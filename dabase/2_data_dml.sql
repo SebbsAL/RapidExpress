@@ -1,0 +1,245 @@
+-- ==========================================================
+-- RapidExpress - Script DML (Data Manipulation Language)
+-- Población de Base de Datos con 21 registros por tabla principal
+-- ==========================================================
+USE rapidexpress_db;
+
+-- 1. Insertar Vehículos (21 registros)
+INSERT INTO vehiculos (placa, marca, modelo, anio_fabricacion, capacidad_maxima_kg, estado) VALUES
+('ABC-001', 'Toyota', 'HiAce', 2018, 1500.00, 'DISPONIBLE'),
+('ABC-002', 'Hino', 'Dutro 300', 2020, 3500.00, 'EN_RUTA'),
+('ABC-003', 'Isuzu', 'NPR', 2019, 4000.00, 'DISPONIBLE'),
+('ABC-004', 'Mercedes', 'Sprinter', 2021, 2000.00, 'EN_MANTENIMIENTO'),
+('ABC-005', 'Chevrolet', 'NKR', 2017, 3000.00, 'DISPONIBLE'),
+('ABC-006', 'Ford', 'Transit', 2022, 1800.00, 'DISPONIBLE'),
+('ABC-007', 'Toyota', 'Hilux', 2020, 1000.00, 'EN_RUTA'),
+('ABC-008', 'Volkswagen', 'Crafter', 2019, 2500.00, 'DISPONIBLE'),
+('ABC-009', 'Hino', 'Dutro', 2018, 3500.00, 'DISPONIBLE'),
+('ABC-010', 'Isuzu', 'NQR', 2021, 5000.00, 'DISPONIBLE'),
+('ABC-011', 'Nissan', 'Frontier', 2020, 1000.00, 'DISPONIBLE'),
+('ABC-012', 'Peugeot', 'Boxer', 2019, 1800.00, 'DISPONIBLE'),
+('ABC-013', 'Renault', 'Master', 2018, 1700.00, 'DISPONIBLE'),
+('ABC-014', 'Iveco', 'Daily', 2021, 2200.00, 'EN_MANTENIMIENTO'),
+('ABC-015', 'Hyundai', 'H100', 2017, 1200.00, 'DISPONIBLE'),
+('ABC-016', 'Toyota', 'HiAce', 2022, 1500.00, 'DISPONIBLE'),
+('ABC-017', 'Chevrolet', 'NQR', 2019, 4500.00, 'EN_RUTA'),
+('ABC-018', 'Ford', 'Transit', 2020, 1800.00, 'DISPONIBLE'),
+('ABC-019', 'Mercedes', 'Sprinter', 2018, 2000.00, 'DISPONIBLE'),
+('ABC-020', 'Hino', 'Dutro 300', 2023, 3500.00, 'DISPONIBLE'),
+('ABC-021', 'Isuzu', 'NPR', 2020, 4000.00, 'DISPONIBLE');
+
+-- 2. Insertar Conductores (21 registros)
+INSERT INTO conductores (numero_identificacion, nombre_completo, tipo_licencia, telefono, email, estado) VALUES
+('1700000001', 'Juan Perez', 'C1', '0990000001', 'juan.perez@email.com', 'ACTIVO'),
+('1700000002', 'Maria Gomez', 'B2', '0990000002', 'maria.gomez@email.com', 'ACTIVO'),
+('1700000003', 'Carlos Ruiz', 'C1', '0990000003', 'carlos.ruiz@email.com', 'ACTIVO'),
+('1700000004', 'Ana Lopez', 'B2', '0990000004', 'ana.lopez@email.com', 'DE_VACACIONES'),
+('1700000005', 'Pedro Torres', 'C1', '0990000005', 'pedro.torres@email.com', 'ACTIVO'),
+('1700000006', 'Luis Fernandez', 'C2', '0990000006', 'luis.f@email.com', 'ACTIVO'),
+('1700000007', 'Marta Jimenez', 'B2', '0990000007', 'marta.j@email.com', 'ACTIVO'),
+('1700000008', 'Jose Ramirez', 'C1', '0990000008', 'jose.r@email.com', 'INACTIVO'),
+('1700000009', 'Lucia Silva', 'B2', '0990000009', 'lucia.s@email.com', 'ACTIVO'),
+('1700000010', 'Miguel Castro', 'C2', '0990000010', 'miguel.c@email.com', 'ACTIVO'),
+('1700000011', 'Rosa Mendez', 'B2', '0990000011', 'rosa.m@email.com', 'ACTIVO'),
+('1700000012', 'David Ortega', 'C1', '0990000012', 'david.o@email.com', 'ACTIVO'),
+('1700000013', 'Elena Cruz', 'B2', '0990000013', 'elena.c@email.com', 'ACTIVO'),
+('1700000014', 'Diego Flores', 'C2', '0990000014', 'diego.f@email.com', 'DE_VACACIONES'),
+('1700000015', 'Carmen Vega', 'B2', '0990000015', 'carmen.v@email.com', 'ACTIVO'),
+('1700000016', 'Jorge Rios', 'C1', '0990000016', 'jorge.r@email.com', 'ACTIVO'),
+('1700000017', 'Laura Paredes', 'B2', '0990000017', 'laura.p@email.com', 'ACTIVO'),
+('1700000018', 'Mario Aguilar', 'C2', '0990000018', 'mario.a@email.com', 'ACTIVO'),
+('1700000019', 'Paula Navarro', 'B2', '0990000019', 'paula.n@email.com', 'ACTIVO'),
+('1700000020', 'Victor Pineda', 'C1', '0990000020', 'victor.p@email.com', 'INACTIVO'),
+('1700000021', 'Sara Moran', 'B2', '0990000021', 'sara.m@email.com', 'ACTIVO');
+
+-- 3. Insertar Mantenimientos (21 registros)
+INSERT INTO mantenimientos (vehiculo_id, tipo_mantenimiento, descripcion, fecha_programada, fecha_realizacion, costo, estado) VALUES
+(1, 'Preventivo', 'Cambio de aceite y filtros', '2023-01-15', '2023-01-15', 120.00, 'COMPLETADO'),
+(2, 'Preventivo', 'Revisión de frenos', '2023-02-10', '2023-02-11', 85.50, 'COMPLETADO'),
+(3, 'Correctivo', 'Reemplazo de batería', '2023-03-05', '2023-03-05', 150.00, 'COMPLETADO'),
+(4, 'Correctivo', 'Reparación de embrague', '2024-05-20', NULL, NULL, 'EN_PROCESO'),
+(5, 'Preventivo', 'Alineación y balanceo', '2023-04-12', '2023-04-12', 60.00, 'COMPLETADO'),
+(6, 'Preventivo', 'Cambio de llantas', '2023-05-22', '2023-05-22', 400.00, 'COMPLETADO'),
+(7, 'Correctivo', 'Fuga de refrigerante', '2023-06-18', '2023-06-19', 95.00, 'COMPLETADO'),
+(8, 'Preventivo', 'Mantenimiento de 50,000 km', '2023-07-01', '2023-07-02', 300.00, 'COMPLETADO'),
+(9, 'Preventivo', 'Cambio de aceite', '2023-08-15', '2023-08-15', 110.00, 'COMPLETADO'),
+(10, 'Correctivo', 'Reemplazo de alternador', '2023-09-10', '2023-09-12', 250.00, 'COMPLETADO'),
+(11, 'Preventivo', 'Revisión general', '2023-10-05', '2023-10-05', 50.00, 'COMPLETADO'),
+(12, 'Preventivo', 'Cambio de bujías', '2023-11-20', '2023-11-20', 70.00, 'COMPLETADO'),
+(13, 'Correctivo', 'Reparación de escape', '2023-12-12', '2023-12-13', 130.00, 'COMPLETADO'),
+(14, 'Correctivo', 'Fallo de motor', '2024-06-10', NULL, NULL, 'PROGRAMADO'),
+(15, 'Preventivo', 'Cambio de aceite', '2024-01-15', '2024-01-15', 90.00, 'COMPLETADO'),
+(16, 'Preventivo', 'Revisión de frenos', '2024-02-10', '2024-02-10', 80.00, 'COMPLETADO'),
+(17, 'Preventivo', 'Alineación', '2024-03-05', '2024-03-05', 45.00, 'COMPLETADO'),
+(18, 'Correctivo', 'Luz fundida', '2024-04-20', '2024-04-20', 25.00, 'COMPLETADO'),
+(19, 'Preventivo', 'Cambio de filtros', '2024-05-12', '2024-05-12', 65.00, 'COMPLETADO'),
+(20, 'Preventivo', 'Mantenimiento 10,000 km', '2024-06-01', NULL, NULL, 'PROGRAMADO'),
+(21, 'Correctivo', 'Vidrio roto', '2024-05-25', '2024-05-26', 180.00, 'COMPLETADO');
+
+-- 4. Insertar Asignaciones Vehículo-Conductor (21 registros)
+INSERT INTO asignaciones_vehiculo_conductor (vehiculo_id, conductor_id, activo) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1),
+(5, 5, 1),
+(6, 6, 1),
+(7, 7, 1),
+(8, 9, 1),
+(9, 10, 1),
+(10, 11, 1),
+(11, 12, 1),
+(12, 13, 1),
+(13, 15, 1),
+(15, 16, 1),
+(16, 17, 1),
+(17, 18, 1),
+(18, 19, 1),
+(19, 21, 1),
+(4, 4, 0), -- Asignación pasada
+(14, 8, 0), -- Asignación pasada
+(20, 14, 0), -- Asignación pasada
+(21, 20, 0); -- Asignación pasada
+
+-- 5. Insertar Clientes (21 registros - Mitad remitentes, mitad destinatarios aprox)
+INSERT INTO clientes (numero_identificacion, nombre_completo, telefono, email, direccion, ciudad) VALUES
+('1800000001', 'Empresa Alfa S.A.', '022000001', 'contacto@alfa.com', 'Av. Amazonas N21', 'Quito'),
+('1800000002', 'Distribuidora Beta', '042000002', 'ventas@beta.com', 'Av. 9 de Octubre', 'Guayaquil'),
+('1800000003', 'Comercial Gamma', '072000003', 'info@gamma.com', 'Calle Larga 123', 'Cuenca'),
+('1800000004', 'Roberto Gómez', '0991111111', 'roberto@email.com', 'Sector La Carolina', 'Quito'),
+('1800000005', 'Luisa Martínez', '0992222222', 'luisa@email.com', 'Urdesa Central', 'Guayaquil'),
+('1800000006', 'Tecnología Delta', '022333444', 'tech@delta.com', 'Quicentro Sur', 'Quito'),
+('1800000007', 'Importadora Omega', '042555666', 'import@omega.com', 'Vía Daule Km 5', 'Guayaquil'),
+('1800000008', 'Fernanda Ruiz', '0993333333', 'fernanda@email.com', 'Centro Histórico', 'Cuenca'),
+('1800000009', 'Supermercados Zeta', '022777888', 'logistica@zeta.com', 'Cumbayá', 'Quito'),
+('1800000010', 'Carlos Viteri', '0994444444', 'carlos.v@email.com', 'Samborondón', 'Guayaquil'),
+('1800000011', 'Librería Nacional', '022999000', 'libros@nacional.com', 'La Mariscal', 'Quito'),
+('1800000012', 'Boutique Elegance', '042111222', 'ropa@elegance.com', 'Mall del Sol', 'Guayaquil'),
+('1800000013', 'Andres Silva', '0995555555', 'andres.s@email.com', 'El Ejido', 'Quito'),
+('1800000014', 'Farmacias Salud', '072333444', 'pedidos@salud.com', 'Totoracocha', 'Cuenca'),
+('1800000015', 'Valeria Paz', '0996666666', 'valeria.p@email.com', 'Miraflores', 'Guayaquil'),
+('1800000016', 'Repuestos Auto', '022444555', 'ventas@auto.com', 'Villaflora', 'Quito'),
+('1800000017', 'Gabriel León', '0997777777', 'gabriel.l@email.com', 'Baños de Agua Santa', 'Tungurahua'),
+('1800000018', 'Constructora C', '042666777', 'obras@constructora.com', 'Alborada', 'Guayaquil'),
+('1800000019', 'Mónica Reyes', '0998888888', 'monica.r@email.com', 'San Blas', 'Cuenca'),
+('1800000020', 'Electrodomésticos E', '022888999', 'ventas@electro.com', 'Chillogallo', 'Quito'),
+('1800000021', 'Javier Cueva', '0999999999', 'javier.c@email.com', 'Los Ceibos', 'Guayaquil');
+
+-- 6. Insertar Paquetes (21 registros)
+INSERT INTO paquetes (codigo_seguimiento, descripcion_contenido, peso_kg, direccion_origen, direccion_destino, remitente_id, destinatario_id, estado) VALUES
+('RPX-1001', 'Documentos legales', 0.5, 'Av. Amazonas N21, Quito', 'Av. 9 de Octubre, Guayaquil', 1, 2, 'ENTREGADO'),
+('RPX-1002', 'Laptops x5', 12.0, 'Quicentro Sur, Quito', 'Calle Larga 123, Cuenca', 6, 3, 'ENTREGADO'),
+('RPX-1003', 'Repuestos motor', 25.5, 'Vía Daule Km 5, Guayaquil', 'Villaflora, Quito', 7, 16, 'EN_TRANSITO'),
+('RPX-1004', 'Ropa temporada', 5.2, 'Mall del Sol, Guayaquil', 'Sector La Carolina, Quito', 12, 4, 'EN_BODEGA'),
+('RPX-1005', 'Medicamentos', 2.1, 'Totoracocha, Cuenca', 'Urdesa Central, Guayaquil', 14, 5, 'ASIGNADO_A_RUTA'),
+('RPX-1006', 'Libros escolares', 15.0, 'La Mariscal, Quito', 'Centro Histórico, Cuenca', 11, 8, 'EN_TRANSITO'),
+('RPX-1007', 'Material construcción', 150.0, 'Alborada, Guayaquil', 'Cumbayá, Quito', 18, 9, 'EN_BODEGA'),
+('RPX-1008', 'Regalo sorpresa', 1.0, 'Samborondón, Guayaquil', 'El Ejido, Quito', 10, 13, 'DEVUELTO'),
+('RPX-1009', 'Televisor 55"', 18.5, 'Chillogallo, Quito', 'Los Ceibos, Guayaquil', 20, 21, 'EN_BODEGA'),
+('RPX-1010', 'Documentos contables', 0.8, 'Av. Amazonas N21, Quito', 'San Blas, Cuenca', 1, 19, 'ENTREGADO'),
+('RPX-1011', 'Zapatos x10', 8.5, 'Av. 9 de Octubre, Guayaquil', 'Quicentro Sur, Quito', 2, 6, 'EN_TRANSITO'),
+('RPX-1012', 'Cosméticos', 3.0, 'Miraflores, Guayaquil', 'La Mariscal, Quito', 15, 11, 'ASIGNADO_A_RUTA'),
+('RPX-1013', 'Equipos médicos', 45.0, 'Totoracocha, Cuenca', 'Av. Amazonas N21, Quito', 14, 1, 'EN_BODEGA'),
+('RPX-1014', 'Muestras laboratorio', 1.5, 'Calle Larga 123, Cuenca', 'Samborondón, Guayaquil', 3, 10, 'ENTREGADO'),
+('RPX-1015', 'Mercancía variada', 200.0, 'Vía Daule Km 5, Guayaquil', 'Chillogallo, Quito', 7, 20, 'EN_TRANSITO'),
+('RPX-1016', 'Partes de computadora', 10.0, 'Quicentro Sur, Quito', 'Alborada, Guayaquil', 6, 18, 'DEVUELTO'),
+('RPX-1017', 'Artesanías', 4.5, 'Baños de Agua Santa', 'Urdesa Central, Guayaquil', 17, 5, 'EN_BODEGA'),
+('RPX-1018', 'Celulares x20', 8.0, 'Av. Amazonas N21, Quito', 'Mall del Sol, Guayaquil', 1, 12, 'ASIGNADO_A_RUTA'),
+('RPX-1019', 'Ropa deportiva', 6.5, 'Centro Histórico, Cuenca', 'Sector La Carolina, Quito', 8, 4, 'EN_TRANSITO'),
+('RPX-1020', 'Insumos oficina', 12.5, 'Cumbayá, Quito', 'Vía Daule Km 5, Guayaquil', 9, 7, 'ENTREGADO'),
+('RPX-1021', 'Muebles hogar', 85.0, 'Los Ceibos, Guayaquil', 'El Ejido, Quito', 21, 13, 'EN_BODEGA');
+
+-- 7. Insertar Historial Paquetes (21 registros - Ejemplos de tracking)
+INSERT INTO historial_paquetes (paquete_id, estado, descripcion_evento, ubicacion) VALUES
+(1, 'EN_BODEGA', 'Paquete recibido en centro logístico', 'Quito'),
+(1, 'EN_TRANSITO', 'Paquete en camino a destino', 'Ruta Q-G'),
+(1, 'ENTREGADO', 'Paquete entregado al destinatario', 'Guayaquil'),
+(2, 'EN_BODEGA', 'Paquete recibido en centro logístico', 'Quito'),
+(2, 'ENTREGADO', 'Paquete entregado exitosamente', 'Cuenca'),
+(3, 'EN_BODEGA', 'Paquete ingresado a bodega', 'Guayaquil'),
+(3, 'EN_TRANSITO', 'Paquete en tránsito interprovincial', 'Ruta G-Q'),
+(4, 'EN_BODEGA', 'Paquete listo para asignación', 'Guayaquil'),
+(5, 'EN_BODEGA', 'Paquete recibido', 'Cuenca'),
+(5, 'ASIGNADO_A_RUTA', 'Asignado a hoja de ruta HR-1002', 'Cuenca'),
+(6, 'EN_BODEGA', 'Ingreso a bodega norte', 'Quito'),
+(6, 'EN_TRANSITO', 'En viaje hacia Cuenca', 'Ruta Q-C'),
+(7, 'EN_BODEGA', 'Recepción de carga pesada', 'Guayaquil'),
+(8, 'EN_BODEGA', 'Recibido en matriz', 'Guayaquil'),
+(8, 'DEVUELTO', 'Destinatario no se encontraba', 'Quito'),
+(9, 'EN_BODEGA', 'Ingresado a sistema', 'Quito'),
+(10, 'ENTREGADO', 'Documentos entregados con firma', 'Cuenca'),
+(11, 'EN_TRANSITO', 'En camino a Quito', 'Ruta G-Q'),
+(12, 'ASIGNADO_A_RUTA', 'Asignado a conductor local', 'Guayaquil'),
+(15, 'EN_TRANSITO', 'Camión en ruta', 'Ruta G-Q'),
+(20, 'ENTREGADO', 'Recibido por guardia', 'Guayaquil');
+
+-- 8. Insertar Rutas (21 registros)
+INSERT INTO rutas (codigo_ruta, vehiculo_id, conductor_id, fecha_ruta, hora_inicio, hora_fin, peso_total_asignado_kg, estado) VALUES
+('HR-20230501-01', 1, 1, '2023-05-01', '08:00:00', '18:00:00', 500.0, 'COMPLETADA'),
+('HR-20230502-02', 2, 2, '2023-05-02', '07:30:00', '19:00:00', 1200.0, 'COMPLETADA'),
+('HR-20230503-03', 3, 3, '2023-05-03', '06:00:00', '20:00:00', 3800.0, 'COMPLETADA'),
+('HR-20240520-04', 2, 2, '2024-05-20', '08:15:00', NULL, 225.5, 'EN_PROCESO'),
+('HR-20240521-05', 7, 7, '2024-05-21', '09:00:00', NULL, 850.0, 'EN_PROCESO'),
+('HR-20240522-06', 17, 18, '2024-05-22', '05:30:00', NULL, 4000.0, 'EN_PROCESO'),
+('HR-20240601-07', 5, 5, '2024-06-01', NULL, NULL, 5.1, 'PLANIFICADA'),
+('HR-20240601-08', 6, 6, '2024-06-01', NULL, NULL, 11.0, 'PLANIFICADA'),
+('HR-20230610-09', 8, 9, '2023-06-10', '08:00:00', '16:00:00', 2100.0, 'COMPLETADA'),
+('HR-20230715-10', 9, 10, '2023-07-15', '07:00:00', '15:30:00', 3000.0, 'COMPLETADA'),
+('HR-20230820-11', 10, 11, '2023-08-20', '06:45:00', '14:00:00', 4500.0, 'COMPLETADA'),
+('HR-20230925-12', 11, 12, '2023-09-25', '08:30:00', '12:30:00', 800.0, 'COMPLETADA'),
+('HR-20231030-13', 12, 13, '2023-10-30', '09:00:00', '18:45:00', 1600.0, 'COMPLETADA'),
+('HR-20231105-14', 13, 15, '2023-11-05', '07:15:00', '17:00:00', 1500.0, 'COMPLETADA'),
+('HR-20231210-15', 15, 16, '2023-12-10', '08:00:00', '16:30:00', 1100.0, 'COMPLETADA'),
+('HR-20240115-16', 16, 17, '2024-01-15', '06:30:00', '19:15:00', 1400.0, 'COMPLETADA'),
+('HR-20240220-17', 18, 19, '2024-02-20', '07:45:00', '15:45:00', 1700.0, 'COMPLETADA'),
+('HR-20240325-18', 19, 21, '2024-03-25', '08:30:00', '17:30:00', 1900.0, 'COMPLETADA'),
+('HR-20240430-19', 1, 1, '2024-04-30', '06:00:00', '18:00:00', 1450.0, 'COMPLETADA'),
+('HR-20240602-20', 3, 3, '2024-06-02', NULL, NULL, 3000.0, 'PLANIFICADA'),
+('HR-20240603-21', 8, 9, '2024-06-03', NULL, NULL, 2000.0, 'PLANIFICADA');
+
+-- 9. Insertar Ruta Paquetes (21 registros)
+INSERT INTO ruta_paquetes (ruta_id, paquete_id, orden_entrega, estado_entrega, fecha_entrega_estimada, fecha_entrega_real) VALUES
+(1, 1, 1, 'ENTREGADO', '2023-05-01 10:00:00', '2023-05-01 10:15:00'),
+(2, 2, 1, 'ENTREGADO', '2023-05-02 11:30:00', '2023-05-02 11:45:00'),
+(4, 3, 1, 'PENDIENTE', '2024-05-20 14:00:00', NULL),
+(7, 5, 1, 'PENDIENTE', '2024-06-01 10:00:00', NULL),
+(5, 6, 2, 'PENDIENTE', '2024-05-21 15:30:00', NULL),
+(3, 8, 1, 'DEVUELTO', '2023-05-03 09:00:00', '2023-05-03 09:10:00'),
+(1, 10, 2, 'ENTREGADO', '2023-05-01 14:00:00', '2023-05-01 13:50:00'),
+(6, 11, 1, 'PENDIENTE', '2024-05-22 11:00:00', NULL),
+(8, 12, 1, 'PENDIENTE', '2024-06-01 12:00:00', NULL),
+(2, 14, 2, 'ENTREGADO', '2023-05-02 16:00:00', '2023-05-02 16:20:00'),
+(4, 15, 2, 'PENDIENTE', '2024-05-20 17:00:00', NULL),
+(5, 16, 1, 'DEVUELTO', '2024-05-21 11:30:00', '2024-05-21 11:35:00'),
+(8, 18, 2, 'PENDIENTE', '2024-06-01 15:00:00', NULL),
+(6, 19, 2, 'PENDIENTE', '2024-05-22 16:30:00', NULL),
+(3, 20, 2, 'ENTREGADO', '2023-05-03 12:00:00', '2023-05-03 11:55:00'),
+(9, 1, 3, 'ENTREGADO', '2023-06-10 10:00:00', '2023-06-10 10:20:00'),
+(10, 2, 3, 'ENTREGADO', '2023-07-15 14:00:00', '2023-07-15 14:10:00'),
+(11, 10, 3, 'ENTREGADO', '2023-08-20 11:00:00', '2023-08-20 11:30:00'),
+(12, 14, 3, 'ENTREGADO', '2023-09-25 15:00:00', '2023-09-25 14:55:00'),
+(13, 20, 3, 'ENTREGADO', '2023-10-30 09:30:00', '2023-10-30 09:45:00'),
+(14, 3, 3, 'INCIDENCIA', '2023-11-05 13:00:00', '2023-11-05 13:15:00');
+
+-- 10. Insertar Auditoria Logs (21 registros)
+INSERT INTO auditoria_logs (entidad, entidad_id, accion, detalle, usuario_o_proceso) VALUES
+('VEHICULO', 1, 'CREACION', 'Vehículo ABC-001 registrado', 'admin'),
+('CONDUCTOR', 1, 'CREACION', 'Conductor Juan Perez registrado', 'admin'),
+('PAQUETE', 1, 'CREACION', 'Paquete RPX-1001 ingresado a sistema', 'operador1'),
+('RUTA', 1, 'CREACION', 'Ruta HR-20230501-01 planificada', 'logistica'),
+('RUTA', 1, 'INICIO_RUTA', 'Ruta HR-20230501-01 iniciada', 'operador1'),
+('PAQUETE', 1, 'CAMBIO_ESTADO', 'Paquete RPX-1001 cambió a EN_TRANSITO', 'sistema'),
+('PAQUETE', 1, 'CAMBIO_ESTADO', 'Paquete RPX-1001 entregado', 'conductor1'),
+('RUTA', 1, 'FIN_RUTA', 'Ruta HR-20230501-01 completada', 'operador1'),
+('VEHICULO', 1, 'MANTENIMIENTO', 'Vehículo ABC-001 entra a mantenimiento preventivo', 'mecanico'),
+('VEHICULO', 1, 'FIN_MANTENIMIENTO', 'Vehículo ABC-001 disponible', 'mecanico'),
+('CLIENTE', 1, 'CREACION', 'Cliente Empresa Alfa registrado', 'ventas'),
+('ASIGNACION', 1, 'NUEVA_ASIGNACION', 'Vehículo 1 asignado a conductor 1', 'admin'),
+('PAQUETE', 8, 'DEVUELTO', 'Destinatario no presente', 'conductor3'),
+('RUTA', 3, 'FIN_RUTA', 'Ruta HR-20230503-03 completada', 'operador2'),
+('PAQUETE', 16, 'DEVUELTO', 'Dirección incorrecta', 'conductor7'),
+('VEHICULO', 4, 'MANTENIMIENTO', 'Ingreso por reparación de embrague', 'mecanico'),
+('CONDUCTOR', 4, 'CAMBIO_ESTADO', 'Conductor sale de vacaciones', 'rrhh'),
+('RUTA', 4, 'INICIO_RUTA', 'Ruta iniciada por conductor 2', 'operador1'),
+('PAQUETE', 3, 'CAMBIO_ESTADO', 'En tránsito a Quito', 'sistema'),
+('RUTA', 7, 'CREACION', 'Planificación para 2024-06-01', 'logistica'),
+('ASIGNACION', 4, 'DESASIGNACION', 'Conductor 4 desasignado de vehículo 4', 'admin');
