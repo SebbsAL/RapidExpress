@@ -1,0 +1,131 @@
+erDiagram
+    VEHICULOS ||--o{ MANTENIMIENTOS : "tiene"
+    VEHICULOS ||--o{ ASIGNACIONES_VEHICULO_CONDUCTOR : "asignado_a"
+    CONDUCTORES ||--o{ ASIGNACIONES_VEHICULO_CONDUCTOR : "recibe"
+    VEHICULOS ||--o{ RUTAS : "utilizado_en"
+    CONDUCTORES ||--o{ RUTAS : "conduce"
+    CLIENTES ||--o{ PAQUETES : "envia_como_remitente"
+    CLIENTES ||--o{ PAQUETES : "recibe_como_destinatario"
+    RUTAS ||--o{ RUTA_PAQUETES : "contiene"
+    PAQUETES ||--o{ RUTA_PAQUETES : "asignado_en"
+    PAQUETES ||--o{ HISTORIAL_PAQUETES : "registra"
+    
+    VEHICULOS {
+        INT id PK
+        VARCHAR placa UK
+        VARCHAR marca
+        VARCHAR modelo
+        INT anio_fabricacion
+        DECIMAL capacidad_maxima_kg
+        ENUM estado
+        DATETIME fecha_creacion
+        DATETIME fecha_actualizacion
+    }
+
+    CONDUCTORES {
+        INT id PK
+        VARCHAR numero_identificacion UK
+        VARCHAR nombre_completo
+        VARCHAR tipo_licencia
+        VARCHAR telefono
+        VARCHAR email
+        ENUM estado
+        DATETIME fecha_creacion
+        DATETIME fecha_actualizacion
+    }
+
+    MANTENIMIENTOS {
+        INT id PK
+        INT vehiculo_id FK
+        VARCHAR tipo_mantenimiento
+        TEXT descripcion
+        DATE fecha_programada
+        DATE fecha_realizacion
+        DECIMAL costo
+        ENUM estado
+        TEXT observaciones
+        DATETIME fecha_creacion
+    }
+
+    ASIGNACIONES_VEHICULO_CONDUCTOR {
+        INT id PK
+        INT vehiculo_id FK
+        INT conductor_id FK
+        DATETIME fecha_asignacion
+        DATETIME fecha_desasignacion
+        BOOLEAN activo
+    }
+
+    CLIENTES {
+        INT id PK
+        VARCHAR numero_identificacion UK
+        VARCHAR nombre_completo
+        VARCHAR telefono
+        VARCHAR email
+        VARCHAR direccion
+        VARCHAR ciudad
+        DATETIME fecha_creacion
+    }
+
+    PAQUETES {
+        INT id PK
+        VARCHAR codigo_seguimiento UK
+        TEXT descripcion_contenido
+        DECIMAL peso_kg
+        DECIMAL largo_cm
+        DECIMAL ancho_cm
+        DECIMAL alto_cm
+        DECIMAL volumen_m3
+        TEXT direccion_origen
+        TEXT direccion_destino
+        INT remitente_id FK
+        INT destinatario_id FK
+        ENUM estado
+        DATETIME fecha_creacion
+        DATETIME fecha_actualizacion
+    }
+
+    HISTORIAL_PAQUETES {
+        INT id PK
+        INT paquete_id FK
+        ENUM estado
+        VARCHAR descripcion_evento
+        VARCHAR ubicacion
+        DATETIME fecha_registro
+    }
+
+    RUTAS {
+        INT id PK
+        VARCHAR codigo_ruta UK
+        INT vehiculo_id FK
+        INT conductor_id FK
+        DATE fecha_ruta
+        TIME hora_inicio
+        TIME hora_fin
+        DECIMAL peso_total_asignado_kg
+        ENUM estado
+        TEXT observaciones
+        DATETIME fecha_creacion
+        DATETIME fecha_actualizacion
+    }
+
+    RUTA_PAQUETES {
+        INT id PK
+        INT ruta_id FK
+        INT paquete_id FK
+        INT orden_entrega
+        ENUM estado_entrega
+        DATETIME fecha_entrega_estimada
+        DATETIME fecha_entrega_real
+        TEXT observaciones_entrega
+    }
+
+    AUDITORIA_LOGS {
+        INT id PK
+        VARCHAR entidad
+        INT entidad_id
+        VARCHAR accion
+        TEXT detalle
+        VARCHAR usuario_o_proceso
+        DATETIME fecha_evento
+    }
