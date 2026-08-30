@@ -18,7 +18,7 @@ public class Vehiculos {
     private String modelo;
     private int anio_fabricacion;
     private int capacidad_maxima_kg;
-    private enum Estado {DISPONIBLE, EN_RUTA,EN_MANTENIMIENTO};
+    public enum Estado {DISPONIBLE, EN_RUTA,EN_MANTENIMIENTO};
     private Estado estado; 
     private LocalDateTime fecha_creacion;
     private LocalDateTime fecha_actualizacion; 
@@ -35,8 +35,9 @@ public class Vehiculos {
         this.fecha_actualizacion = fecha_actualizacion;
     }
 
+    public Vehiculos() {
+    }
     
-
     public int getId() {
         return id;
     }
@@ -49,6 +50,10 @@ public class Vehiculos {
         return modelo;
     }
 
+    public String getMarca() {
+        return marca;
+    }    
+    
     public int getAnio_fabricacion() {
         return anio_fabricacion;
     }
@@ -63,6 +68,38 @@ public class Vehiculos {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setAnio_fabricacion(int anio_fabricacion) {
+        this.anio_fabricacion = anio_fabricacion;
+    }
+
+    public void setCapacidad_maxima_kg(int capacidad_maxima_kg) {
+        this.capacidad_maxima_kg = capacidad_maxima_kg;
+    }
+
+    public void setFecha_creacion(LocalDateTime fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
+    }
+
+    public void setFecha_actualizacion(LocalDateTime fecha_actualizacion) {
+        this.fecha_actualizacion = fecha_actualizacion;
     }
     
     @Override
