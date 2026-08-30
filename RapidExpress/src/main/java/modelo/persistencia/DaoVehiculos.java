@@ -28,9 +28,8 @@ public class DaoVehiculos {
             ps.setString(6, vehiculo.getEstado().name());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al insertar vehículo: " + e.getMessage());
+            System.err.println("Error al insertar vehículo: " + e.getMessage());
         }
-        
     }
     
     public void actualizar(Vehiculos vehiculo) {
@@ -44,7 +43,7 @@ public class DaoVehiculos {
             ps.setString(5, vehiculo.getPlaca());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al actualizar vehículo: " + e.getMessage());
+            System.err.println("Error al actualizar vehículo: " + e.getMessage());
         }
     }
     
@@ -73,6 +72,7 @@ public class DaoVehiculos {
         }
         return null;
     }
+    
 
     public List<Vehiculos> obtenerTodos() {
         String sql = "SELECT * FROM vehiculos";
@@ -86,6 +86,7 @@ public class DaoVehiculos {
         }
         return lista;
     }
+    
 
     private Vehiculos mapearVehiculo(ResultSet rs) throws SQLException {
         Vehiculos v = new Vehiculos();
@@ -94,8 +95,14 @@ public class DaoVehiculos {
         v.setMarca(rs.getString("marca"));
         v.setModelo(rs.getString("modelo"));
         v.setAnio_fabricacion(rs.getInt("anio_fabricacion"));
-        v.setCapacidad_maxima_kg(rs.getDouble("capacidad_maxima_kg"));
-        v.setEstado(Estado.valueOf(rs.getString("estado")));
+        v.setCapacidad_maxima_kg(rs.getInt("capacidad_maxima_kg")); // Basado en tu clase actual
+        v.setEstado(Vehiculos.Estado.valueOf(rs.getString("estado")));
+        if (rs.getTimestamp("fecha_creacion") != null) {
+            v.setFecha_creacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+        }
+        if (rs.getTimestamp("fecha_actualizacion") != null) {
+            v.setFecha_actualizacion(rs.getTimestamp("fecha_actualizacion").toLocalDateTime());
+        }
         return v;
     }
 }
