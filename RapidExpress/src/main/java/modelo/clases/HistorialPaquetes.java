@@ -28,6 +28,9 @@ public class HistorialPaquetes {
         this.fechaRegistro = fechaRegistro;
     }
 
+    public HistorialPaquetes() {
+    }
+    
     public int getId() {
         return id;
     }
@@ -62,6 +65,18 @@ public class HistorialPaquetes {
 
     public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPaqueteId(int paqueteId) {
+        this.paqueteId = paqueteId;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     @Override
