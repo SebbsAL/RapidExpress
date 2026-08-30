@@ -31,6 +31,10 @@ public class Clientes {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public Clientes() {
+    }
+
+    
     public int getId() {
         return id;
     }
@@ -61,6 +65,38 @@ public class Clientes {
 
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNumeroIdentificacion(String numeroIdentificacion) {
+        this.numeroIdentificacion = numeroIdentificacion;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
     
     @Override
