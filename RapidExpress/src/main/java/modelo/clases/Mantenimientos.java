@@ -37,6 +37,9 @@ public class Mantenimientos {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public Mantenimientos() {
+    }
+    
     public int getId() {
         return id;
     }
@@ -79,6 +82,42 @@ public class Mantenimientos {
 
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setVehiculoId(int vehiculoId) {
+        this.vehiculoId = vehiculoId;
+    }
+
+    public void setTipoMantenimiento(String tipoMantenimiento) {
+        this.tipoMantenimiento = tipoMantenimiento;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setFechaProgramada(LocalDate fechaProgramada) {
+        this.fechaProgramada = fechaProgramada;
+    }
+
+    public void setFechaRealizacion(LocalDate fechaRealizacion) {
+        this.fechaRealizacion = fechaRealizacion;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     @Override

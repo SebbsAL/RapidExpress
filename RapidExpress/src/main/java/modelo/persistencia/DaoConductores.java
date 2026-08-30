@@ -30,9 +30,9 @@ public class DaoConductores {
         } catch (SQLException e) {
             System.err.println("Error al insertar conductor: " + e.getMessage());
         }
-     }
+    }
 
-     public void actualizar(Conductores conductor) {
+    public void actualizar(Conductores conductor) {
         String sql = "UPDATE conductores SET nombre_completo=?, tipo_licencia=?, telefono=?, email=? WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -46,8 +46,8 @@ public class DaoConductores {
             System.err.println("Error al actualizar conductor: " + e.getMessage());
         }
     }
-     
-     public void actualizarEstado(String identificacion, String nuevoEstado) {
+
+    public void actualizarEstado(String identificacion, String nuevoEstado) {
         String sql = "UPDATE conductores SET estado=? WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -58,20 +58,8 @@ public class DaoConductores {
             System.err.println("Error al actualizar estado del conductor: " + e.getMessage());
         }
     }
-     
-     private Conductores mapearConductor(ResultSet rs) throws SQLException {
-        Conductores c = new Conductores();
-        c.setId(rs.getInt("id"));
-        c.setNumeroIdentificacion(rs.getString("numero_identificacion"));
-        c.setNombreCompleto(rs.getString("nombre_completo"));
-        c.setTipoLicencia(rs.getString("tipo_licencia"));
-        c.setTelefono(rs.getString("telefono"));
-        c.setEmail(rs.getString("email"));
-        c.setEstado(Estado.valueOf(rs.getString("estado")));
-        return c;
-    }
-     
-     public Conductores obtenerPorIdentificacion(String identificacion) {
+
+    public Conductores obtenerPorIdentificacion(String identificacion) {
         String sql = "SELECT * FROM conductores WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -84,8 +72,8 @@ public class DaoConductores {
         }
         return null;
     }
-     
-     public List<Conductores> obtenerTodos() {
+
+    public List<Conductores> obtenerTodos() {
         String sql = "SELECT * FROM conductores";
         List<Conductores> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -97,8 +85,26 @@ public class DaoConductores {
         }
         return lista;
     }
-     
-     public boolean tieneAsignacionActiva(String identificacionConductor) {
+
+    private Conductores mapearConductor(ResultSet rs) throws SQLException {
+        Conductores c = new Conductores();
+        c.setId(rs.getInt("id"));
+        c.setNumeroIdentificacion(rs.getString("numero_identificacion"));
+        c.setNombreCompleto(rs.getString("nombre_completo"));
+        c.setTipoLicencia(rs.getString("tipo_licencia"));
+        c.setTelefono(rs.getString("telefono"));
+        c.setEmail(rs.getString("email"));
+        c.setEstado(Conductores.Estado.valueOf(rs.getString("estado")));
+        if (rs.getTimestamp("fecha_creacion") != null) {
+            c.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+        }
+        if (rs.getTimestamp("fecha_actualizacion") != null) {
+            c.setFechaActualizacion(rs.getTimestamp("fecha_actualizacion").toLocalDateTime());
+        }
+        return c;
+    }
+
+    public boolean tieneAsignacionActiva(String identificacionConductor) {
         String sql = "SELECT count(*) AS total FROM asignaciones_vehiculo_conductor a JOIN conductores c ON a.conductor_id = c.id WHERE c.numero_identificacion=? AND a.activo=1";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
