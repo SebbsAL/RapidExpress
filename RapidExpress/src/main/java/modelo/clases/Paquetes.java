@@ -45,7 +45,11 @@ public class Paquetes {
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
     }
+
+    public Paquetes() {
+    }
     
+        
     public Estado getEstado() {
         return this.estado;
     }
@@ -109,7 +113,61 @@ public class Paquetes {
     public LocalDateTime getFechaActualizacion() {
         return fechaActualizacion;
     }
-    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCodigoSeguimiento(String codigoSeguimiento) {
+        this.codigoSeguimiento = codigoSeguimiento;
+    }
+
+    public void setDescripcionContenido(String descripcionContenido) {
+        this.descripcionContenido = descripcionContenido;
+    }
+
+    public void setPesoKg(double pesoKg) {
+        this.pesoKg = pesoKg;
+    }
+
+    public void setLargoCm(double largoCm) {
+        this.largoCm = largoCm;
+    }
+
+    public void setAnchoCm(double anchoCm) {
+        this.anchoCm = anchoCm;
+    }
+
+    public void setAltoCm(double altoCm) {
+        this.altoCm = altoCm;
+    }
+
+    public void setVolumenM3(double volumenM3) {
+        this.volumenM3 = volumenM3;
+    }
+
+    public void setDireccionOrigen(String direccionOrigen) {
+        this.direccionOrigen = direccionOrigen;
+    }
+
+    public void setDireccionDestino(String direccionDestino) {
+        this.direccionDestino = direccionDestino;
+    }
+
+    public void setRemitenteId(int remitenteId) {
+        this.remitenteId = remitenteId;
+    }
+
+    public void setDestinatatioId(int destinatatioId) {
+        this.destinatatioId = destinatatioId;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
     @Override
     public String toString() {
         return "Paquetes{" +
