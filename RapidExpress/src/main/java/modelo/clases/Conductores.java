@@ -34,8 +34,9 @@ public class Conductores {
         this.fechaActualizacion = fechaActualizacion;
     }
 
-    
-    
+    public Conductores() {
+    }
+        
      public Estado getEstado() {
         return this.estado;
     }
@@ -74,6 +75,38 @@ public class Conductores {
 
     public LocalDateTime getFechaActualizacion() {
         return fechaActualizacion;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNumeroIdentificacion(String numeroIdentificacion) {
+        this.numeroIdentificacion = numeroIdentificacion;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public void setTipoLicencia(String tipoLicencia) {
+        this.tipoLicencia = tipoLicencia;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
     
     @Override

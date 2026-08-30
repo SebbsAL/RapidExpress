@@ -17,7 +17,7 @@ public class Vehiculos {
     private String marca;
     private String modelo;
     private int anio_fabricacion;
-    private int capacidad_maxima_kg;
+    private double capacidad_maxima_kg;
     public enum Estado {DISPONIBLE, EN_RUTA,EN_MANTENIMIENTO};
     private Estado estado; 
     private LocalDateTime fecha_creacion;
@@ -58,7 +58,7 @@ public class Vehiculos {
         return anio_fabricacion;
     }
 
-    public int getCapacidad_maxima_kg() {
+    public double getCapacidad_maxima_kg() {
         return capacidad_maxima_kg;
     }
     
@@ -90,7 +90,7 @@ public class Vehiculos {
         this.anio_fabricacion = anio_fabricacion;
     }
 
-    public void setCapacidad_maxima_kg(int capacidad_maxima_kg) {
+    public void setCapacidad_maxima_kg(double capacidad_maxima_kg) {
         this.capacidad_maxima_kg = capacidad_maxima_kg;
     }
 
