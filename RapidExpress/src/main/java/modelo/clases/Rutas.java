@@ -21,7 +21,7 @@ public class Rutas {
     private LocalTime horaInicio;
     private LocalTime horaFin;
     private double pesoTotalAsignadoKg;
-    public enum Estado {PLANIFICADA,EN_PROCESO,COMPLETADA,CANCELADA}
+    public enum Estado {PLANIFICADA,EN_PROCESO,COMPLETADA,CANCELADA};
     private Estado estado;
     private String observaciones;
     private LocalDateTime fechaCreacion;
