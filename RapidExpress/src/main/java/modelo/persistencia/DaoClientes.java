@@ -1,0 +1,68 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package modelo.persistencia;
+import modelo.clases.Clientes;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+/**
+ *
+ * @author sergi
+ */
+public class DaoClientes {
+    public Clientes insertar(Clientes cliente) {
+        String sql = "INSERT INTO clientes (numero_identificacion, nombre_completo, telefono, email, direccion, ciudad) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            
+            ps.setString(1, cliente.getNumeroIdentificacion());
+            ps.setString(2, cliente.getNombreCompleto());
+            ps.setString(3, cliente.getTelefono());
+            ps.setString(4, cliente.getEmail());
+            ps.setString(5, cliente.getDireccion());
+            ps.setString(6, cliente.getCiudad());
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    cliente.setId(rs.getInt(1));
+                    return cliente;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al insertar cliente: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Clientes obtenerPorIdentificacion(String identificacion) {
+        String sql = "SELECT * FROM clientes WHERE numero_identificacion=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, identificacion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Clientes c = new Clientes();
+                    c.setId(rs.getInt("id"));
+                    c.setNumeroIdentificacion(rs.getString("numero_identificacion"));
+                    c.setNombreCompleto(rs.getString("nombre_completo"));
+                    c.setTelefono(rs.getString("telefono"));
+                    c.setEmail(rs.getString("email"));
+                    c.setDireccion(rs.getString("direccion"));
+                    c.setCiudad(rs.getString("ciudad"));
+                    if (rs.getTimestamp("fecha_creacion") != null) {
+                        c.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+                    }
+                    return c;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener cliente: " + e.getMessage());
+        }
+        return null;
+    }
+}
