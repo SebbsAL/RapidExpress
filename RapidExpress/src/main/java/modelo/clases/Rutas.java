@@ -41,6 +41,9 @@ public class Rutas {
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
     }
+
+    public Rutas() {
+    }
     
     public Estado getEstado() {
         return this.estado;
@@ -92,6 +95,50 @@ public class Rutas {
 
     public LocalDateTime getFechaActualizacion() {
         return fechaActualizacion;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCodigoRuta(String codigoRuta) {
+        this.codigoRuta = codigoRuta;
+    }
+
+    public void setVehiculoId(int vehiculoId) {
+        this.vehiculoId = vehiculoId;
+    }
+
+    public void setConductorId(int conductorId) {
+        this.conductorId = conductorId;
+    }
+
+    public void setFechaRuta(LocalDate fechaRuta) {
+        this.fechaRuta = fechaRuta;
+    }
+
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public void setHoraFin(LocalTime horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public void setPesoTotalAsignadoKg(double pesoTotalAsignadoKg) {
+        this.pesoTotalAsignadoKg = pesoTotalAsignadoKg;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     @Override
