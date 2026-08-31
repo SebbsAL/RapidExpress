@@ -1,0 +1,76 @@
+package modelo.servicios;
+
+import modelo.clases.Conductores;
+import modelo.persistencia.DaoConductores;
+import java.util.List;
+
+public class ServicioConductores {
+
+    private final DaoConductores daoConductores;
+    private final ServicioVehiculos servicioVehiculos;
+
+    public ServicioConductores(DaoConductores daoConductores, ServicioVehiculos servicioVehiculos) {
+        this.daoConductores = daoConductores;
+        this.servicioVehiculos = servicioVehiculos;
+    }
+
+    public void registrarConductor(String identificacion, String nombre, String licencia, String telefono, String email) {
+        Conductores c = new Conductores();
+        c.setNumeroIdentificacion(identificacion);
+        c.setNombreCompleto(nombre);
+        c.setTipoLicencia(licencia);
+        c.setTelefono(telefono);
+        c.setEmail(email);
+        c.setEstado(Conductores.Estado.ACTIVO);
+        
+        daoConductores.insertar(c);
+        System.out.println("Conductor registrado: " + nombre);
+    }
+
+    public void actualizarDatosConductor(String identificacion, String nombre, String licencia, String telefono, String email) {
+        Conductores c = new Conductores();
+        c.setNumeroIdentificacion(identificacion);
+        c.setNombreCompleto(nombre);
+        c.setTipoLicencia(licencia);
+        c.setTelefono(telefono);
+        c.setEmail(email);
+        
+        daoConductores.actualizar(c);
+        System.out.println("Datos del conductor actualizados.");
+    }
+
+    public List<Conductores> listarConductores() {
+        return daoConductores.obtenerTodos();
+    }
+
+    public Conductores buscarConductorPorIdentificacion(String identificacion) {
+        return daoConductores.obtenerPorIdentificacion(identificacion);
+    }
+
+    public void actualizarEstadoConductor(String identificacion, String nuevoEstado) {
+        daoConductores.actualizarEstado(identificacion, nuevoEstado);
+        System.out.println("Estado del conductor actualizado a " + nuevoEstado);
+    }
+
+    public void asignarVehiculoAConductor(String identificacionConductor, String placaVehiculo) {
+        Conductores conductor = buscarConductorPorIdentificacion(identificacionConductor);
+        if (conductor == null || conductor.getEstado() != Conductores.Estado.ACTIVO) {
+            System.err.println("Error: Conductor no existe o no está ACTIVO.");
+            return;
+        }
+
+        var vehiculo = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
+        if (vehiculo == null || vehiculo.getEstado() != modelo.clases.Vehiculos.Estado.DISPONIBLE) {
+            System.err.println("Error: Vehículo no existe o no está DISPONIBLE.");
+            return;
+        }
+
+        if (daoConductores.tieneAsignacionActiva(identificacionConductor)) {
+            System.err.println("Error: El conductor ya tiene un vehículo asignado activo.");
+            return;
+        }
+
+        daoConductores.registrarAsignacion(vehiculo.getId(), conductor.getId());
+        System.out.println("Vehículo " + placaVehiculo + " asignado exitosamente al conductor " + identificacionConductor);
+    }
+}
