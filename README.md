@@ -2,9 +2,7 @@
 #vehiculos
 registrar nuevos vehiculos(placa,marca,modelo,año de fabricacion y capacidad de carga en kilogramos)
 actualizar, consultar, el estado de cualquier vehiculo (disponoble, en ruta, en mantenimiento)
-crear Programar y registrar los mantenimientos realizados a cada vehículo 
-
-feat: add service layer classes and initialize empty controllers
+crear Programar y registrar los mantenimientos realizados a cada vehículo
 
 # personas 
 
