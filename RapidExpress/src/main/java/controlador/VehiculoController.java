@@ -4,6 +4,10 @@
  */
 package controlador;
 
+import java.util.List;
+import modelo.clases.Vehiculos;
+import modelo.servicios.ServicioVehiculos;
+
 /**
  *
  * @author Sebastian 
@@ -69,8 +73,4 @@ public class VehiculoController {
         servicioVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
         controladorAuditoria.registrar("VEHICULOS", "CAMBIO ESTADO", "Vehículo " + placa + " cambió a estado " + nuevoEstado, USUARIO_SISTEMA);
     }
- * @author sergi
- */
-public class VehiculoController {
-    
 }
