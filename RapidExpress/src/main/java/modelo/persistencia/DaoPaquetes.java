@@ -79,6 +79,21 @@ public class DaoPaquetes {
         return lista;
     }
 
+    public List<Paquetes> obtenerPorRuta(int rutaId) {
+        String sql = "SELECT p.* FROM paquetes p JOIN ruta_paquetes rp ON p.id = rp.paquete_id WHERE rp.ruta_id=? ORDER BY rp.orden_entrega";
+        List<Paquetes> lista = new ArrayList<>();
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, rutaId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(mapearPaquete(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener paquetes de la ruta: " + e.getMessage());
+        }
+        return lista;
+    }
+
     private Paquetes mapearPaquete(ResultSet rs) throws SQLException {
         Paquetes p = new Paquetes();
         p.setId(rs.getInt("id"));

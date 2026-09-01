@@ -7,7 +7,9 @@ import controlador.ControladorConductores;
 import controlador.ControladorAuditoria;
 import modelo.clases.Conductores;
 import modelo.persistencia.DaoConductores;
+import modelo.persistencia.DaoVehiculos;
 import modelo.servicios.ServicioConductores;
+import modelo.servicios.ServicioVehiculos;
 import java.util.List;
 /**
  * Vista para gestión de conductores
@@ -17,7 +19,8 @@ public class VistaConductores {
     private ControladorConductores controladorConductores;
     public VistaConductores() {
         DaoConductores daoConductores = new DaoConductores();
-        ServicioConductores servicioConductores = new ServicioConductores(daoConductores);
+        ServicioVehiculos servicioVehiculos = new ServicioVehiculos(new DaoVehiculos());
+        ServicioConductores servicioConductores = new ServicioConductores(daoConductores, servicioVehiculos);
         ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
         this.controladorConductores = new ControladorConductores(servicioConductores, controladorAuditoria);
     }

@@ -18,7 +18,7 @@ public class DaoClientes {
         String sql = "INSERT INTO clientes (numero_identificacion, nombre_completo, telefono, email, direccion, ciudad) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            
+
             ps.setString(1, cliente.getNumeroIdentificacion());
             ps.setString(2, cliente.getNombreCompleto());
             ps.setString(3, cliente.getTelefono());
@@ -45,24 +45,40 @@ public class DaoClientes {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, identificacion);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Clientes c = new Clientes();
-                    c.setId(rs.getInt("id"));
-                    c.setNumeroIdentificacion(rs.getString("numero_identificacion"));
-                    c.setNombreCompleto(rs.getString("nombre_completo"));
-                    c.setTelefono(rs.getString("telefono"));
-                    c.setEmail(rs.getString("email"));
-                    c.setDireccion(rs.getString("direccion"));
-                    c.setCiudad(rs.getString("ciudad"));
-                    if (rs.getTimestamp("fecha_creacion") != null) {
-                        c.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
-                    }
-                    return c;
-                }
+                if (rs.next()) return mapearCliente(rs);
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener cliente: " + e.getMessage());
         }
         return null;
+    }
+
+    public Clientes obtenerPorId(int id) {
+        String sql = "SELECT * FROM clientes WHERE id=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearCliente(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener cliente: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private Clientes mapearCliente(ResultSet rs) throws SQLException {
+        Clientes c = new Clientes();
+        c.setId(rs.getInt("id"));
+        c.setNumeroIdentificacion(rs.getString("numero_identificacion"));
+        c.setNombreCompleto(rs.getString("nombre_completo"));
+        c.setTelefono(rs.getString("telefono"));
+        c.setEmail(rs.getString("email"));
+        c.setDireccion(rs.getString("direccion"));
+        c.setCiudad(rs.getString("ciudad"));
+        if (rs.getTimestamp("fecha_creacion") != null) {
+            c.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+        }
+        return c;
     }
 }

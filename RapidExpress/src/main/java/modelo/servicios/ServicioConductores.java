@@ -47,6 +47,10 @@ public class ServicioConductores {
         return daoConductores.obtenerPorIdentificacion(identificacion);
     }
 
+    public Conductores obtenerConductorPorId(int id) {
+        return daoConductores.obtenerPorId(id);
+    }
+
     public void actualizarEstadoConductor(String identificacion, String nuevoEstado) {
         daoConductores.actualizarEstado(identificacion, nuevoEstado);
         System.out.println("Estado del conductor actualizado a " + nuevoEstado);

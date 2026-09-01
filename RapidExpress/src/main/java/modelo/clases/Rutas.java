@@ -7,6 +7,7 @@ package modelo.clases;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  *
@@ -26,6 +27,9 @@ public class Rutas {
     private String observaciones;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
+    private Vehiculos vehiculo;
+    private Conductores conductor;
+    private List<Paquetes> paquetes;
 
     public Rutas(int id, String codigoRuta, int vehiculoId, int conductorId, LocalDate fechaRuta, LocalTime horaInicio, LocalTime horaFin, double pesoTotalAsignadoKg, Estado estado, String observaciones, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
@@ -139,6 +143,30 @@ public class Rutas {
 
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public Vehiculos getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculos vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    public Conductores getConductor() {
+        return conductor;
+    }
+
+    public void setConductor(Conductores conductor) {
+        this.conductor = conductor;
+    }
+
+    public List<Paquetes> getPaquetes() {
+        return paquetes;
+    }
+
+    public void setPaquetes(List<Paquetes> paquetes) {
+        this.paquetes = paquetes;
     }
 
     @Override

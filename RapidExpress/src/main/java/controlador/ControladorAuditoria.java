@@ -13,6 +13,10 @@ import modelo.servicios.ServicioAuditoria;
 public class ControladorAuditoria {
     private final ServicioAuditoria servicioAuditoria;
 
+    public ControladorAuditoria() {
+        this(new ServicioAuditoria());
+    }
+
     public ControladorAuditoria(ServicioAuditoria servicioAuditoria) {
         this.servicioAuditoria = servicioAuditoria;
     }

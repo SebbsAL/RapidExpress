@@ -4,7 +4,6 @@
  */
 package vistas;
 import controlador.ControladorClientes;
-import controlador.ControladorAuditoria;
 import modelo.clases.Clientes;
 import modelo.persistencia.DaoClientes;
 import modelo.servicios.ServicioClientes;
@@ -17,8 +16,7 @@ public class VistaClientes {
     public VistaClientes() {
         DaoClientes daoClientes = new DaoClientes();
         ServicioClientes servicioClientes = new ServicioClientes(daoClientes);
-        ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
-        this.controladorClientes = new ControladorClientes(servicioClientes, controladorAuditoria);
+        this.controladorClientes = new ControladorClientes(servicioClientes);
     }
     /**
      * Muestra el menú principal de clientes
@@ -53,7 +51,7 @@ public class VistaClientes {
             String email = UtilidadConsola.leerTexto("  Email: ");
             String direccion = UtilidadConsola.leerTexto("  Dirección: ");
             String ciudad = UtilidadConsola.leerTexto("  Ciudad: ");
-            Cliente cliente = controladorClientes.registrarBuscarCliente(
+            Clientes cliente = controladorClientes.registrarBuscarCliente(
                 identificacion, nombreCompleto, telefono, email, direccion, ciudad
             );
             if (cliente != null) {
