@@ -66,35 +66,50 @@ public class DaoRutas {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Rutas r = new Rutas();
-                r.setId(rs.getInt("id"));
-                r.setCodigoRuta(rs.getString("codigo_ruta"));
-                r.setVehiculoId(rs.getInt("vehiculo_id"));
-                r.setConductorId(rs.getInt("conductor_id"));
-                
-                if (rs.getDate("fecha_ruta") != null) {
-                    r.setFechaRuta(rs.getDate("fecha_ruta").toLocalDate());
-                }
-                if (rs.getTime("hora_inicio") != null) {
-                    r.setHoraInicio(rs.getTime("hora_inicio").toLocalTime());
-                }
-                if (rs.getTime("hora_fin") != null) {
-                    r.setHoraFin(rs.getTime("hora_fin").toLocalTime());
-                }
-                
-                r.setPesoTotalAsignadoKg(rs.getDouble("peso_total_asignado_kg"));
-                r.setEstado(Rutas.Estado.valueOf(rs.getString("estado")));
-                r.setObservaciones(rs.getString("observaciones"));
-                
-                // Si agregas setters a tu clase Rutas, puedes descomentar esto:
-                // if (rs.getTimestamp("fecha_creacion") != null) r.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
-                
-                lista.add(r);
+                lista.add(mapearRuta(rs));
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener rutas activas: " + e.getMessage());
         }
         return lista;
+    }
+
+    public Rutas obtenerPorCodigo(String codigoRuta) {
+        String sql = "SELECT * FROM rutas WHERE codigo_ruta=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, codigoRuta);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearRuta(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener ruta: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private Rutas mapearRuta(ResultSet rs) throws SQLException {
+        Rutas r = new Rutas();
+        r.setId(rs.getInt("id"));
+        r.setCodigoRuta(rs.getString("codigo_ruta"));
+        r.setVehiculoId(rs.getInt("vehiculo_id"));
+        r.setConductorId(rs.getInt("conductor_id"));
+
+        if (rs.getDate("fecha_ruta") != null) {
+            r.setFechaRuta(rs.getDate("fecha_ruta").toLocalDate());
+        }
+        if (rs.getTime("hora_inicio") != null) {
+            r.setHoraInicio(rs.getTime("hora_inicio").toLocalTime());
+        }
+        if (rs.getTime("hora_fin") != null) {
+            r.setHoraFin(rs.getTime("hora_fin").toLocalTime());
+        }
+
+        r.setPesoTotalAsignadoKg(rs.getDouble("peso_total_asignado_kg"));
+        r.setEstado(Rutas.Estado.valueOf(rs.getString("estado")));
+        r.setObservaciones(rs.getString("observaciones"));
+
+        return r;
     }
 
     // --- Métodos de Ruta Paquetes (ruta_paquetes) ---

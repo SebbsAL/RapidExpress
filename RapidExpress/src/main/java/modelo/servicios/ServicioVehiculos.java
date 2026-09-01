@@ -58,6 +58,10 @@ public class ServicioVehiculos {
         return daoVehiculos.obtenerPorPlaca(placa);
     }
 
+    public Vehiculos obtenerVehiculoPorId(int id) {
+        return daoVehiculos.obtenerPorId(id);
+    }
+
     public void actualizarEstadoVehiculo(String placa, String nuevoEstado) {
         Vehiculos v = daoVehiculos.obtenerPorPlaca(placa);
         if (v != null) {
