@@ -4,10 +4,21 @@
  */
 package controlador;
 
+import modelo.clases.Clientes;
+import modelo.servicios.ServicioClientes;
+
 /**
  *
  * @author sergi
  */
 public class ControladorClientes {
+    private ServicioClientes servicioClientes;
+
+    public ControladorClientes(ServicioClientes servicioClientes) {
+        this.servicioClientes = servicioClientes;
+    }
     
+    public Clientes registrarBuscarCliente(String identificacion, String nombre, String telefono, String email, String direccion, String ciudad){
+        return servicioClientes.registrarOObtenerCliente(identificacion, nombre, telefono, email, direccion, ciudad);
+    }
 }
