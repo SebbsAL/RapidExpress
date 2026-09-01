@@ -19,10 +19,29 @@ public class ServicioPaquetes {
         this.servicioClientes = servicioClientes;
     }
 
-    public String registrarPaquete(String descripcion, double peso, double largo, double ancho, double alto, 
-                                   String dirOrigen, String dirDestino, Clientes remitente, Clientes destinatario) {
+    public String registrarPaquete(String descripcion, double peso, String dimensiones, String dirOrigen, String dirDestino,
+                                   String remitenteIdentificacion, String remitenteNombre, String remitenteTelefono, String remitenteEmail, String remitenteDireccion, String remitenteCiudad,
+                                   String destinatarioIdentificacion, String destinatarioNombre, String destinatarioTelefono, String destinatarioEmail, String destinatarioDireccion, String destinatarioCiudad) {
         if (peso <= 0) {
             System.err.println("Error: El peso debe ser mayor a 0.");
+            return null;
+        }
+
+        double[] dims;
+        try {
+            dims = parsearDimensiones(dimensiones);
+        } catch (NumberFormatException e) {
+            System.err.println("Error: Dimensiones inválidas. Use el formato alto x ancho x largo, por ejemplo 30x40x50.");
+            return null;
+        }
+        double alto = dims[0];
+        double ancho = dims[1];
+        double largo = dims[2];
+
+        Clientes remitente = servicioClientes.registrarOObtenerCliente(remitenteIdentificacion, remitenteNombre, remitenteTelefono, remitenteEmail, remitenteDireccion, remitenteCiudad);
+        Clientes destinatario = servicioClientes.registrarOObtenerCliente(destinatarioIdentificacion, destinatarioNombre, destinatarioTelefono, destinatarioEmail, destinatarioDireccion, destinatarioCiudad);
+        if (remitente == null || destinatario == null) {
+            System.err.println("Error: No se pudo registrar u obtener el remitente/destinatario.");
             return null;
         }
 
@@ -44,7 +63,7 @@ public class ServicioPaquetes {
         paquete.setEstado(Paquetes.Estado.EN_BODEGA);
 
         daoPaquetes.insertar(paquete);
-        
+
         // Obtenemos el paquete insertado para conocer su ID autogenerado
         Paquetes insertado = daoPaquetes.obtenerPorTracking(trackingId);
         if(insertado != null) {
@@ -57,12 +76,14 @@ public class ServicioPaquetes {
         }
 
         servicioAuditoria.registrarOperacionCritica("PAQUETES", "REGISTRO", "Paquete registrado: " + trackingId, "SISTEMA");
-        
+
         return trackingId;
     }
 
     public Paquetes buscarPaquetePorTracking(String codigoSeguimiento) {
-        return daoPaquetes.obtenerPorTracking(codigoSeguimiento);
+        Paquetes paquete = daoPaquetes.obtenerPorTracking(codigoSeguimiento);
+        hidratarClientes(paquete);
+        return paquete;
     }
 
     public List<HistorialPaquetes> consultarTrazabilidadPaquete(String codigoSeguimiento) {
@@ -70,6 +91,29 @@ public class ServicioPaquetes {
     }
 
     public List<Paquetes> listarPaquetesEnBodega() {
-        return daoPaquetes.obtenerPorEstado("EN_BODEGA");
+        List<Paquetes> paquetes = daoPaquetes.obtenerPorEstado("EN_BODEGA");
+        for (Paquetes paquete : paquetes) {
+            hidratarClientes(paquete);
+        }
+        return paquetes;
+    }
+
+    private void hidratarClientes(Paquetes paquete) {
+        if (paquete == null) {
+            return;
+        }
+        paquete.setRemitente(servicioClientes.obtenerClientePorId(paquete.getRemitenteId()));
+        paquete.setDestinatario(servicioClientes.obtenerClientePorId(paquete.getDestinatatioId()));
+    }
+
+    private double[] parsearDimensiones(String dimensiones) {
+        String[] partes = dimensiones.split("[xX]");
+        if (partes.length != 3) {
+            throw new NumberFormatException("Formato de dimensiones inválido: " + dimensiones);
+        }
+        double alto = Double.parseDouble(partes[0].trim());
+        double ancho = Double.parseDouble(partes[1].trim());
+        double largo = Double.parseDouble(partes[2].trim());
+        return new double[]{alto, ancho, largo};
     }
 }

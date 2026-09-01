@@ -10,27 +10,31 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
+ * Conexión a la base de datos. La URL, usuario y contraseña se leen de
+ * variables de entorno (DB_URL, DB_USER, DB_PASSWORD) para no dejar
+ * credenciales en el código fuente. Configúralas en tu entorno local o en
+ * la configuración de ejecución del proyecto en NetBeans.
  *
  * @author sergi
  */
 public abstract class ConexionBD {
-    private static String url= "jdbc:Mysql://2.24.207.152:3306/rapidexpress_db";
-    private static String user = "root";
-    private static String password = "Th4n4tos_?*";
-    
+    private static String url = System.getenv().getOrDefault("DB_URL", "jdbc:mysql://localhost:3306/rapidexpress_db");
+    private static String user = System.getenv().getOrDefault("DB_USER", "root");
+    private static String password = System.getenv().getOrDefault("DB_PASSWORD", "");
+
     public static Connection con = null;
-    
-    public static Connection MySQLConnection(){
+
+    public static Connection MySQLConnection() {
         con = null;
         try {
-            con = DriverManager.getConnection(url,user,password);
-            
-            if(con != null){
+            con = DriverManager.getConnection(url, user, password);
+
+            if (con != null) {
                 DatabaseMetaData meta = con.getMetaData();
-                System.out.println("Base de datos conectada: "+meta.getDriverName());
+                System.out.println("Base de datos conectada: " + meta.getDriverName());
             }
         } catch (SQLException ex) {
-            System.out.println("Error al conectar la BD: "+ex.getMessage());
+            System.out.println("Error al conectar la BD: " + ex.getMessage());
         }
         return con;
     }
