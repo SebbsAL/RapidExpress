@@ -10,7 +10,7 @@ import modelo.persistencia.DaoClientes;
 import modelo.servicios.ServicioClientes;
 /**
  * Vista para gestión de clientes
- * @author RapidExpress
+ * @author Sebastian
  */
 public class VistaClientes {
     private ControladorClientes controladorClientes;
