@@ -7,7 +7,7 @@ import modelo.servicios.ServicioReportes;
 import java.util.Date;
 /**
  *
- * @author sergi
+ * @author Sebastian
  */
 public class ControladorReportes {
     private static final String USUARIO_SISTEMA = "SISTEMA";
