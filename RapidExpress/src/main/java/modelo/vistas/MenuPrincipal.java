@@ -2,9 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
+package modelo.vistas;
 
 import modelo.vistas.VistaReportes;
+import vistas.UtilidadConsola;
+import vistas.VistaClientes;
+import vistas.VistaConductores;
+import vistas.VistaPaquetes;
+import vistas.VistaRutas;
 
 /**
  * Menú principal del sistema RapidExpress
