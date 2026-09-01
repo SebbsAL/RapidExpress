@@ -11,7 +11,7 @@ import modelo.servicios.ServicioVehiculos;
  * Maneja las operaciones CRUD y cambios de estado de vehículos,
  * registrando todas las operaciones en la auditoría del sistema.
  *
- * @author Sebastian
+ * @author Sebastian 
  */
 public class VehiculoController {
     private static final String USUARIO_SISTEMA = "SISTEMA";
