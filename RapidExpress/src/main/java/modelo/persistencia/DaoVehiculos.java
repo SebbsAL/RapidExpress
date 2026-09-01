@@ -74,6 +74,20 @@ public class DaoVehiculos {
     }
     
 
+    public Vehiculos obtenerPorId(int id) {
+        String sql = "SELECT * FROM vehiculos WHERE id=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearVehiculo(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener vehículo: " + e.getMessage());
+        }
+        return null;
+    }
+
     public List<Vehiculos> obtenerTodos() {
         String sql = "SELECT * FROM vehiculos";
         List<Vehiculos> lista = new ArrayList<>();

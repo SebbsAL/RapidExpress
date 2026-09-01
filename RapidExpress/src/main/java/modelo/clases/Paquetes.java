@@ -27,6 +27,8 @@ public class Paquetes {
     private Estado estado; 
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
+    private Clientes remitente;
+    private Clientes destinatario;
 
     public Paquetes(int id, String codigoSeguimiento, String descripcionContenido, double pesoKg, double largoCm, double anchoCm, double altoCm, double volumenM3, String direccionOrigen, String direccionDestino, int remitenteId, int destinatatioId, Estado estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
@@ -72,6 +74,30 @@ public class Paquetes {
 
     public double getPesoKg() {
         return pesoKg;
+    }
+
+    public double getPeso() {
+        return pesoKg;
+    }
+
+    public String getDimensiones() {
+        return largoCm + "x" + anchoCm + "x" + altoCm + " cm";
+    }
+
+    public Clientes getRemitente() {
+        return remitente;
+    }
+
+    public void setRemitente(Clientes remitente) {
+        this.remitente = remitente;
+    }
+
+    public Clientes getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(Clientes destinatario) {
+        this.destinatario = destinatario;
     }
 
     public double getLargoCm() {

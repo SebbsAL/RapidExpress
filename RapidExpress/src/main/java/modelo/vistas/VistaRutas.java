@@ -7,8 +7,14 @@ import controlador.ControladorRutas;
 import controlador.ControladorAuditoria;
 import modelo.clases.Rutas;
 import modelo.clases.Paquetes;
+import modelo.persistencia.DaoConductores;
+import modelo.persistencia.DaoPaquetes;
 import modelo.persistencia.DaoRutas;
+import modelo.persistencia.DaoVehiculos;
+import modelo.servicios.ServicioAuditoria;
+import modelo.servicios.ServicioConductores;
 import modelo.servicios.ServicioRutas;
+import modelo.servicios.ServicioVehiculos;
 import java.util.List;
 /**
  * Vista para gestión de rutas
@@ -18,7 +24,11 @@ public class VistaRutas {
     private ControladorRutas controladorRutas;
     public VistaRutas() {
         DaoRutas daoRutas = new DaoRutas();
-        ServicioRutas servicioRutas = new ServicioRutas(daoRutas);
+        DaoPaquetes daoPaquetes = new DaoPaquetes();
+        ServicioVehiculos servicioVehiculos = new ServicioVehiculos(new DaoVehiculos());
+        ServicioConductores servicioConductores = new ServicioConductores(new DaoConductores(), servicioVehiculos);
+        ServicioAuditoria servicioAuditoria = new ServicioAuditoria();
+        ServicioRutas servicioRutas = new ServicioRutas(daoRutas, servicioVehiculos, servicioConductores, daoPaquetes, servicioAuditoria);
         ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
         this.controladorRutas = new ControladorRutas(servicioRutas, controladorAuditoria);
     }

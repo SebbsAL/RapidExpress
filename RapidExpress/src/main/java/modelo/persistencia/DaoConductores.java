@@ -73,6 +73,20 @@ public class DaoConductores {
         return null;
     }
 
+    public Conductores obtenerPorId(int id) {
+        String sql = "SELECT * FROM conductores WHERE id=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearConductor(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener conductor: " + e.getMessage());
+        }
+        return null;
+    }
+
     public List<Conductores> obtenerTodos() {
         String sql = "SELECT * FROM conductores";
         List<Conductores> lista = new ArrayList<>();

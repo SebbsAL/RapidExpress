@@ -4,7 +4,6 @@
  */
 package controlador;
 import java.util.List;
-import modelo.clases.Clientes;
 import modelo.clases.HistorialPaquetes;
 import modelo.clases.Paquetes;
 import modelo.servicios.ServicioPaquetes;
@@ -21,20 +20,20 @@ public class ControladorPaquetes {
         this.controladorAuditoria = controladorAuditoria;
     }
     /**
-     * Registra un nuevo paquete en el sistema
+     * Registra un nuevo paquete en el sistema, creando u obteniendo al remitente y destinatario
      * @param descripcion Descripción del contenido del paquete
      * @param peso Peso del paquete en kg
-     * @param largo Largo del paquete en cm
-     * @param ancho Ancho del paquete en cm
-     * @param alto Alto del paquete en cm
+     * @param dimensiones Dimensiones del paquete en formato "alto x ancho x largo" (cm)
      * @param dirOrigen Dirección de origen
      * @param dirDestino Dirección de destino
-     * @param remitente Cliente remitente
-     * @param destinatario Cliente destinatario
      * @return El código de seguimiento generado, o null si hubo error
      */
-    public String registrarPaquete(String descripcion, double peso, double largo, double ancho, double alto, String dirOrigen, String dirDestino, Clientes remitente, Clientes destinatario) {
-        String trackingId = servicioPaquetes.registrarPaquete(descripcion, peso, largo, ancho, alto, dirOrigen, dirDestino, remitente, destinatario);
+    public String registrarPaquete(String descripcion, double peso, String dimensiones, String dirOrigen, String dirDestino,
+            String remitenteIdentificacion, String remitenteNombre, String remitenteTelefono, String remitenteEmail, String remitenteDireccion, String remitenteCiudad,
+            String destinatarioIdentificacion, String destinatarioNombre, String destinatarioTelefono, String destinatarioEmail, String destinatarioDireccion, String destinatarioCiudad) {
+        String trackingId = servicioPaquetes.registrarPaquete(descripcion, peso, dimensiones, dirOrigen, dirDestino,
+                remitenteIdentificacion, remitenteNombre, remitenteTelefono, remitenteEmail, remitenteDireccion, remitenteCiudad,
+                destinatarioIdentificacion, destinatarioNombre, destinatarioTelefono, destinatarioEmail, destinatarioDireccion, destinatarioCiudad);
         if (trackingId != null) {
             controladorAuditoria.registrar("PAQUETES", "REGISTRO", "Paquete registrado con tracking: " + trackingId, USUARIO_SISTEMA);
         }

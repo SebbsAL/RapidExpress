@@ -7,7 +7,10 @@ import controlador.ControladorPaquetes;
 import controlador.ControladorAuditoria;
 import modelo.clases.Paquetes;
 import modelo.clases.HistorialPaquetes;
+import modelo.persistencia.DaoClientes;
 import modelo.persistencia.DaoPaquetes;
+import modelo.servicios.ServicioAuditoria;
+import modelo.servicios.ServicioClientes;
 import modelo.servicios.ServicioPaquetes;
 import java.util.List;
 /**
@@ -18,7 +21,9 @@ public class VistaPaquetes {
     private ControladorPaquetes controladorPaquetes;
     public VistaPaquetes() {
         DaoPaquetes daoPaquetes = new DaoPaquetes();
-        ServicioPaquetes servicioPaquetes = new ServicioPaquetes(daoPaquetes);
+        ServicioAuditoria servicioAuditoria = new ServicioAuditoria();
+        ServicioClientes servicioClientes = new ServicioClientes(new DaoClientes());
+        ServicioPaquetes servicioPaquetes = new ServicioPaquetes(daoPaquetes, servicioAuditoria, servicioClientes);
         ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
         this.controladorPaquetes = new ControladorPaquetes(servicioPaquetes, controladorAuditoria);
     }
