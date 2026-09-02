@@ -7,7 +7,7 @@ package modelo.clases;
 import java.time.LocalDateTime;
 
 /**
- *
+ * 
  * @author sergi
  */
 public class RutaPaquetes {

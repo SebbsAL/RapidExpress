@@ -16,7 +16,7 @@ import java.util.Properties;
 
 /**
  * Conexión a la base de datos. La URL, usuario y contraseña se leen del
- * archivo "db.properties" en el directorio de trabajo (mismo nivel que
+ * archivo "db.properties" en el directorio de trabajo (mismo nivel que 
  * pom.xml); si una clave no está presente se usa un valor por defecto para
  * desarrollo local. Así no quedan credenciales en el código fuente.
  * "db.properties" nunca debe subirse al repositorio (ver .gitignore);
