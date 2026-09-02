@@ -23,13 +23,13 @@ public class VistaClientes {
      */
     public void mostrarMenuClientes() {
         String[] opciones = {
-            "Registrar/Buscar cliente"
+            "Registrar un nuevo cliente"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE CLIENTES", opciones);
             switch (opcion) {
                 case 1:
-                    registrarOBuscarCliente();
+                    registrarCliente();
                     break;
                 case 0:
                     return;
@@ -41,7 +41,7 @@ public class VistaClientes {
     /**
      * Registra o busca un cliente por identificacion
      */
-    private void registrarOBuscarCliente() {
+    private void registrarCliente() {
         System.out.println("\nREGISTRO/BUSQUEDA DE CLIENTE");
         System.out.println("---------------------------------------");
         try {
