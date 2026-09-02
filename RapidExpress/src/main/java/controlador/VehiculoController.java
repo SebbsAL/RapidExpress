@@ -3,15 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controlador;
+
 import java.util.List;
 import modelo.clases.Vehiculos;
+import modelo.clases.EstadoVehiculo;
 import modelo.servicios.ServicioVehiculos;
 /**
  * Controlador para la gestión de vehículos del sistema.
  * Maneja las operaciones CRUD y cambios de estado de vehículos,
  * registrando todas las operaciones en la auditoría del sistema.
  *
- * @author Sebastian
  */
 public class VehiculoController {
     private static final String USUARIO_SISTEMA = "SISTEMA";
@@ -70,8 +71,11 @@ public class VehiculoController {
      * @param placa Placa del vehículo
      * @param nuevoEstado Nuevo estado del vehículo
      */
-    public void actualizarEstadoVehiculo(String placa, String nuevoEstado){
+    public void actualizarEstadoVehiculo(String placa, EstadoVehiculo nuevoEstado){
         servicioVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
         controladorAuditoria.registrar("VEHICULOS", "CAMBIO ESTADO", "Vehículo " + placa + " cambió a estado " + nuevoEstado, USUARIO_SISTEMA);
     }
+
 }
+
+

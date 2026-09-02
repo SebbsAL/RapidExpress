@@ -24,7 +24,11 @@ public class ServicioClientes {
         nuevo.setEmail(email);
         nuevo.setDireccion(direccion);
         nuevo.setCiudad(ciudad);
-        
+
         return daoClientes.insertar(nuevo);
+    }
+
+    public Clientes obtenerClientePorId(int id) {
+        return daoClientes.obtenerPorId(id);
     }
 }

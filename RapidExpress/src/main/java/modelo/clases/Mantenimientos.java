@@ -19,12 +19,11 @@ public class Mantenimientos {
     private LocalDate fechaProgramada;
     private LocalDate fechaRealizacion;
     private double costo;
-    public enum Estado {PROGRAMADO,EN_PROCESO,COMPLETADO,CANCELADO};
-    private Estado estado;
+    private EstadoMantenimiento estado;
     private String observaciones;
     private LocalDateTime fechaCreacion;
 
-    public Mantenimientos(int id, int vehiculoId, String tipoMantenimiento, String descripcion, LocalDate fechaProgramada, LocalDate fechaRealizacion, double costo, Estado estado, String observaciones, LocalDateTime fechaCreacion) {
+    public Mantenimientos(int id, int vehiculoId, String tipoMantenimiento, String descripcion, LocalDate fechaProgramada, LocalDate fechaRealizacion, double costo, EstadoMantenimiento estado, String observaciones, LocalDateTime fechaCreacion) {
         this.id = id;
         this.vehiculoId = vehiculoId;
         this.tipoMantenimiento = tipoMantenimiento;
@@ -68,11 +67,11 @@ public class Mantenimientos {
         return costo;
     }
 
-    public Estado getEstado() {
+    public EstadoMantenimiento getEstado() {
         return this.estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoMantenimiento estado) {
         this.estado = estado;
     }
 
