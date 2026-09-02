@@ -4,23 +4,46 @@
  */
 package modelo.persistencia;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
- * Conexión a la base de datos. La URL, usuario y contraseña se leen de
- * variables de entorno (DB_URL, DB_USER, DB_PASSWORD) para no dejar
- * credenciales en el código fuente. Configúralas en tu entorno local o en
- * la configuración de ejecución del proyecto en NetBeans.
+ * Conexión a la base de datos. La URL, usuario y contraseña se leen del
+ * archivo "db.properties" en el directorio de trabajo (mismo nivel que
+ * pom.xml); si una clave no está presente se usa un valor por defecto para
+ * desarrollo local. Así no quedan credenciales en el código fuente.
+ * "db.properties" nunca debe subirse al repositorio (ver .gitignore);
+ * usa db.properties.example como plantilla.
  *
  * @author sergi
  */
 public abstract class ConexionBD {
-    private static String url = System.getenv().getOrDefault("DB_URL", "jdbc:mysql://localhost:3306/rapidexpress_db");
-    private static String user = System.getenv().getOrDefault("DB_USER", "root");
-    private static String password = System.getenv().getOrDefault("DB_PASSWORD", "");
+    private static final Properties PROPIEDADES = cargarPropiedades();
+
+    private static String url = PROPIEDADES.getProperty("DB_URL");
+    private static String user = PROPIEDADES.getProperty("DB_USER");
+    private static String password = PROPIEDADES.getProperty("DB_PASSWORD");
+
+    private static Properties cargarPropiedades() {
+        Properties propiedades = new Properties();
+        Path ruta = Path.of("db.properties");
+        if (!Files.exists(ruta)) {
+            return propiedades;
+        }
+        try (FileInputStream entrada = new FileInputStream(ruta.toFile())) {
+            propiedades.load(entrada);
+        } catch (IOException e) {
+            System.err.println("No se pudo leer el archivo db.properties: " + e.getMessage());
+        }
+        return propiedades;
+    }
 
     public static Connection con = null;
 
