@@ -8,7 +8,7 @@ import modelo.servicios.ServicioAuditoria;
 
 /**
  *
- * @author sergi
+ * @author sergi 
  */
 public class ControladorAuditoria {
     private final ServicioAuditoria servicioAuditoria;
