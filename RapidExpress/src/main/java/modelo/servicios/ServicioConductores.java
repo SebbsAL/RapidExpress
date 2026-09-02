@@ -61,22 +61,22 @@ public class ServicioConductores {
     public void asignarVehiculoAConductor(String identificacionConductor, String placaVehiculo) {
         Conductores conductor = buscarConductorPorIdentificacion(identificacionConductor);
         if (conductor == null || conductor.getEstado() != EstadoConductor.ACTIVO) {
-            System.err.println("Error: Conductor no existe o no está ACTIVO.");
+            System.err.println("Error: Conductor no existe o no esta ACTIVO.");
             return;
         }
 
         var vehiculo = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
         if (vehiculo == null || vehiculo.getEstado() != EstadoVehiculo.DISPONIBLE) {
-            System.err.println("Error: Vehículo no existe o no está DISPONIBLE.");
+            System.err.println("Error: Vehiculo no existe o no esta DISPONIBLE.");
             return;
         }
 
         if (daoConductores.tieneAsignacionActiva(identificacionConductor)) {
-            System.err.println("Error: El conductor ya tiene un vehículo asignado activo.");
+            System.err.println("Error: El conductor ya tiene un vehiculo asignado activo.");
             return;
         }
 
         daoConductores.registrarAsignacion(vehiculo.getId(), conductor.getId());
-        System.out.println("Vehículo " + placaVehiculo + " asignado exitosamente al conductor " + identificacionConductor);
+        System.out.println("Vehiculo " + placaVehiculo + " asignado exitosamente al conductor " + identificacionConductor);
     }
 }

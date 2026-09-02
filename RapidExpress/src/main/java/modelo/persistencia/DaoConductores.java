@@ -127,7 +127,7 @@ public class DaoConductores {
                 if (rs.next()) return rs.getInt("total") > 0;
             }
         } catch (SQLException e) {
-            System.err.println("Error validando asignación: " + e.getMessage());
+            System.err.println("Error validando asignacion: " + e.getMessage());
         }
         return false;
     }
@@ -140,7 +140,7 @@ public class DaoConductores {
             ps.setInt(2, idConductor);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al registrar asignación: " + e.getMessage());
+            System.err.println("Error al registrar asignacion: " + e.getMessage());
         }
     }
 }

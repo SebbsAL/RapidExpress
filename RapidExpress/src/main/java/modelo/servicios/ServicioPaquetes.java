@@ -32,7 +32,7 @@ public class ServicioPaquetes {
         try {
             dims = parsearDimensiones(dimensiones);
         } catch (NumberFormatException e) {
-            System.err.println("Error: Dimensiones inválidas. Use el formato alto x ancho x largo, por ejemplo 30x40x50.");
+            System.err.println("Error: Dimensiones invalidas. Use el formato alto x ancho x largo, por ejemplo 30x40x50.");
             return null;
         }
         double alto = dims[0];

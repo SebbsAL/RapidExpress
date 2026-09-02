@@ -39,7 +39,7 @@ public class ServicioRutas {
         var conductor = servicioConductores.buscarConductorPorIdentificacion(identificacionConductor);
 
         if (vehiculo == null || conductor == null) {
-            System.err.println("Error: Vehículo o conductor no encontrados.");
+            System.err.println("Error: Vehiculo o conductor no encontrados.");
             return null;
         }
 
@@ -47,7 +47,7 @@ public class ServicioRutas {
         for (String codigo : codigosPaquetes) {
             Paquetes p = daoPaquetes.obtenerPorTracking(codigo);
             if (p == null) {
-                System.err.println("Error: No se encontró el paquete con código " + codigo);
+                System.err.println("Error: No se encontro el paquete con codigo " + codigo);
                 return null;
             }
             paquetesSeleccionados.add(p);
@@ -59,7 +59,7 @@ public class ServicioRutas {
         }
 
         if (pesoTotal > vehiculo.getCapacidad_maxima_kg()) {
-            System.err.println("Error: El peso total (" + pesoTotal + "kg) excede la capacidad del vehículo (" + vehiculo.getCapacidad_maxima_kg() + "kg).");
+            System.err.println("Error: El peso total (" + pesoTotal + "kg) excede la capacidad del vehiculo (" + vehiculo.getCapacidad_maxima_kg() + "kg).");
             return null;
         }
 
@@ -95,13 +95,13 @@ public class ServicioRutas {
     public boolean iniciarRuta(String codigoRuta) {
         Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
         if (ruta == null) {
-            System.err.println("Error: No se encontró la ruta " + codigoRuta);
+            System.err.println("Error: No se encontro la ruta " + codigoRuta);
             return false;
         }
         Vehiculos vehiculo = servicioVehiculos.obtenerVehiculoPorId(ruta.getVehiculoId());
         Conductores conductor = servicioConductores.obtenerConductorPorId(ruta.getConductorId());
         if (vehiculo == null || conductor == null) {
-            System.err.println("Error: No se pudo resolver el vehículo o conductor de la ruta.");
+            System.err.println("Error: No se pudo resolver el vehiculo o conductor de la ruta.");
             return false;
         }
         List<Paquetes> paquetesDeRuta = daoPaquetes.obtenerPorRuta(ruta.getId());
@@ -127,7 +127,7 @@ public class ServicioRutas {
     public boolean registrarEntregaPaquete(String codigoRuta, String codigoSeguimiento, String observaciones) {
         Paquetes paquete = daoPaquetes.obtenerPorTracking(codigoSeguimiento);
         if (paquete == null) {
-            System.err.println("Error: No se encontró el paquete " + codigoSeguimiento);
+            System.err.println("Error: No se encontro el paquete " + codigoSeguimiento);
             return false;
         }
         daoRutas.actualizarEstadoEntregaPaquete(codigoRuta, codigoSeguimiento, EstadoEntrega.ENTREGADO, observaciones);
@@ -147,13 +147,13 @@ public class ServicioRutas {
     public boolean finalizarRuta(String codigoRuta) {
         Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
         if (ruta == null) {
-            System.err.println("Error: No se encontró la ruta " + codigoRuta);
+            System.err.println("Error: No se encontro la ruta " + codigoRuta);
             return false;
         }
         Vehiculos vehiculo = servicioVehiculos.obtenerVehiculoPorId(ruta.getVehiculoId());
         Conductores conductor = servicioConductores.obtenerConductorPorId(ruta.getConductorId());
         if (vehiculo == null || conductor == null) {
-            System.err.println("Error: No se pudo resolver el vehículo o conductor de la ruta.");
+            System.err.println("Error: No se pudo resolver el vehiculo o conductor de la ruta.");
             return false;
         }
 
@@ -167,7 +167,7 @@ public class ServicioRutas {
     public List<RutaPaquetes> obtenerDetalleEntregas(String codigoRuta) {
         Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
         if (ruta == null) {
-            System.err.println("Error: No se encontró la ruta " + codigoRuta);
+            System.err.println("Error: No se encontro la ruta " + codigoRuta);
             return new ArrayList<>();
         }
         List<RutaPaquetes> detalle = daoRutas.obtenerDetalleEntregas(ruta.getId());
