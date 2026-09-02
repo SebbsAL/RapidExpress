@@ -7,7 +7,7 @@ package vistas;
 /**
  * Menu principal del sistema RapidExpress
  * Punto de entrada para la interfaz de consola
- * @author Sebastian
+ * @author Sebastian 
  */
 public class MenuPrincipal {
     private VistaVehiculos vistaVehiculos;

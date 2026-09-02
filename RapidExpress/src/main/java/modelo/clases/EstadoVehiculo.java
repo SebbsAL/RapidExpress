@@ -1,7 +1,7 @@
 package modelo.clases;
 
 /**
- * Estados posibles de un vehículo.
+ * Estados posibles de un vehículo. 
  */
 public enum EstadoVehiculo {
     DISPONIBLE,

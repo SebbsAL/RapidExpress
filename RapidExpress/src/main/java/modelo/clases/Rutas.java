@@ -10,7 +10,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- *
+ * 
  * @author sergi
  */
 public class Rutas {

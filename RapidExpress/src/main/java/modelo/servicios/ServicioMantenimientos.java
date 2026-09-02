@@ -16,7 +16,7 @@ public class ServicioMantenimientos {
     public ServicioMantenimientos(DaoMantenimientos daoMantenimientos, ServicioVehiculos servicioVehiculos) {
         this.daoMantenimientos = daoMantenimientos;
         this.servicioVehiculos = servicioVehiculos;
-    }
+    } 
 
     public void programarMantenimiento(String placaVehiculo, String tipo, String descripcion, LocalDate fechaProgramada) {
         Vehiculos v = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
