@@ -12,7 +12,7 @@ import modelo.servicios.ServicioMantenimientos;
 
 /**
  *
- * @author sergi
+ * @author sergi 
  */
 public class ControladorMantenimientos {
     private static final String USUARIO_SISTEMA = "SISTEMA";
