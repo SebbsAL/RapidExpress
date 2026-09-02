@@ -8,7 +8,7 @@ import modelo.clases.Clientes;
 import modelo.persistencia.DaoClientes;
 import modelo.servicios.ServicioClientes;
 /**
- * Vista para gestion de clientes
+ * Vista para gestion de clientes 
  * @author Sebastian
  */
 public class VistaClientes {
