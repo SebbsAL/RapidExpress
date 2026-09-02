@@ -14,7 +14,7 @@ public class ServicioConductores {
     public ServicioConductores(DaoConductores daoConductores, ServicioVehiculos servicioVehiculos) {
         this.daoConductores = daoConductores;
         this.servicioVehiculos = servicioVehiculos;
-    }
+    } 
 
     public void registrarConductor(String identificacion, String nombre, String licencia, String telefono, String email) {
         Conductores c = new Conductores();

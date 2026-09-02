@@ -18,7 +18,7 @@ public class ServicioPaquetes {
         this.daoPaquetes = daoPaquetes;
         this.servicioAuditoria = servicioAuditoria;
         this.servicioClientes = servicioClientes;
-    }
+    } 
 
     public String registrarPaquete(String descripcion, double peso, String dimensiones, String dirOrigen, String dirDestino,
                                    String remitenteIdentificacion, String remitenteNombre, String remitenteTelefono, String remitenteEmail, String remitenteDireccion, String remitenteCiudad,
