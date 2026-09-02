@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author sergi
+ * @author sergi 
  */
 public class Paquetes {
     private int id;
