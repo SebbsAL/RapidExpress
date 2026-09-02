@@ -17,12 +17,11 @@ public class Conductores {
     private String tipoLicencia;
     private String telefono;
     private String email;
-    public enum Estado {ACTIVO,DE_VACACIONES,INACTIVO};
-    private Estado estado;
+    private EstadoConductor estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime  fechaActualizacion;
 
-    public Conductores(int id, String numeroIdentificacion, String nombreCompleto, String tipoLicencia, String telefono, String email, Estado estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Conductores(int id, String numeroIdentificacion, String nombreCompleto, String tipoLicencia, String telefono, String email, EstadoConductor estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
         this.numeroIdentificacion = numeroIdentificacion;
         this.nombreCompleto = nombreCompleto;
@@ -37,11 +36,11 @@ public class Conductores {
     public Conductores() {
     }
         
-     public Estado getEstado() {
+     public EstadoConductor getEstado() {
         return this.estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoConductor estado) {
         this.estado = estado;
     }
 

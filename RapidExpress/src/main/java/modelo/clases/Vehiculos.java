@@ -18,12 +18,11 @@ public class Vehiculos {
     private String modelo;
     private int anio_fabricacion;
     private double capacidad_maxima_kg;
-    public enum Estado {DISPONIBLE, EN_RUTA,EN_MANTENIMIENTO};
-    private Estado estado; 
+    private EstadoVehiculo estado;
     private LocalDateTime fecha_creacion;
-    private LocalDateTime fecha_actualizacion; 
+    private LocalDateTime fecha_actualizacion;
 
-    public Vehiculos(int id, String placa, String marca, String modelo, int anio_fabricacion, int capacidad_maxima_kg, Estado estado, LocalDateTime fecha_creacion, LocalDateTime fecha_actualizacion) {
+    public Vehiculos(int id, String placa, String marca, String modelo, int anio_fabricacion, int capacidad_maxima_kg, EstadoVehiculo estado, LocalDateTime fecha_creacion, LocalDateTime fecha_actualizacion) {
         this.id = id;
         this.placa = placa;
         this.marca = marca;
@@ -62,11 +61,11 @@ public class Vehiculos {
         return capacidad_maxima_kg;
     }
     
-    public Estado getEstado() {
+    public EstadoVehiculo getEstado() {
         return this.estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoVehiculo estado) {
         this.estado = estado;
     }
     

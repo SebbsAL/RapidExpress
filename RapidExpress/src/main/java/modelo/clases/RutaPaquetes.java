@@ -15,11 +15,11 @@ public class RutaPaquetes {
     private int rutaId;
     private int paqueteId;
     private int ordenEntrega;
-    public enum EstadoEntrega {PENDIENTE,EN_CAMINO,ENTREGADO,NO_ENTREGADO,DEVUELTO};
     private EstadoEntrega estadoEntrega;
     private LocalDateTime fechaEntregaEstimada;
     private LocalDateTime fechaEntregaReal;
     private String observacionesEntrega;
+    private Paquetes paquete;
 
     public RutaPaquetes(int id, int rutaId, int paqueteId, int ordenEntrega,EstadoEntrega estadoEntrega, LocalDateTime fechaEntregaEstimada,LocalDateTime fechaEntregaReal, String observacionesEntrega) {
         this.id = id;
@@ -32,16 +32,31 @@ public class RutaPaquetes {
         this.observacionesEntrega = observacionesEntrega;
     }
 
+    public RutaPaquetes() {
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getRutaId() {
         return rutaId;
     }
 
+    public void setRutaId(int rutaId) {
+        this.rutaId = rutaId;
+    }
+
     public int getPaqueteId() {
         return paqueteId;
+    }
+
+    public void setPaqueteId(int paqueteId) {
+        this.paqueteId = paqueteId;
     }
 
     public int getOrdenEntrega() {
@@ -82,6 +97,14 @@ public class RutaPaquetes {
 
     public void setObservacionesEntrega(String observacionesEntrega) {
         this.observacionesEntrega = observacionesEntrega;
+    }
+
+    public Paquetes getPaquete() {
+        return paquete;
+    }
+
+    public void setPaquete(Paquetes paquete) {
+        this.paquete = paquete;
     }
 
     @Override

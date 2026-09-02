@@ -5,6 +5,7 @@
 package controlador;
 import modelo.servicios.ServicioReportes;
 import java.util.Date;
+import java.util.List;
 /**
  *
  * @author Sebastian
@@ -17,16 +18,18 @@ public class ControladorReportes {
         this.servicioReportes = servicioReportes;
         this.controladorAuditoria = controladorAuditoria;
     }
-    public void generarReporteEntregasPorConductor(Date fechaInicio, Date fechaFin){
-        servicioReportes.obtenerReporteEntregasPorConductor(fechaInicio, fechaFin);
+    public List<String> generarReporteEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin){
+        List<String> reporte = servicioReportes.obtenerReporteEntregasPorConductor(identificacionConductor, fechaInicio, fechaFin);
         controladorAuditoria.registrar("REPORTES", "REPORTE_ENTREGAS",
-            "Reporte de entregas por conductor generado desde " + fechaInicio + " hasta " + fechaFin,
+            "Reporte de entregas del conductor " + identificacionConductor + " generado desde " + fechaInicio + " hasta " + fechaFin,
             USUARIO_SISTEMA);
+        return reporte;
     }
-    public void generarHistorialRutasVehiculo(String placa){
-        servicioReportes.obtenerHistorialRutasVehiculo(placa);
+    public List<String> generarHistorialRutasVehiculo(String placa){
+        List<String> historial = servicioReportes.obtenerHistorialRutasVehiculo(placa);
         controladorAuditoria.registrar("REPORTES", "REPORTE_HISTORIAL_RUTAS",
             "Historial de rutas del vehículo " + placa + " generado",
             USUARIO_SISTEMA);
+        return historial;
     }
 }

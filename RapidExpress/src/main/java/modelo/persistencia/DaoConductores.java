@@ -4,7 +4,7 @@
  */
 package modelo.persistencia;
 import modelo.clases.Conductores;
-import modelo.clases.Conductores.Estado;
+import modelo.clases.EstadoConductor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,11 +47,11 @@ public class DaoConductores {
         }
     }
 
-    public void actualizarEstado(String identificacion, String nuevoEstado) {
+    public void actualizarEstado(String identificacion, EstadoConductor nuevoEstado) {
         String sql = "UPDATE conductores SET estado=? WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nuevoEstado);
+            ps.setString(1, nuevoEstado.name());
             ps.setString(2, identificacion);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -64,6 +64,20 @@ public class DaoConductores {
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, identificacion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearConductor(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener conductor: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Conductores obtenerPorId(int id) {
+        String sql = "SELECT * FROM conductores WHERE id=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearConductor(rs);
             }
@@ -94,7 +108,7 @@ public class DaoConductores {
         c.setTipoLicencia(rs.getString("tipo_licencia"));
         c.setTelefono(rs.getString("telefono"));
         c.setEmail(rs.getString("email"));
-        c.setEstado(Conductores.Estado.valueOf(rs.getString("estado")));
+        c.setEstado(EstadoConductor.valueOf(rs.getString("estado")));
         if (rs.getTimestamp("fecha_creacion") != null) {
             c.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
         }
@@ -113,7 +127,7 @@ public class DaoConductores {
                 if (rs.next()) return rs.getInt("total") > 0;
             }
         } catch (SQLException e) {
-            System.err.println("Error validando asignación: " + e.getMessage());
+            System.err.println("Error validando asignacion: " + e.getMessage());
         }
         return false;
     }
@@ -126,7 +140,7 @@ public class DaoConductores {
             ps.setInt(2, idConductor);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al registrar asignación: " + e.getMessage());
+            System.err.println("Error al registrar asignacion: " + e.getMessage());
         }
     }
 }
