@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.vistas;
+package vistas;
 
 import controlador.ControladorReportes;
 import controlador.ControladorAuditoria;
@@ -10,7 +10,6 @@ import modelo.persistencia.DaoReportes;
 import modelo.servicios.ServicioReportes;
 import java.util.Date;
 import java.util.List;
-import vistas.UtilidadConsola;
 /**
  * Vista para generación de reportes
  * @author Sebastian
