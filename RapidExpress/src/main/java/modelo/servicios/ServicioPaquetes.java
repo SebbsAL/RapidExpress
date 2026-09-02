@@ -1,6 +1,7 @@
 package modelo.servicios;
 
 import modelo.clases.Paquetes;
+import modelo.clases.EstadoPaquete;
 import modelo.clases.HistorialPaquetes;
 import modelo.clases.Clientes;
 import modelo.persistencia.DaoPaquetes;
@@ -60,7 +61,7 @@ public class ServicioPaquetes {
         paquete.setDireccionDestino(dirDestino);
         paquete.setRemitenteId(remitente.getId());
         paquete.setDestinatatioId(destinatario.getId()); // Typo idéntico al de tu clase
-        paquete.setEstado(Paquetes.Estado.EN_BODEGA);
+        paquete.setEstado(EstadoPaquete.EN_BODEGA);
 
         daoPaquetes.insertar(paquete);
 
@@ -69,7 +70,7 @@ public class ServicioPaquetes {
         if(insertado != null) {
             HistorialPaquetes historial = new HistorialPaquetes();
             historial.setPaqueteId(insertado.getId());
-            historial.setEstado(HistorialPaquetes.Estado.EN_BODEGA);
+            historial.setEstado(EstadoPaquete.EN_BODEGA);
             historial.setDescripcionEvento("Ingresado en Bodega Central");
             historial.setUbicacion("Bodega Central");
             daoPaquetes.registrarHistorial(historial);

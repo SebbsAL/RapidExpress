@@ -6,6 +6,7 @@
 package controlador;
 import java.util.List;
 import modelo.clases.Rutas;
+import modelo.clases.RutaPaquetes;
 import modelo.servicios.ServicioRutas;
 /**
  *
@@ -77,5 +78,14 @@ public class ControladorRutas {
      */
     public List<Rutas> listarRutasActivas() {
         return servicioRutas.listarRutasActivas();
+    }
+    /**
+     * Obtiene el detalle de entrega de cada paquete asignado a una ruta
+     * (orden de entrega, estado de entrega, fechas y observaciones)
+     * @param codigoRuta Código de la ruta
+     * @return Lista de detalle de entregas de la ruta
+     */
+    public List<RutaPaquetes> obtenerDetalleEntregas(String codigoRuta) {
+        return servicioRutas.obtenerDetalleEntregas(codigoRuta);
     }
 }

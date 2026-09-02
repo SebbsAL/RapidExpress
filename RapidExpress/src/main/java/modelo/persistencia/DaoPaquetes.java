@@ -4,6 +4,7 @@
  */
 package modelo.persistencia;
 import modelo.clases.Paquetes;
+import modelo.clases.EstadoPaquete;
 import modelo.clases.HistorialPaquetes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,11 +39,11 @@ public class DaoPaquetes {
         }
     }
 
-    public void actualizarEstado(String codigoSeguimiento, String nuevoEstado) {
+    public void actualizarEstado(String codigoSeguimiento, EstadoPaquete nuevoEstado) {
         String sql = "UPDATE paquetes SET estado=? WHERE codigo_seguimiento=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nuevoEstado);
+            ps.setString(1, nuevoEstado.name());
             ps.setString(2, codigoSeguimiento);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -55,6 +56,20 @@ public class DaoPaquetes {
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, codigoSeguimiento);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearPaquete(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener paquete: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Paquetes obtenerPorId(int id) {
+        String sql = "SELECT * FROM paquetes WHERE id=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearPaquete(rs);
             }
@@ -111,7 +126,7 @@ public class DaoPaquetes {
         // Uso de nombre idéntico a la clase
         p.setDestinatatioId(rs.getInt("destinatario_id")); 
         
-        p.setEstado(Paquetes.Estado.valueOf(rs.getString("estado")));
+        p.setEstado(EstadoPaquete.valueOf(rs.getString("estado")));
         
         if (rs.getTimestamp("fecha_creacion") != null) {
             p.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
@@ -149,7 +164,7 @@ public class DaoPaquetes {
                     HistorialPaquetes h = new HistorialPaquetes();
                     h.setId(rs.getInt("id"));
                     h.setPaqueteId(rs.getInt("paquete_id"));
-                    h.setEstado(HistorialPaquetes.Estado.valueOf(rs.getString("estado")));
+                    h.setEstado(EstadoPaquete.valueOf(rs.getString("estado")));
                     h.setDescripcionEvento(rs.getString("descripcion_evento"));
                     h.setUbicacion(rs.getString("ubicacion"));
                     if (rs.getTimestamp("fecha_registro") != null) {

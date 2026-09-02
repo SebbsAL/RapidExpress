@@ -23,14 +23,13 @@ public class Paquetes {
     private String direccionDestino;
     private int remitenteId;
     private int destinatatioId;
-    public enum Estado {EN_BODEGA, ASIGNADO_A_RUTA, EN_TRANSITO, ENTREGADO, DEVUELTO};
-    private Estado estado; 
+    private EstadoPaquete estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
     private Clientes remitente;
     private Clientes destinatario;
 
-    public Paquetes(int id, String codigoSeguimiento, String descripcionContenido, double pesoKg, double largoCm, double anchoCm, double altoCm, double volumenM3, String direccionOrigen, String direccionDestino, int remitenteId, int destinatatioId, Estado estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Paquetes(int id, String codigoSeguimiento, String descripcionContenido, double pesoKg, double largoCm, double anchoCm, double altoCm, double volumenM3, String direccionOrigen, String direccionDestino, int remitenteId, int destinatatioId, EstadoPaquete estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
         this.codigoSeguimiento = codigoSeguimiento;
         this.descripcionContenido = descripcionContenido;
@@ -52,11 +51,11 @@ public class Paquetes {
     }
     
         
-    public Estado getEstado() {
+    public EstadoPaquete getEstado() {
         return this.estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoPaquete estado) {
         this.estado = estado;
     }
 
