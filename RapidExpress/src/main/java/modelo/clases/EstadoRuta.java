@@ -1,7 +1,7 @@
 package modelo.clases;
 
 /**
- * Estados posibles de una hoja de ruta.
+ * Estados posibles de una hoja de ruta. 
  */
 public enum EstadoRuta {
     PLANIFICADA,
