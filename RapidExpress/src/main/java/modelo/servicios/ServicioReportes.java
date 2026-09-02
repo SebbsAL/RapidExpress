@@ -10,7 +10,7 @@ public class ServicioReportes {
 
     public ServicioReportes(DaoReportes daoReportes) {
         this.daoReportes = daoReportes;
-    }
+    } 
 
     public List<String> obtenerReporteEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) {
         return daoReportes.obtenerEntregasPorConductor(identificacionConductor, fechaInicio, fechaFin);
