@@ -4,8 +4,6 @@
  */
 package vistas;
 
-import modelo.vistas.VistaReportes;
-
 /**
  * Menú principal del sistema RapidExpress
  * Punto de entrada para la interfaz de consola

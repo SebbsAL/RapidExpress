@@ -13,13 +13,12 @@ import java.time.LocalDateTime;
 public class HistorialPaquetes {
     private int id;
     private int paqueteId;    
-    public enum Estado {EN_BODEGA,ASIGNADO_A_RUTA,EN_TRANSITO,ENTREGADO,DEVUELTO};
-    private Estado estado;
+    private EstadoPaquete estado;
     private String descripcionEvento;
     private String ubicacion;
     private LocalDateTime fechaRegistro;
 
-    public HistorialPaquetes(int id, int paqueteId, Estado estado, String descripcionEvento,String ubicacion, LocalDateTime fechaRegistro) {
+    public HistorialPaquetes(int id, int paqueteId, EstadoPaquete estado, String descripcionEvento,String ubicacion, LocalDateTime fechaRegistro) {
         this.id = id;
         this.paqueteId = paqueteId;
         this.estado = estado;
@@ -39,11 +38,11 @@ public class HistorialPaquetes {
         return paqueteId;
     }
 
-    public Estado getEstado() {
+    public EstadoPaquete getEstado() {
         return this.estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoPaquete estado) {
         this.estado = estado;
     }
 

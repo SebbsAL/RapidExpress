@@ -6,6 +6,7 @@ package controlador;
 
 import java.util.List;
 import modelo.clases.Vehiculos;
+import modelo.clases.EstadoVehiculo;
 import modelo.servicios.ServicioVehiculos;
 /**
  * Controlador para la gestión de vehículos del sistema.
@@ -70,7 +71,7 @@ public class VehiculoController {
      * @param placa Placa del vehículo
      * @param nuevoEstado Nuevo estado del vehículo
      */
-    public void actualizarEstadoVehiculo(String placa, String nuevoEstado){
+    public void actualizarEstadoVehiculo(String placa, EstadoVehiculo nuevoEstado){
         servicioVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
         controladorAuditoria.registrar("VEHICULOS", "CAMBIO ESTADO", "Vehículo " + placa + " cambió a estado " + nuevoEstado, USUARIO_SISTEMA);
     }

@@ -5,7 +5,16 @@
 package vistas;
 import controlador.VehiculoController;
 import controlador.ControladorAuditoria;
+import controlador.ControladorMantenimientos;
+import modelo.clases.Mantenimientos;
+import modelo.clases.EstadoMantenimiento;
 import modelo.clases.Vehiculos;
+import modelo.clases.EstadoVehiculo;
+import modelo.persistencia.DaoMantenimientos;
+import modelo.servicios.ServicioMantenimientos;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 /**
  * Vista para gestión de vehículos
@@ -13,12 +22,16 @@ import java.util.List;
  */
 public class VistaVehiculos {
     private VehiculoController controladorVehiculos;
+    private ControladorMantenimientos controladorMantenimientos;
     public VistaVehiculos() {
         // Necesitamos instanciar las dependencias del controlador
         modelo.persistencia.DaoVehiculos daoVehiculos = new modelo.persistencia.DaoVehiculos();
         modelo.servicios.ServicioVehiculos servicioVehiculos = new modelo.servicios.ServicioVehiculos(daoVehiculos);
         ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
         this.controladorVehiculos = new VehiculoController(servicioVehiculos, controladorAuditoria);
+        DaoMantenimientos daoMantenimientos = new DaoMantenimientos();
+        ServicioMantenimientos servicioMantenimientos = new ServicioMantenimientos(daoMantenimientos, servicioVehiculos);
+        this.controladorMantenimientos = new ControladorMantenimientos(servicioMantenimientos, controladorAuditoria);
     }
     /**
      * Muestra el menú principal de vehículos
@@ -29,7 +42,10 @@ public class VistaVehiculos {
             "Listar vehículos",
             "Buscar vehículo por placa",
             "Actualizar datos de vehículo",
-            "Actualizar estado de vehículo"
+            "Actualizar estado de vehículo",
+            "Programar mantenimiento de vehículo",
+            "Actualizar estado de un mantenimiento",
+            "Consultar historial de mantenimientos de un vehículo"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTIÓN DE VEHÍCULOS", opciones);
@@ -48,6 +64,15 @@ public class VistaVehiculos {
                     break;
                 case 5:
                     actualizarEstadoVehiculo();
+                    break;
+                case 6:
+                    programarMantenimiento();
+                    break;
+                case 7:
+                    actualizarEstadoMantenimiento();
+                    break;
+                case 8:
+                    consultarHistorialMantenimientos();
                     break;
                 case 0:
                     return;
@@ -167,16 +192,16 @@ public class VistaVehiculos {
             System.out.println("  [2] EN_RUTA");
             System.out.println("  [3] EN_MANTENIMIENTO");
             int opcionEstado = UtilidadConsola.leerEntero("  Seleccione el nuevo estado: ");
-            String nuevoEstado = null;
+            EstadoVehiculo nuevoEstado;
             switch (opcionEstado) {
                 case 1:
-                    nuevoEstado = "DISPONIBLE";
+                    nuevoEstado = EstadoVehiculo.DISPONIBLE;
                     break;
                 case 2:
-                    nuevoEstado = "EN_RUTA";
+                    nuevoEstado = EstadoVehiculo.EN_RUTA;
                     break;
                 case 3:
-                    nuevoEstado = "EN_MANTENIMIENTO";
+                    nuevoEstado = EstadoVehiculo.EN_MANTENIMIENTO;
                     break;
                 default:
                     UtilidadConsola.mostrarError("Estado no válido");
@@ -186,6 +211,99 @@ public class VistaVehiculos {
             UtilidadConsola.mostrarExito("Estado del vehículo actualizado a: " + nuevoEstado);
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar estado: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Programa un nuevo mantenimiento para un vehículo. El vehículo debe estar DISPONIBLE;
+     * al programarse, su estado pasa a EN_MANTENIMIENTO.
+     */
+    private void programarMantenimiento() {
+        System.out.println("\n🔧 PROGRAMAR MANTENIMIENTO");
+        System.out.println("═══════════════════════════════════════");
+        try {
+            String placa = UtilidadConsola.leerTexto("  Placa del vehículo: ");
+            String tipo = UtilidadConsola.leerTexto("  Tipo de mantenimiento (ej. PREVENTIVO, CORRECTIVO): ");
+            String descripcion = UtilidadConsola.leerTexto("  Descripción: ");
+            String fechaProgramadaStr = UtilidadConsola.leerTexto("  Fecha programada (dd/MM/yyyy): ");
+            LocalDate fechaProgramada = LocalDate.parse(fechaProgramadaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            controladorMantenimientos.programarMantenimiento(placa, tipo, descripcion, fechaProgramada);
+            UtilidadConsola.mostrarExito("Mantenimiento programado para el vehículo: " + placa);
+        } catch (DateTimeParseException e) {
+            UtilidadConsola.mostrarError("Formato de fecha inválido. Use dd/MM/yyyy");
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al programar mantenimiento: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Actualiza el estado de un mantenimiento existente. Al marcarlo COMPLETADO,
+     * el vehículo vuelve a estado DISPONIBLE.
+     */
+    private void actualizarEstadoMantenimiento() {
+        System.out.println("\n🔄 ACTUALIZAR ESTADO DE MANTENIMIENTO");
+        System.out.println("═══════════════════════════════════════");
+        try {
+            int idMantenimiento = UtilidadConsola.leerEntero("  ID del mantenimiento: ");
+            String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehículo: ");
+            System.out.println("\n  Estados disponibles:");
+            System.out.println("  [1] EN_PROCESO");
+            System.out.println("  [2] COMPLETADO");
+            System.out.println("  [3] CANCELADO");
+            int opcionEstado = UtilidadConsola.leerEntero("  Seleccione el nuevo estado: ");
+            EstadoMantenimiento nuevoEstado;
+            switch (opcionEstado) {
+                case 1:
+                    nuevoEstado = EstadoMantenimiento.EN_PROCESO;
+                    break;
+                case 2:
+                    nuevoEstado = EstadoMantenimiento.COMPLETADO;
+                    break;
+                case 3:
+                    nuevoEstado = EstadoMantenimiento.CANCELADO;
+                    break;
+                default:
+                    UtilidadConsola.mostrarError("Estado no válido");
+                    return;
+            }
+            double costo = UtilidadConsola.leerDouble("  Costo (0 si no aplica): ");
+            String observaciones = UtilidadConsola.leerTexto("  Observaciones: ");
+            controladorMantenimientos.actualizarEstadoMantenimiento(idMantenimiento, nuevoEstado, costo, observaciones, placaVehiculo);
+            UtilidadConsola.mostrarExito("Mantenimiento actualizado a estado: " + nuevoEstado);
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al actualizar mantenimiento: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Consulta el historial de mantenimientos registrados para un vehículo
+     */
+    private void consultarHistorialMantenimientos() {
+        System.out.println("\n📋 HISTORIAL DE MANTENIMIENTOS");
+        System.out.println("═══════════════════════════════════════");
+        try {
+            String placa = UtilidadConsola.leerTexto("  Placa del vehículo: ");
+            List<Mantenimientos> historial = controladorMantenimientos.consultarHistorialMantenimientosPorVehiculo(placa);
+            if (historial == null || historial.isEmpty()) {
+                UtilidadConsola.mostrarInfo("No hay mantenimientos registrados para el vehículo: " + placa);
+            } else {
+                System.out.println("\n  Total de mantenimientos: " + historial.size());
+                System.out.println("═══════════════════════════════════════");
+                for (Mantenimientos m : historial) {
+                    System.out.println("\n  🔧 ID: " + m.getId());
+                    System.out.println("  Tipo: " + m.getTipoMantenimiento());
+                    System.out.println("  Descripción: " + m.getDescripcion());
+                    System.out.println("  Fecha programada: " + m.getFechaProgramada());
+                    System.out.println("  Fecha realización: " + m.getFechaRealizacion());
+                    System.out.println("  Costo: " + m.getCosto());
+                    System.out.println("  Estado: " + m.getEstado());
+                    System.out.println("  Observaciones: " + m.getObservaciones());
+                    System.out.println("  ─────────────────────────────────────");
+                }
+                UtilidadConsola.mostrarExito("Historial consultado exitosamente");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar historial de mantenimientos: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }

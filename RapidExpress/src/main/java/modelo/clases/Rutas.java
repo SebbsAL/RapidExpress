@@ -22,8 +22,7 @@ public class Rutas {
     private LocalTime horaInicio;
     private LocalTime horaFin;
     private double pesoTotalAsignadoKg;
-    public enum Estado {PLANIFICADA,EN_PROCESO,COMPLETADA,CANCELADA};
-    private Estado estado;
+    private EstadoRuta estado;
     private String observaciones;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
@@ -31,7 +30,7 @@ public class Rutas {
     private Conductores conductor;
     private List<Paquetes> paquetes;
 
-    public Rutas(int id, String codigoRuta, int vehiculoId, int conductorId, LocalDate fechaRuta, LocalTime horaInicio, LocalTime horaFin, double pesoTotalAsignadoKg, Estado estado, String observaciones, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Rutas(int id, String codigoRuta, int vehiculoId, int conductorId, LocalDate fechaRuta, LocalTime horaInicio, LocalTime horaFin, double pesoTotalAsignadoKg, EstadoRuta estado, String observaciones, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
         this.codigoRuta = codigoRuta;
         this.vehiculoId = vehiculoId;
@@ -49,11 +48,11 @@ public class Rutas {
     public Rutas() {
     }
     
-    public Estado getEstado() {
+    public EstadoRuta getEstado() {
         return this.estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoRuta estado) {
         this.estado = estado;
     }
 

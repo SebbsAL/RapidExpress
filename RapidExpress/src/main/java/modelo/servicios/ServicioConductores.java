@@ -1,6 +1,8 @@
 package modelo.servicios;
 
 import modelo.clases.Conductores;
+import modelo.clases.EstadoConductor;
+import modelo.clases.EstadoVehiculo;
 import modelo.persistencia.DaoConductores;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class ServicioConductores {
         c.setTipoLicencia(licencia);
         c.setTelefono(telefono);
         c.setEmail(email);
-        c.setEstado(Conductores.Estado.ACTIVO);
+        c.setEstado(EstadoConductor.ACTIVO);
         
         daoConductores.insertar(c);
         System.out.println("Conductor registrado: " + nombre);
@@ -51,20 +53,20 @@ public class ServicioConductores {
         return daoConductores.obtenerPorId(id);
     }
 
-    public void actualizarEstadoConductor(String identificacion, String nuevoEstado) {
+    public void actualizarEstadoConductor(String identificacion, EstadoConductor nuevoEstado) {
         daoConductores.actualizarEstado(identificacion, nuevoEstado);
         System.out.println("Estado del conductor actualizado a " + nuevoEstado);
     }
 
     public void asignarVehiculoAConductor(String identificacionConductor, String placaVehiculo) {
         Conductores conductor = buscarConductorPorIdentificacion(identificacionConductor);
-        if (conductor == null || conductor.getEstado() != Conductores.Estado.ACTIVO) {
+        if (conductor == null || conductor.getEstado() != EstadoConductor.ACTIVO) {
             System.err.println("Error: Conductor no existe o no está ACTIVO.");
             return;
         }
 
         var vehiculo = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
-        if (vehiculo == null || vehiculo.getEstado() != modelo.clases.Vehiculos.Estado.DISPONIBLE) {
+        if (vehiculo == null || vehiculo.getEstado() != EstadoVehiculo.DISPONIBLE) {
             System.err.println("Error: Vehículo no existe o no está DISPONIBLE.");
             return;
         }
