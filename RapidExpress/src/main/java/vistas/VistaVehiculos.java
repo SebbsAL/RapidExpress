@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 /**
- * Vista para gestión de vehículos
+ * Vista para gestion de vehiculos
  * @author Sebastian
  */
 public class VistaVehiculos {
@@ -34,21 +34,21 @@ public class VistaVehiculos {
         this.controladorMantenimientos = new ControladorMantenimientos(servicioMantenimientos, controladorAuditoria);
     }
     /**
-     * Muestra el menú principal de vehículos
+     * Muestra el menu principal de vehiculos
      */
     public void mostrarMenuVehiculos() {
         String[] opciones = {
-            "Registrar vehículo",
-            "Listar vehículos",
-            "Buscar vehículo por placa",
-            "Actualizar datos de vehículo",
-            "Actualizar estado de vehículo",
-            "Programar mantenimiento de vehículo",
+            "Registrar vehiculo",
+            "Listar vehiculos",
+            "Buscar vehiculo por placa",
+            "Actualizar datos de vehiculo",
+            "Actualizar estado de vehiculo",
+            "Programar mantenimiento de vehiculo",
             "Actualizar estado de un mantenimiento",
-            "Consultar historial de mantenimientos de un vehículo"
+            "Consultar historial de mantenimientos de un vehiculo"
         };
         while (true) {
-            int opcion = UtilidadConsola.mostrarMenu("GESTIÓN DE VEHÍCULOS", opciones);
+            int opcion = UtilidadConsola.mostrarMenu("GESTION DE VEHICULOS", opciones);
             switch (opcion) {
                 case 1:
                     registrarVehiculo();
@@ -77,45 +77,45 @@ public class VistaVehiculos {
                 case 0:
                     return;
                 default:
-                    UtilidadConsola.mostrarError("Opción no válida");
+                    UtilidadConsola.mostrarError("Opcion no valida");
             }
         }
     }
     /**
-     * Registra un nuevo vehículo
+     * Registra un nuevo vehiculo
      */
     private void registrarVehiculo() {
-        System.out.println("\n📝 REGISTRO DE VEHÍCULO");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nREGISTRO DE VEHICULO");
+        System.out.println("---------------------------------------");
         try {
             String placa = UtilidadConsola.leerTexto("  Placa: ");
             String marca = UtilidadConsola.leerTexto("  Marca: ");
             String modelo = UtilidadConsola.leerTexto("  Modelo: ");
-            int anioFabricacion = UtilidadConsola.leerEntero("  Año de fabricación: ");
-            double capacidadMaxima = UtilidadConsola.leerDouble("  Capacidad máxima (kg): ");
+            int anioFabricacion = UtilidadConsola.leerEntero("  Ano de fabricacion: ");
+            double capacidadMaxima = UtilidadConsola.leerDouble("  Capacidad maxima (kg): ");
             controladorVehiculos.registrarVehiculo(
                 placa, marca, modelo, anioFabricacion, capacidadMaxima
             );
-            UtilidadConsola.mostrarExito("Vehículo registrado exitosamente con placa: " + placa);
+            UtilidadConsola.mostrarExito("Vehiculo registrado exitosamente con placa: " + placa);
         } catch (Exception e) {
-            UtilidadConsola.mostrarError("Error al registrar vehículo: " + e.getMessage());
+            UtilidadConsola.mostrarError("Error al registrar vehiculo: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
     /**
-     * Lista todos los vehículos registrados
+     * Lista todos los vehiculos registrados
      */
     private void listarVehiculos() {
-        System.out.println("\n📋 LISTADO DE VEHÍCULOS");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nLISTADO DE VEHICULOS");
+        System.out.println("---------------------------------------");
         try {
             List<Vehiculos> vehiculos = controladorVehiculos.listarVehiculos();
             if (vehiculos.isEmpty()) {
-                UtilidadConsola.mostrarInfo("No hay vehículos registrados");
+                UtilidadConsola.mostrarInfo("No hay vehiculos registrados");
             } else {
                 System.out.printf("%-12s %-15s %-15s %-6s %-10s %-15s%n",
-                    "PLACA", "MARCA", "MODELO", "AÑO", "CAPACIDAD", "ESTADO");
-                System.out.println("────────────────────────────────────────────────────────────");
+                    "PLACA", "MARCA", "MODELO", "ANO", "CAPACIDAD", "ESTADO");
+                System.out.println("");
                 for (Vehiculos v : vehiculos) {
                     System.out.printf("%-12s %-15s %-15s %-6d %-10.2f %-15s%n",
                         v.getPlaca(),
@@ -126,68 +126,68 @@ public class VistaVehiculos {
                         v.getEstado().toString()
                     );
                 }
-                UtilidadConsola.mostrarInfo("Total de vehículos: " + vehiculos.size());
+                UtilidadConsola.mostrarInfo("Total de vehiculos: " + vehiculos.size());
             }
         } catch (Exception e) {
-            UtilidadConsola.mostrarError("Error al listar vehículos: " + e.getMessage());
+            UtilidadConsola.mostrarError("Error al listar vehiculos: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
     /**
-     * Busca un vehículo por su placa
+     * Busca un vehiculo por su placa
      */
     private void buscarVehiculoPorPlaca() {
-        System.out.println("\n🔍 BÚSQUEDA DE VEHÍCULO POR PLACA");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nBUSQUEDA DE VEHICULO POR PLACA");
+        System.out.println("---------------------------------------");
         try {
             String placa = UtilidadConsola.leerTexto(" Ingrese la placa a buscar: ");
             Vehiculos vehiculo = controladorVehiculos.buscarVehiculoPorPlaca(placa);
             if (vehiculo != null) {
-                System.out.println("\n✅ VEHÍCULO ENCONTRADO:");
+                System.out.println("\nVEHICULO ENCONTRADO:");
                 System.out.println("  Placa: " + vehiculo.getPlaca());
                 System.out.println("  Marca: " + vehiculo.getMarca());
                 System.out.println("  Modelo: " + vehiculo.getModelo());
-                System.out.println("  Año: " + vehiculo.getAnio_fabricacion());
-                System.out.println("  Capacidad Máxima: " + vehiculo.getCapacidad_maxima_kg() + " kg");
+                System.out.println("  Ano: " + vehiculo.getAnio_fabricacion());
+                System.out.println("  Capacidad Maxima: " + vehiculo.getCapacidad_maxima_kg() + " kg");
                 System.out.println("  Estado: " + vehiculo.getEstado());
             } else {
-                UtilidadConsola.mostrarError("No se encontró un vehículo con placa: " + placa);
+                UtilidadConsola.mostrarError("No se encontro un vehiculo con placa: " + placa);
             }
         } catch (Exception e) {
-            UtilidadConsola.mostrarError("Error al buscar vehículo: " + e.getMessage());
+            UtilidadConsola.mostrarError("Error al buscar vehiculo: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
     /**
-     * Actualiza los datos de un vehículo
+     * Actualiza los datos de un vehiculo
      */
     private void actualizarDatosVehiculo() {
-        System.out.println("\n✏️  ACTUALIZACIÓN DE DATOS DE VEHÍCULO");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\n ACTUALIZACION DE DATOS DE VEHICULO");
+        System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehículo a actualizar: ");
+            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo a actualizar: ");
             String nuevaMarca = UtilidadConsola.leerTexto("  Nueva marca: ");
             String nuevoModelo = UtilidadConsola.leerTexto("  Nuevo modelo: ");
-            int nuevoAnio = UtilidadConsola.leerEntero("  Nuevo año de fabricación: ");
-            double nuevaCapacidad = UtilidadConsola.leerDouble("  Nueva capacidad máxima (kg): ");
+            int nuevoAnio = UtilidadConsola.leerEntero("  Nuevo ano de fabricacion: ");
+            double nuevaCapacidad = UtilidadConsola.leerDouble("  Nueva capacidad maxima (kg): ");
             controladorVehiculos.actualizarDatosVehiculo(
                 placa, nuevaMarca, nuevoModelo, nuevoAnio, nuevaCapacidad
             );
-            UtilidadConsola.mostrarExito("Datos del vehículo actualizados correctamente");
+            UtilidadConsola.mostrarExito("Datos del vehiculo actualizados correctamente");
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar datos: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
     /**
-     * Actualiza el estado de un vehículo
+     * Actualiza el estado de un vehiculo
      */
     private void actualizarEstadoVehiculo() {
-        System.out.println("\n🔄 ACTUALIZACIÓN DE ESTADO DE VEHÍCULO");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nACTUALIZACION DE ESTADO DE VEHICULO");
+        System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehículo: ");
-            System.out.println("\n  Estados disponibles:");
+            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            System.out.println("\n Estados disponibles:");
             System.out.println("  [1] DISPONIBLE");
             System.out.println("  [2] EN_RUTA");
             System.out.println("  [3] EN_MANTENIMIENTO");
@@ -204,33 +204,33 @@ public class VistaVehiculos {
                     nuevoEstado = EstadoVehiculo.EN_MANTENIMIENTO;
                     break;
                 default:
-                    UtilidadConsola.mostrarError("Estado no válido");
+                    UtilidadConsola.mostrarError("Estado no valido");
                     return;
             }
             controladorVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
-            UtilidadConsola.mostrarExito("Estado del vehículo actualizado a: " + nuevoEstado);
+            UtilidadConsola.mostrarExito("Estado del vehiculo actualizado a: " + nuevoEstado);
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar estado: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
     /**
-     * Programa un nuevo mantenimiento para un vehículo. El vehículo debe estar DISPONIBLE;
+     * Programa un nuevo mantenimiento para un vehiculo. El vehiculo debe estar DISPONIBLE;
      * al programarse, su estado pasa a EN_MANTENIMIENTO.
      */
     private void programarMantenimiento() {
-        System.out.println("\n🔧 PROGRAMAR MANTENIMIENTO");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nPROGRAMAR MANTENIMIENTO");
+        System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehículo: ");
+            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
             String tipo = UtilidadConsola.leerTexto("  Tipo de mantenimiento (ej. PREVENTIVO, CORRECTIVO): ");
-            String descripcion = UtilidadConsola.leerTexto("  Descripción: ");
+            String descripcion = UtilidadConsola.leerTexto("  Descripcion: ");
             String fechaProgramadaStr = UtilidadConsola.leerTexto("  Fecha programada (dd/MM/yyyy): ");
             LocalDate fechaProgramada = LocalDate.parse(fechaProgramadaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             controladorMantenimientos.programarMantenimiento(placa, tipo, descripcion, fechaProgramada);
-            UtilidadConsola.mostrarExito("Mantenimiento programado para el vehículo: " + placa);
+            UtilidadConsola.mostrarExito("Mantenimiento programado para el vehiculo: " + placa);
         } catch (DateTimeParseException e) {
-            UtilidadConsola.mostrarError("Formato de fecha inválido. Use dd/MM/yyyy");
+            UtilidadConsola.mostrarError("Formato de fecha invalido. Use dd/MM/yyyy");
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al programar mantenimiento: " + e.getMessage());
         }
@@ -238,15 +238,15 @@ public class VistaVehiculos {
     }
     /**
      * Actualiza el estado de un mantenimiento existente. Al marcarlo COMPLETADO,
-     * el vehículo vuelve a estado DISPONIBLE.
+     * el vehiculo vuelve a estado DISPONIBLE.
      */
     private void actualizarEstadoMantenimiento() {
-        System.out.println("\n🔄 ACTUALIZAR ESTADO DE MANTENIMIENTO");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nACTUALIZAR ESTADO DE MANTENIMIENTO");
+        System.out.println("---------------------------------------");
         try {
             int idMantenimiento = UtilidadConsola.leerEntero("  ID del mantenimiento: ");
-            String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehículo: ");
-            System.out.println("\n  Estados disponibles:");
+            String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            System.out.println("\n Estados disponibles:");
             System.out.println("  [1] EN_PROCESO");
             System.out.println("  [2] COMPLETADO");
             System.out.println("  [3] CANCELADO");
@@ -263,7 +263,7 @@ public class VistaVehiculos {
                     nuevoEstado = EstadoMantenimiento.CANCELADO;
                     break;
                 default:
-                    UtilidadConsola.mostrarError("Estado no válido");
+                    UtilidadConsola.mostrarError("Estado no valido");
                     return;
             }
             double costo = UtilidadConsola.leerDouble("  Costo (0 si no aplica): ");
@@ -276,29 +276,29 @@ public class VistaVehiculos {
         UtilidadConsola.pausar();
     }
     /**
-     * Consulta el historial de mantenimientos registrados para un vehículo
+     * Consulta el historial de mantenimientos registrados para un vehiculo
      */
     private void consultarHistorialMantenimientos() {
-        System.out.println("\n📋 HISTORIAL DE MANTENIMIENTOS");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nHISTORIAL DE MANTENIMIENTOS");
+        System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehículo: ");
+            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
             List<Mantenimientos> historial = controladorMantenimientos.consultarHistorialMantenimientosPorVehiculo(placa);
             if (historial == null || historial.isEmpty()) {
-                UtilidadConsola.mostrarInfo("No hay mantenimientos registrados para el vehículo: " + placa);
+                UtilidadConsola.mostrarInfo("No hay mantenimientos registrados para el vehiculo: " + placa);
             } else {
-                System.out.println("\n  Total de mantenimientos: " + historial.size());
-                System.out.println("═══════════════════════════════════════");
+                System.out.println("\n Total de mantenimientos: " + historial.size());
+                System.out.println("---------------------------------------");
                 for (Mantenimientos m : historial) {
-                    System.out.println("\n  🔧 ID: " + m.getId());
+                    System.out.println("\n  ID: " + m.getId());
                     System.out.println("  Tipo: " + m.getTipoMantenimiento());
-                    System.out.println("  Descripción: " + m.getDescripcion());
+                    System.out.println("  Descripcion: " + m.getDescripcion());
                     System.out.println("  Fecha programada: " + m.getFechaProgramada());
-                    System.out.println("  Fecha realización: " + m.getFechaRealizacion());
+                    System.out.println("  Fecha realizacion: " + m.getFechaRealizacion());
                     System.out.println("  Costo: " + m.getCosto());
                     System.out.println("  Estado: " + m.getEstado());
                     System.out.println("  Observaciones: " + m.getObservaciones());
-                    System.out.println("  ─────────────────────────────────────");
+                    System.out.println("---------------------------------------");
                 }
                 UtilidadConsola.mostrarExito("Historial consultado exitosamente");
             }
