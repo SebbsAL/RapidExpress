@@ -1,9 +1,14 @@
 package modelo.servicios;
 
 import modelo.clases.Rutas;
+import modelo.clases.EstadoRuta;
 import modelo.clases.Paquetes;
+import modelo.clases.EstadoPaquete;
+import modelo.clases.RutaPaquetes;
+import modelo.clases.EstadoEntrega;
 import modelo.clases.Conductores;
 import modelo.clases.Vehiculos;
+import modelo.clases.EstadoVehiculo;
 import modelo.clases.HistorialPaquetes;
 import modelo.persistencia.DaoRutas;
 import modelo.persistencia.DaoPaquetes;
@@ -66,18 +71,18 @@ public class ServicioRutas {
         ruta.setConductorId(conductor.getId());
         ruta.setFechaRuta(LocalDate.now());
         ruta.setPesoTotalAsignadoKg(pesoTotal);
-        ruta.setEstado(Rutas.Estado.PLANIFICADA);
+        ruta.setEstado(EstadoRuta.PLANIFICADA);
 
         int rutaId = daoRutas.insertar(ruta);
 
         int orden = 1;
         for (Paquetes p : paquetesSeleccionados) {
             daoRutas.asociarPaqueteARuta(rutaId, p.getId(), orden++);
-            daoPaquetes.actualizarEstado(p.getCodigoSeguimiento(), "ASIGNADO_A_RUTA");
+            daoPaquetes.actualizarEstado(p.getCodigoSeguimiento(), EstadoPaquete.ASIGNADO_A_RUTA);
 
             HistorialPaquetes h = new HistorialPaquetes();
             h.setPaqueteId(p.getId());
-            h.setEstado(HistorialPaquetes.Estado.ASIGNADO_A_RUTA);
+            h.setEstado(EstadoPaquete.ASIGNADO_A_RUTA);
             h.setDescripcionEvento("Asignado a ruta " + codigoRuta);
             h.setUbicacion("Centro de Distribución");
             daoPaquetes.registrarHistorial(h);
@@ -101,16 +106,15 @@ public class ServicioRutas {
         }
         List<Paquetes> paquetesDeRuta = daoPaquetes.obtenerPorRuta(ruta.getId());
 
-        daoRutas.actualizarEstado(codigoRuta, "EN_PROCESO");
-        servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), "EN_RUTA");
-        servicioConductores.actualizarEstadoConductor(conductor.getNumeroIdentificacion(), "EN_RUTA");
+        daoRutas.actualizarEstado(codigoRuta, EstadoRuta.EN_PROCESO);
+        servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), EstadoVehiculo.EN_RUTA);
 
         for (Paquetes p : paquetesDeRuta) {
-            daoPaquetes.actualizarEstado(p.getCodigoSeguimiento(), "EN_TRANSITO");
+            daoPaquetes.actualizarEstado(p.getCodigoSeguimiento(), EstadoPaquete.EN_TRANSITO);
 
             HistorialPaquetes h = new HistorialPaquetes();
             h.setPaqueteId(p.getId());
-            h.setEstado(HistorialPaquetes.Estado.EN_TRANSITO);
+            h.setEstado(EstadoPaquete.EN_TRANSITO);
             h.setDescripcionEvento("Vehículo en camino para entrega");
             h.setUbicacion("En Tránsito");
             daoPaquetes.registrarHistorial(h);
@@ -126,18 +130,17 @@ public class ServicioRutas {
             System.err.println("Error: No se encontró el paquete " + codigoSeguimiento);
             return false;
         }
-        String estadoEntrega = "ENTREGADO";
-        daoRutas.actualizarEstadoEntregaPaquete(codigoRuta, codigoSeguimiento, estadoEntrega, observaciones);
-        daoPaquetes.actualizarEstado(codigoSeguimiento, estadoEntrega);
+        daoRutas.actualizarEstadoEntregaPaquete(codigoRuta, codigoSeguimiento, EstadoEntrega.ENTREGADO, observaciones);
+        daoPaquetes.actualizarEstado(codigoSeguimiento, EstadoPaquete.ENTREGADO);
 
         HistorialPaquetes h = new HistorialPaquetes();
         h.setPaqueteId(paquete.getId());
-        h.setEstado(HistorialPaquetes.Estado.valueOf(estadoEntrega));
+        h.setEstado(EstadoPaquete.ENTREGADO);
         h.setDescripcionEvento(observaciones);
         h.setUbicacion(paquete.getDireccionDestino());
         daoPaquetes.registrarHistorial(h);
 
-        servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + estadoEntrega, "SISTEMA");
+        servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + EstadoPaquete.ENTREGADO, "SISTEMA");
         return true;
     }
 
@@ -154,12 +157,24 @@ public class ServicioRutas {
             return false;
         }
 
-        daoRutas.actualizarEstado(codigoRuta, "COMPLETADA");
-        servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), "DISPONIBLE");
-        servicioConductores.actualizarEstadoConductor(conductor.getNumeroIdentificacion(), "ACTIVO");
+        daoRutas.actualizarEstado(codigoRuta, EstadoRuta.COMPLETADA);
+        servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), EstadoVehiculo.DISPONIBLE);
 
         servicioAuditoria.registrarOperacionCritica("RUTAS", "FIN", "Ruta finalizada: " + codigoRuta, "SISTEMA");
         return true;
+    }
+
+    public List<RutaPaquetes> obtenerDetalleEntregas(String codigoRuta) {
+        Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
+        if (ruta == null) {
+            System.err.println("Error: No se encontró la ruta " + codigoRuta);
+            return new ArrayList<>();
+        }
+        List<RutaPaquetes> detalle = daoRutas.obtenerDetalleEntregas(ruta.getId());
+        for (RutaPaquetes rp : detalle) {
+            rp.setPaquete(daoPaquetes.obtenerPorId(rp.getPaqueteId()));
+        }
+        return detalle;
     }
 
     public List<Rutas> listarRutasActivas() {

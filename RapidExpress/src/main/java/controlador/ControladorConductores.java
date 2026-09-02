@@ -6,6 +6,7 @@ package controlador;
 
 import java.util.List;
 import modelo.clases.Conductores;
+import modelo.clases.EstadoConductor;
 import modelo.servicios.ServicioConductores;
 
 /**
@@ -39,7 +40,7 @@ public class ControladorConductores {
         controladorAuditoria.registrar("CONDUCTORES", "CREACION","Conductor registrado: "+identificacion,USUARIO_SISTEMA);
     }
     
-    public void actualizarEstadoConductor(String identificacion, String nuevoEstado){
+    public void actualizarEstadoConductor(String identificacion, EstadoConductor nuevoEstado){
         servicioConductores.actualizarEstadoConductor(identificacion, nuevoEstado);
         controladorAuditoria.registrar("CONDUCTORES", "CAMBIO ESTADO","Conductor "+identificacion+"Cambio de estado "+nuevoEstado, USUARIO_SISTEMA);
     }

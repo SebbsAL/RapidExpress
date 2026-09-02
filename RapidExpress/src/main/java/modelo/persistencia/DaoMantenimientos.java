@@ -4,7 +4,7 @@
  */
 package modelo.persistencia;
 import modelo.clases.Mantenimientos;
-import modelo.clases.Mantenimientos.Estado;
+import modelo.clases.EstadoMantenimiento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,11 +32,11 @@ public class DaoMantenimientos {
         }
     }
 
-    public void actualizarEstadoYCostos(int idMantenimiento, String estado, double costo, String observaciones) {
+    public void actualizarEstadoYCostos(int idMantenimiento, EstadoMantenimiento estado, double costo, String observaciones) {
         String sql = "UPDATE mantenimientos SET estado=?, costo=?, observaciones=?, fecha_realizacion=CURRENT_DATE WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, estado);
+            ps.setString(1, estado.name());
             ps.setDouble(2, costo);
             ps.setString(3, observaciones);
             ps.setInt(4, idMantenimiento);
@@ -68,7 +68,7 @@ public class DaoMantenimientos {
                     }
                     
                     m.setCosto(rs.getDouble("costo"));
-                    m.setEstado(Mantenimientos.Estado.valueOf(rs.getString("estado")));
+                    m.setEstado(EstadoMantenimiento.valueOf(rs.getString("estado")));
                     m.setObservaciones(rs.getString("observaciones"));
                     
                     if (rs.getTimestamp("fecha_creacion") != null) {

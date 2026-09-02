@@ -6,6 +6,7 @@ package vistas;
 import controlador.ControladorConductores;
 import controlador.ControladorAuditoria;
 import modelo.clases.Conductores;
+import modelo.clases.EstadoConductor;
 import modelo.persistencia.DaoConductores;
 import modelo.persistencia.DaoVehiculos;
 import modelo.servicios.ServicioConductores;
@@ -175,16 +176,16 @@ public class VistaConductores {
             System.out.println("  [2] DE_VACACIONES");
             System.out.println("  [3] INACTIVO");
             int opcionEstado = UtilidadConsola.leerEntero("  Seleccione el nuevo estado: ");
-            String nuevoEstado = null;
+            EstadoConductor nuevoEstado;
             switch (opcionEstado) {
                 case 1:
-                    nuevoEstado = "ACTIVO";
+                    nuevoEstado = EstadoConductor.ACTIVO;
                     break;
                 case 2:
-                    nuevoEstado = "DE_VACACIONES";
+                    nuevoEstado = EstadoConductor.DE_VACACIONES;
                     break;
                 case 3:
-                    nuevoEstado = "INACTIVO";
+                    nuevoEstado = EstadoConductor.INACTIVO;
                     break;
                 default:
                     UtilidadConsola.mostrarError("Estado no válido");

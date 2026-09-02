@@ -4,6 +4,9 @@
  */
 package modelo.persistencia;
 import modelo.clases.Rutas;
+import modelo.clases.EstadoRuta;
+import modelo.clases.RutaPaquetes;
+import modelo.clases.EstadoEntrega;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,20 +41,20 @@ public class DaoRutas {
         return idGenerado;
     }
 
-    public void actualizarEstado(String codigoRuta, String nuevoEstado) {
+    public void actualizarEstado(String codigoRuta, EstadoRuta nuevoEstado) {
         String sql = "UPDATE rutas SET estado=?, ";
-        if (nuevoEstado.equals("EN_PROCESO")) {
+        if (nuevoEstado == EstadoRuta.EN_PROCESO) {
             sql += "hora_inicio=CURRENT_TIME ";
-        } else if (nuevoEstado.equals("COMPLETADA")) {
+        } else if (nuevoEstado == EstadoRuta.COMPLETADA) {
             sql += "hora_fin=CURRENT_TIME ";
         } else {
-            sql += "fecha_actualizacion=CURRENT_TIMESTAMP "; 
+            sql += "fecha_actualizacion=CURRENT_TIMESTAMP ";
         }
         sql += "WHERE codigo_ruta=?";
 
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nuevoEstado);
+            ps.setString(1, nuevoEstado.name());
             ps.setString(2, codigoRuta);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -106,7 +109,7 @@ public class DaoRutas {
         }
 
         r.setPesoTotalAsignadoKg(rs.getDouble("peso_total_asignado_kg"));
-        r.setEstado(Rutas.Estado.valueOf(rs.getString("estado")));
+        r.setEstado(EstadoRuta.valueOf(rs.getString("estado")));
         r.setObservaciones(rs.getString("observaciones"));
 
         return r;
@@ -115,19 +118,20 @@ public class DaoRutas {
     // --- Métodos de Ruta Paquetes (ruta_paquetes) ---
 
     public void asociarPaqueteARuta(int rutaId, int paqueteId, int ordenEntrega) {
-        String sql = "INSERT INTO ruta_paquetes (ruta_id, paquete_id, orden_entrega, estado_entrega) VALUES (?, ?, ?, 'PENDIENTE')";
+        String sql = "INSERT INTO ruta_paquetes (ruta_id, paquete_id, orden_entrega, estado_entrega) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, rutaId);
             ps.setInt(2, paqueteId);
             ps.setInt(3, ordenEntrega);
+            ps.setString(4, EstadoEntrega.PENDIENTE.name());
             ps.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error al asociar paquete a ruta: " + e.getMessage());
         }
     }
 
-    public void actualizarEstadoEntregaPaquete(String codigoRuta, String codigoSeguimiento, String estadoEntrega, String observaciones) {
+    public void actualizarEstadoEntregaPaquete(String codigoRuta, String codigoSeguimiento, EstadoEntrega estadoEntrega, String observaciones) {
         String sql = "UPDATE ruta_paquetes rp " +
                      "JOIN rutas r ON rp.ruta_id = r.id " +
                      "JOIN paquetes p ON rp.paquete_id = p.id " +
@@ -135,7 +139,7 @@ public class DaoRutas {
                      "WHERE r.codigo_ruta=? AND p.codigo_seguimiento=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, estadoEntrega);
+            ps.setString(1, estadoEntrega.name());
             ps.setString(2, observaciones);
             ps.setString(3, codigoRuta);
             ps.setString(4, codigoSeguimiento);
@@ -143,5 +147,35 @@ public class DaoRutas {
         } catch (SQLException e) {
             System.err.println("Error actualizando entrega de paquete: " + e.getMessage());
         }
+    }
+
+    public List<RutaPaquetes> obtenerDetalleEntregas(int rutaId) {
+        String sql = "SELECT * FROM ruta_paquetes WHERE ruta_id=? ORDER BY orden_entrega";
+        List<RutaPaquetes> lista = new ArrayList<>();
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, rutaId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    RutaPaquetes rp = new RutaPaquetes();
+                    rp.setId(rs.getInt("id"));
+                    rp.setRutaId(rs.getInt("ruta_id"));
+                    rp.setPaqueteId(rs.getInt("paquete_id"));
+                    rp.setOrdenEntrega(rs.getInt("orden_entrega"));
+                    rp.setEstadoEntrega(EstadoEntrega.valueOf(rs.getString("estado_entrega")));
+                    if (rs.getTimestamp("fecha_entrega_estimada") != null) {
+                        rp.setFechaEntregaEstimada(rs.getTimestamp("fecha_entrega_estimada").toLocalDateTime());
+                    }
+                    if (rs.getTimestamp("fecha_entrega_real") != null) {
+                        rp.setFechaEntregaReal(rs.getTimestamp("fecha_entrega_real").toLocalDateTime());
+                    }
+                    rp.setObservacionesEntrega(rs.getString("observaciones_entrega"));
+                    lista.add(rp);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener detalle de entregas: " + e.getMessage());
+        }
+        return lista;
     }
 }

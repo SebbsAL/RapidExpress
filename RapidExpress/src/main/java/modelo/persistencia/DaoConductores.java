@@ -4,7 +4,7 @@
  */
 package modelo.persistencia;
 import modelo.clases.Conductores;
-import modelo.clases.Conductores.Estado;
+import modelo.clases.EstadoConductor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,11 +47,11 @@ public class DaoConductores {
         }
     }
 
-    public void actualizarEstado(String identificacion, String nuevoEstado) {
+    public void actualizarEstado(String identificacion, EstadoConductor nuevoEstado) {
         String sql = "UPDATE conductores SET estado=? WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nuevoEstado);
+            ps.setString(1, nuevoEstado.name());
             ps.setString(2, identificacion);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -108,7 +108,7 @@ public class DaoConductores {
         c.setTipoLicencia(rs.getString("tipo_licencia"));
         c.setTelefono(rs.getString("telefono"));
         c.setEmail(rs.getString("email"));
-        c.setEstado(Conductores.Estado.valueOf(rs.getString("estado")));
+        c.setEstado(EstadoConductor.valueOf(rs.getString("estado")));
         if (rs.getTimestamp("fecha_creacion") != null) {
             c.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
         }
