@@ -10,7 +10,7 @@ import modelo.clases.EstadoVehiculo;
 import modelo.servicios.ServicioVehiculos;
 /**
  * Controlador para la gestión de vehículos del sistema.
- * Maneja las operaciones CRUD y cambios de estado de vehículos,
+ * Maneja las operaciones CRUD y cambios de estado de vehículos, 
  * registrando todas las operaciones en la auditoría del sistema.
  *
  */
