@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author sergi
+ * @author sergi 
  */
 public class Mantenimientos {
     private int id;
