@@ -7,7 +7,9 @@ import controlador.VehiculoController;
 import controlador.ControladorAuditoria;
 import controlador.ControladorMantenimientos;
 import modelo.clases.Mantenimientos;
+import modelo.clases.EstadoMantenimiento;
 import modelo.clases.Vehiculos;
+import modelo.clases.EstadoVehiculo;
 import modelo.persistencia.DaoMantenimientos;
 import modelo.servicios.ServicioMantenimientos;
 import java.time.LocalDate;
@@ -190,16 +192,16 @@ public class VistaVehiculos {
             System.out.println("  [2] EN_RUTA");
             System.out.println("  [3] EN_MANTENIMIENTO");
             int opcionEstado = UtilidadConsola.leerEntero("  Seleccione el nuevo estado: ");
-            String nuevoEstado = null;
+            EstadoVehiculo nuevoEstado;
             switch (opcionEstado) {
                 case 1:
-                    nuevoEstado = "DISPONIBLE";
+                    nuevoEstado = EstadoVehiculo.DISPONIBLE;
                     break;
                 case 2:
-                    nuevoEstado = "EN_RUTA";
+                    nuevoEstado = EstadoVehiculo.EN_RUTA;
                     break;
                 case 3:
-                    nuevoEstado = "EN_MANTENIMIENTO";
+                    nuevoEstado = EstadoVehiculo.EN_MANTENIMIENTO;
                     break;
                 default:
                     UtilidadConsola.mostrarError("Estado no válido");
@@ -249,16 +251,16 @@ public class VistaVehiculos {
             System.out.println("  [2] COMPLETADO");
             System.out.println("  [3] CANCELADO");
             int opcionEstado = UtilidadConsola.leerEntero("  Seleccione el nuevo estado: ");
-            String nuevoEstado;
+            EstadoMantenimiento nuevoEstado;
             switch (opcionEstado) {
                 case 1:
-                    nuevoEstado = "EN_PROCESO";
+                    nuevoEstado = EstadoMantenimiento.EN_PROCESO;
                     break;
                 case 2:
-                    nuevoEstado = "COMPLETADO";
+                    nuevoEstado = EstadoMantenimiento.COMPLETADO;
                     break;
                 case 3:
-                    nuevoEstado = "CANCELADO";
+                    nuevoEstado = EstadoMantenimiento.CANCELADO;
                     break;
                 default:
                     UtilidadConsola.mostrarError("Estado no válido");

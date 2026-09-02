@@ -7,6 +7,7 @@ import controlador.ControladorRutas;
 import controlador.ControladorAuditoria;
 import modelo.clases.Rutas;
 import modelo.clases.Paquetes;
+import modelo.clases.RutaPaquetes;
 import modelo.persistencia.DaoConductores;
 import modelo.persistencia.DaoPaquetes;
 import modelo.persistencia.DaoRutas;
@@ -41,7 +42,8 @@ public class VistaRutas {
             "Iniciar ruta",
             "Registrar entrega de paquete",
             "Finalizar ruta",
-            "Listar rutas activas"
+            "Listar rutas activas",
+            "Ver detalle de entregas de una ruta"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTIÓN DE RUTAS", opciones);
@@ -60,6 +62,9 @@ public class VistaRutas {
                     break;
                 case 5:
                     listarRutasActivas();
+                    break;
+                case 6:
+                    verDetalleEntregas();
                     break;
                 case 0:
                     return;
@@ -210,6 +215,40 @@ public class VistaRutas {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al listar rutas: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Muestra el detalle de entrega de cada paquete asignado a una ruta
+     * (orden, estado de entrega, fechas y observaciones)
+     */
+    private void verDetalleEntregas() {
+        System.out.println("\n📦 DETALLE DE ENTREGAS DE LA RUTA");
+        System.out.println("═══════════════════════════════════════");
+        try {
+            String codigoRuta = UtilidadConsola.leerTexto("  Código de ruta: ");
+            List<RutaPaquetes> detalle = controladorRutas.obtenerDetalleEntregas(codigoRuta);
+            if (detalle == null || detalle.isEmpty()) {
+                UtilidadConsola.mostrarInfo("No hay paquetes asignados a la ruta: " + codigoRuta);
+            } else {
+                System.out.println("\n  Total de paquetes en la ruta: " + detalle.size());
+                System.out.println("═══════════════════════════════════════");
+                for (RutaPaquetes rp : detalle) {
+                    System.out.println("\n  📦 Orden: " + rp.getOrdenEntrega());
+                    if (rp.getPaquete() != null) {
+                        System.out.println("  Código: " + rp.getPaquete().getCodigoSeguimiento());
+                        System.out.println("  Descripción: " + rp.getPaquete().getDescripcionContenido());
+                    }
+                    System.out.println("  Estado de entrega: " + rp.getEstadoEntrega());
+                    System.out.println("  Fecha entrega estimada: " + rp.getFechaEntregaEstimada());
+                    System.out.println("  Fecha entrega real: " + rp.getFechaEntregaReal());
+                    System.out.println("  Observaciones: " + rp.getObservacionesEntrega());
+                    System.out.println("  ─────────────────────────────────────");
+                }
+                UtilidadConsola.mostrarExito("Detalle de entregas consultado exitosamente");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar detalle de entregas: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }

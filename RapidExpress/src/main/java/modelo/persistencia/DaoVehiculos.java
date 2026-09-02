@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo.persistencia;
-import modelo.clases.Vehiculos.Estado;
+import modelo.clases.EstadoVehiculo;
 import modelo.clases.Vehiculos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,11 +47,11 @@ public class DaoVehiculos {
         }
     }
     
-    public void actualizarEstado(String placa, String nuevoEstado) {
+    public void actualizarEstado(String placa, EstadoVehiculo nuevoEstado) {
         String sql = "UPDATE vehiculos SET estado=? WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nuevoEstado);
+            ps.setString(1, nuevoEstado.name());
             ps.setString(2, placa);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -110,7 +110,7 @@ public class DaoVehiculos {
         v.setModelo(rs.getString("modelo"));
         v.setAnio_fabricacion(rs.getInt("anio_fabricacion"));
         v.setCapacidad_maxima_kg(rs.getInt("capacidad_maxima_kg")); // Basado en tu clase actual
-        v.setEstado(Vehiculos.Estado.valueOf(rs.getString("estado")));
+        v.setEstado(EstadoVehiculo.valueOf(rs.getString("estado")));
         if (rs.getTimestamp("fecha_creacion") != null) {
             v.setFecha_creacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
         }

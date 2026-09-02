@@ -1,5 +1,6 @@
 package modelo.servicios;
 
+import modelo.clases.EstadoVehiculo;
 import modelo.clases.Vehiculos;
 import modelo.persistencia.DaoVehiculos;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ServicioVehiculos {
         vehiculo.setModelo(modelo);
         vehiculo.setAnio_fabricacion(anio);
         vehiculo.setCapacidad_maxima_kg(capacidadMaxima);
-        vehiculo.setEstado(Vehiculos.Estado.DISPONIBLE);
+        vehiculo.setEstado(EstadoVehiculo.DISPONIBLE);
         
         daoVehiculos.insertar(vehiculo);
         System.out.println("Vehículo registrado con éxito: " + placa);
@@ -62,7 +63,7 @@ public class ServicioVehiculos {
         return daoVehiculos.obtenerPorId(id);
     }
 
-    public void actualizarEstadoVehiculo(String placa, String nuevoEstado) {
+    public void actualizarEstadoVehiculo(String placa, EstadoVehiculo nuevoEstado) {
         Vehiculos v = daoVehiculos.obtenerPorPlaca(placa);
         if (v != null) {
             daoVehiculos.actualizarEstado(placa, nuevoEstado);
