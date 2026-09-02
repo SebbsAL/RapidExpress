@@ -21,11 +21,11 @@ public class ServicioMantenimientos {
     public void programarMantenimiento(String placaVehiculo, String tipo, String descripcion, LocalDate fechaProgramada) {
         Vehiculos v = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
         if (v == null) {
-            System.err.println("Error: El vehículo no existe.");
+            System.err.println("Error: El vehiculo no existe.");
             return;
         }
         if (v.getEstado() != EstadoVehiculo.DISPONIBLE) {
-            System.err.println("Error: El vehículo debe estar DISPONIBLE para programar mantenimiento.");
+            System.err.println("Error: El vehiculo debe estar DISPONIBLE para programar mantenimiento.");
             return;
         }
 
@@ -38,7 +38,7 @@ public class ServicioMantenimientos {
 
         daoMantenimientos.insertar(m);
         servicioVehiculos.actualizarEstadoVehiculo(placaVehiculo, EstadoVehiculo.EN_MANTENIMIENTO);
-        System.out.println("Mantenimiento programado exitosamente para el vehículo " + placaVehiculo);
+        System.out.println("Mantenimiento programado exitosamente para el vehiculo " + placaVehiculo);
     }
 
     public void actualizarEstadoMantenimiento(int idMantenimiento, EstadoMantenimiento nuevoEstado, double costo, String observaciones, String placaVehiculo) {
@@ -46,7 +46,7 @@ public class ServicioMantenimientos {
 
         if (nuevoEstado == EstadoMantenimiento.COMPLETADO) {
             servicioVehiculos.actualizarEstadoVehiculo(placaVehiculo, EstadoVehiculo.DISPONIBLE);
-            System.out.println("Mantenimiento completado. Vehículo " + placaVehiculo + " está DISPONIBLE.");
+            System.out.println("Mantenimiento completado. Vehiculo " + placaVehiculo + " esta DISPONIBLE.");
         }
     }
 

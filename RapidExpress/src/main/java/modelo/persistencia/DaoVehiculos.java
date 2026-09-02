@@ -28,7 +28,7 @@ public class DaoVehiculos {
             ps.setString(6, vehiculo.getEstado().name());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al insertar vehículo: " + e.getMessage());
+            System.err.println("Error al insertar vehiculo: " + e.getMessage());
         }
     }
     
@@ -43,7 +43,7 @@ public class DaoVehiculos {
             ps.setString(5, vehiculo.getPlaca());
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al actualizar vehículo: " + e.getMessage());
+            System.err.println("Error al actualizar vehiculo: " + e.getMessage());
         }
     }
     
@@ -55,7 +55,7 @@ public class DaoVehiculos {
             ps.setString(2, placa);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al actualizar estado del vehículo: " + e.getMessage());
+            System.err.println("Error al actualizar estado del vehiculo: " + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class DaoVehiculos {
                 if (rs.next()) return mapearVehiculo(rs);
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener vehículo: " + e.getMessage());
+            System.err.println("Error al obtener vehiculo: " + e.getMessage());
         }
         return null;
     }
@@ -83,7 +83,7 @@ public class DaoVehiculos {
                 if (rs.next()) return mapearVehiculo(rs);
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener vehículo: " + e.getMessage());
+            System.err.println("Error al obtener vehiculo: " + e.getMessage());
         }
         return null;
     }
@@ -96,7 +96,7 @@ public class DaoVehiculos {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) lista.add(mapearVehiculo(rs));
         } catch (SQLException e) {
-            System.err.println("Error al obtener todos los vehículos: " + e.getMessage());
+            System.err.println("Error al obtener todos los vehiculos: " + e.getMessage());
         }
         return lista;
     }
