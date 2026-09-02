@@ -54,7 +54,7 @@ public class DaoReportes {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error consultando historial de vehículos: " + e.getMessage());
+            System.err.println("Error consultando historial de vehiculos: " + e.getMessage());
         }
         return lineas;
     }

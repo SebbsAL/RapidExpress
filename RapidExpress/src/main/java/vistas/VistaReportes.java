@@ -11,7 +11,7 @@ import modelo.servicios.ServicioReportes;
 import java.util.Date;
 import java.util.List;
 /**
- * Vista para generación de reportes
+ * Vista para generacion de reportes
  * @author Sebastian
  */
 public class VistaReportes {
@@ -23,15 +23,15 @@ public class VistaReportes {
         this.controladorReportes = new ControladorReportes(servicioReportes, controladorAuditoria);
     }
     /**
-     * Muestra el menú principal de reportes
+     * Muestra el menu principal de reportes
      */
     public void mostrarMenuReportes() {
         String[] opciones = {
             "Generar reporte de entregas por conductor",
-            "Generar historial de rutas por vehículo"
+            "Generar historial de rutas por vehiculo"
         };
         while (true) {
-            int opcion = UtilidadConsola.mostrarMenu("GENERACIÓN DE REPORTES", opciones);
+            int opcion = UtilidadConsola.mostrarMenu("GENERACION DE REPORTES", opciones);
             switch (opcion) {
                 case 1:
                     generarReporteEntregasPorConductor();
@@ -42,7 +42,7 @@ public class VistaReportes {
                 case 0:
                     return;
                 default:
-                    UtilidadConsola.mostrarError("Opción no válida");
+                    UtilidadConsola.mostrarError("Opcion no valida");
             }
         }
     }
@@ -50,11 +50,11 @@ public class VistaReportes {
      * Genera un reporte de entregas realizadas por un conductor en un rango de fechas
      */
     private void generarReporteEntregasPorConductor() {
-        System.out.println("\n📊 REPORTE DE ENTREGAS POR CONDUCTOR");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nREPORTE DE ENTREGAS POR CONDUCTOR");
+        System.out.println("---------------------------------------");
         try {
-            String identificacionConductor = UtilidadConsola.leerTexto("  Identificación del conductor: ");
-            System.out.println("\n  RANGO DE FECHAS:");
+            String identificacionConductor = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
+            System.out.println("\n RANGO DE FECHAS:");
             System.out.println("  Formato: dd/MM/yyyy");
             String fechaInicioStr = UtilidadConsola.leerTexto("    Fecha inicio: ");
             String fechaFinStr = UtilidadConsola.leerTexto("    Fecha fin: ");
@@ -67,47 +67,47 @@ public class VistaReportes {
                 identificacionConductor, fechaInicio, fechaFin
             );
             if (reporte != null && !reporte.isEmpty()) {
-                System.out.println("\n═══════════════════════════════════════");
-                System.out.println("  📋 REPORTE DE ENTREGAS");
-                System.out.println("═══════════════════════════════════════");
+                System.out.println("\n---------------------------------------");
+                System.out.println("   REPORTE DE ENTREGAS");
+                System.out.println("---------------------------------------");
                 System.out.println("  Conductor: " + identificacionConductor);
-                System.out.println("  Período: " + fechaInicioStr + " a " + fechaFinStr);
-                System.out.println("═══════════════════════════════════════");
+                System.out.println("  Periodo: " + fechaInicioStr + " a " + fechaFinStr);
+                System.out.println("---------------------------------------");
                 for (String linea : reporte) {
                     System.out.println("  " + linea);
                 }
-                System.out.println("═══════════════════════════════════════");
+                System.out.println("---------------------------------------");
                 UtilidadConsola.mostrarExito("Reporte generado: " + reporte.size() + " registros");
             } else {
-                UtilidadConsola.mostrarInfo("No se encontraron entregas para el conductor en el período especificado");
+                UtilidadConsola.mostrarInfo("No se encontraron entregas para el conductor en el periodo especificado");
             }
         } catch (java.text.ParseException e) {
-            UtilidadConsola.mostrarError("Formato de fecha inválido. Use dd/MM/yyyy");
+            UtilidadConsola.mostrarError("Formato de fecha invalido. Use dd/MM/yyyy");
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al generar reporte: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
     /**
-     * Genera el historial de rutas realizadas por un vehículo específico
+     * Genera el historial de rutas realizadas por un vehiculo especifico
      */
     private void generarHistorialRutasVehiculo() {
-        System.out.println("\n📋 HISTORIAL DE RUTAS POR VEHÍCULO");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nHISTORIAL DE RUTAS POR VEHICULO");
+        System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehículo: ");
+            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
             List<String> reporte = controladorReportes.generarHistorialRutasVehiculo(placa);
             if (reporte != null && !reporte.isEmpty()) {
-                System.out.println("\n═══════════════════════════════════════");
-                System.out.println("  🚗 HISTORIAL DE RUTAS - VEHÍCULO: " + placa);
-                System.out.println("═══════════════════════════════════════");
+                System.out.println("\n---------------------------------------");
+                System.out.println("   HISTORIAL DE RUTAS - VEHICULO: " + placa);
+                System.out.println("---------------------------------------");
                 for (String linea : reporte) {
                     System.out.println("  " + linea);
                 }
-                System.out.println("═══════════════════════════════════════");
+                System.out.println("---------------------------------------");
                 UtilidadConsola.mostrarExito("Historial generado: " + reporte.size() + " rutas");
             } else {
-                UtilidadConsola.mostrarInfo("No se encontraron rutas para el vehículo con placa: " + placa);
+                UtilidadConsola.mostrarInfo("No se encontraron rutas para el vehiculo con placa: " + placa);
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al generar historial: " + e.getMessage());

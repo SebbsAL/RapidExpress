@@ -5,7 +5,7 @@
 package vistas;
 
 /**
- * Menú principal del sistema RapidExpress
+ * Menu principal del sistema RapidExpress
  * Punto de entrada para la interfaz de consola
  * @author Sebastian
  */
@@ -25,26 +25,21 @@ public class MenuPrincipal {
         this.vistaReportes = new VistaReportes();
     }
     /**
-     * Muestra el menú principal del sistema
+     * Muestra el menu principal del sistema
      */
     public void mostrarMenuPrincipal() {
         String[] opciones = {
-            "🚗 Gestión de Vehículos",
-            "👤 Gestión de Conductores",
-            "👥 Gestión de Clientes",
-            "📦 Gestión de Paquetes",
-            "🚛 Gestión de Rutas",
-            "📊 Reportes"
+            "Gestion de Vehiculos",
+            "Gestion de Conductores",
+            "Gestion de Clientes",
+            "Gestion de Paquetes",
+            "Gestion de Rutas",
+            "Reportes"
         };
         while (true) {
             UtilidadConsola.limpiarConsola();
-            System.out.println("╔═══════════════════════════════════════╗");
-            System.out.println("║                                       ║");
-            System.out.println("║      📦 RAPID EXPRESS SYSTEM 🚛       ║");
-            System.out.println("║    Sistema de Gestión Logística       ║");
-            System.out.println("║                                       ║");
-            System.out.println("╚═══════════════════════════════════════╝");
-            int opcion = UtilidadConsola.mostrarMenu("MENÚ PRINCIPAL", opciones);
+            mostrarEncabezado("Sistema de Gestion Logistica");
+            int opcion = UtilidadConsola.mostrarMenu("MENU PRINCIPAL", opciones);
             switch (opcion) {
                 case 1:
                     vistaVehiculos.mostrarMenuVehiculos();
@@ -65,34 +60,34 @@ public class MenuPrincipal {
                     vistaReportes.mostrarMenuReportes();
                     break;
                 case 0:
-                    System.out.println("\n═══════════════════════════════════════");
-                    System.out.println("  🙋 ¡Gracias por usar Rapid Express!");
-                    System.out.println("  👋 Hasta pronto...");
-                    System.out.println("═══════════════════════════════════════\n");
+                    System.out.println("\nGracias por usar Rapid Express.");
+                    System.out.println("Hasta pronto.\n");
                     return;
                 default:
-                    UtilidadConsola.mostrarError("Opción no válida");
+                    UtilidadConsola.mostrarError("Opcion no valida");
                     UtilidadConsola.pausar();
             }
         }
     }
     /**
-     * Método main - Punto de entrada del sistema
+     * Metodo main - Punto de entrada del sistema
      */
     public static void main(String[] args) {
-        System.out.println("\n╔═══════════════════════════════════════╗");
-        System.out.println("║                                       ║");
-        System.out.println("║      📦 RAPID EXPRESS SYSTEM 🚛       ║");
-        System.out.println("║         Iniciando sistema...          ║");
-        System.out.println("║                                       ║");
-        System.out.println("╚═══════════════════════════════════════╝\n");
+        mostrarEncabezado("Iniciando sistema...");
         try {
             MenuPrincipal menu = new MenuPrincipal();
             menu.mostrarMenuPrincipal();
         } catch (Exception e) {
-            System.out.println("\n❌ Error crítico al iniciar el sistema:");
+            System.out.println("\n[ERROR] Error critico al iniciar el sistema:");
             System.out.println("   " + e.getMessage());
-            System.out.println("\nPor favor contacte al administrador del sistema.\n");
+            System.out.println("\nContacte al administrador del sistema.\n");
         }
+    }
+
+    private static void mostrarEncabezado(String subtitulo) {
+        System.out.println("\n========================================");
+        System.out.println("             RAPID EXPRESS");
+        System.out.println("========================================");
+        System.out.println(subtitulo);
     }
 }
