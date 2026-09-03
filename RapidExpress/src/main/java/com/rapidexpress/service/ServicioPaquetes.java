@@ -1,15 +1,18 @@
-package modelo.servicios;
+package com.rapidexpress.service;
 
-import modelo.clases.Paquetes;
-import modelo.clases.EstadoPaquete;
-import modelo.clases.HistorialPaquetes;
-import modelo.clases.Clientes;
-import modelo.persistencia.IDaoPaquetes;
+import com.rapidexpress.model.entity.Paquetes;
+import com.rapidexpress.model.entity.EstadoPaquete;
+import com.rapidexpress.model.entity.HistorialPaquetes;
+import com.rapidexpress.model.entity.Clientes;
+import com.rapidexpress.model.dao.IDaoPaquetes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Servicio de gestión de paquetes.
+ */
 public class ServicioPaquetes {
 
     private final IDaoPaquetes daoPaquetes;
@@ -22,6 +25,9 @@ public class ServicioPaquetes {
         this.servicioClientes = servicioClientes;
     }
 
+    /**
+     * Registra un nuevo paquete en estado EN_BODEGA junto con su remitente y destinatario.
+     */
     public String registrarPaquete(String descripcion, double peso, String dimensiones, String dirOrigen, String dirDestino,
                                    String remitenteIdentificacion, String remitenteNombre, String remitenteTelefono, String remitenteEmail, String remitenteDireccion, String remitenteCiudad,
                                    String destinatarioIdentificacion, String destinatarioNombre, String destinatarioTelefono, String destinatarioEmail, String destinatarioDireccion, String destinatarioCiudad) {
@@ -91,6 +97,9 @@ public class ServicioPaquetes {
         }
     }
 
+    /**
+     * Busca un paquete por su código de seguimiento.
+     */
     public Paquetes buscarPaquetePorTracking(String codigoSeguimiento) {
         try {
             Paquetes paquete = daoPaquetes.obtenerPorTracking(codigoSeguimiento);
@@ -102,6 +111,9 @@ public class ServicioPaquetes {
         }
     }
 
+    /**
+     * Consulta el historial de eventos (trazabilidad) de un paquete.
+     */
     public List<HistorialPaquetes> consultarTrazabilidadPaquete(String codigoSeguimiento) {
         try {
             return daoPaquetes.obtenerHistorial(codigoSeguimiento);
@@ -111,6 +123,9 @@ public class ServicioPaquetes {
         }
     }
 
+    /**
+     * Lista los paquetes que actualmente están en estado EN_BODEGA.
+     */
     public List<Paquetes> listarPaquetesEnBodega() {
         try {
             List<Paquetes> paquetes = daoPaquetes.obtenerPorEstado("EN_BODEGA");
@@ -122,6 +137,9 @@ public class ServicioPaquetes {
         }
     }
 
+    /**
+     * Completa un paquete con los datos de remitente y destinatario.
+     */
     private void hidratarClientes(Paquetes paquete) {
         if (paquete == null) {
             return;
@@ -130,6 +148,9 @@ public class ServicioPaquetes {
         paquete.setDestinatario(servicioClientes.obtenerClientePorId(paquete.getDestinatarioId()));
     }
 
+    /**
+     * Convierte la cadena "alto x ancho x largo" en un arreglo numérico.
+     */
     private double[] parsearDimensiones(String dimensiones) {
         if (dimensiones == null) {
             throw new NumberFormatException("Dimensiones no puede ser nulo");

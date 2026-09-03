@@ -1,24 +1,27 @@
-package modelo.servicios;
+package com.rapidexpress.service;
 
-import modelo.clases.Rutas;
-import modelo.clases.EstadoRuta;
-import modelo.clases.Paquetes;
-import modelo.clases.EstadoPaquete;
-import modelo.clases.RutaPaquetes;
-import modelo.clases.EstadoEntrega;
-import modelo.clases.Conductores;
-import modelo.clases.EstadoConductor;
-import modelo.clases.Vehiculos;
-import modelo.clases.EstadoVehiculo;
-import modelo.clases.HistorialPaquetes;
-import modelo.persistencia.IDaoRutas;
-import modelo.persistencia.IDaoPaquetes;
+import com.rapidexpress.model.entity.Rutas;
+import com.rapidexpress.model.entity.EstadoRuta;
+import com.rapidexpress.model.entity.Paquetes;
+import com.rapidexpress.model.entity.EstadoPaquete;
+import com.rapidexpress.model.entity.RutaPaquetes;
+import com.rapidexpress.model.entity.EstadoEntrega;
+import com.rapidexpress.model.entity.Conductores;
+import com.rapidexpress.model.entity.EstadoConductor;
+import com.rapidexpress.model.entity.Vehiculos;
+import com.rapidexpress.model.entity.EstadoVehiculo;
+import com.rapidexpress.model.entity.HistorialPaquetes;
+import com.rapidexpress.model.dao.IDaoRutas;
+import com.rapidexpress.model.dao.IDaoPaquetes;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Servicio de gestión de rutas de entrega.
+ */
 public class ServicioRutas {
 
     private final IDaoRutas daoRutas;
@@ -36,6 +39,9 @@ public class ServicioRutas {
         this.servicioAuditoria = servicioAuditoria;
     }
 
+    /**
+     * Crea una hoja de ruta validando vehículo, conductor y capacidad de carga.
+     */
     public String crearHojaDeRuta(String placaVehiculo, String identificacionConductor, List<String> codigosPaquetes) {
         if (codigosPaquetes == null || codigosPaquetes.isEmpty()) {
             System.err.println("Error: Debe especificar al menos un paquete para la ruta.");
@@ -115,6 +121,9 @@ public class ServicioRutas {
         }
     }
 
+    /**
+     * Inicia una ruta planificada y pone en tránsito vehículo, conductor y paquetes.
+     */
     public boolean iniciarRuta(String codigoRuta) {
         try {
             Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
@@ -153,6 +162,9 @@ public class ServicioRutas {
         }
     }
 
+    /**
+     * Registra el resultado de la entrega de un paquete dentro de una ruta.
+     */
     public boolean registrarEntregaPaquete(String codigoRuta, String codigoSeguimiento, String observaciones, EstadoEntrega estadoEntrega) {
         try {
             Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
@@ -203,6 +215,9 @@ public class ServicioRutas {
         }
     }
 
+    /**
+     * Finaliza una ruta en proceso y libera al vehículo y al conductor.
+     */
     public boolean finalizarRuta(String codigoRuta) {
         try {
             Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
@@ -229,6 +244,9 @@ public class ServicioRutas {
         }
     }
 
+    /**
+     * Obtiene el detalle de entrega de cada paquete asignado a una ruta.
+     */
     public List<RutaPaquetes> obtenerDetalleEntregas(String codigoRuta) {
         try {
             Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
@@ -247,6 +265,9 @@ public class ServicioRutas {
         }
     }
 
+    /**
+     * Lista las rutas actualmente activas (en proceso).
+     */
     public List<Rutas> listarRutasActivas() {
         try {
             List<Rutas> rutas = daoRutas.obtenerActivas();
@@ -258,6 +279,9 @@ public class ServicioRutas {
         }
     }
 
+    /**
+     * Completa una ruta con sus datos de vehículo, conductor y paquetes.
+     */
     private void hidratarRuta(Rutas ruta) {
         ruta.setVehiculo(servicioVehiculos.obtenerVehiculoPorId(ruta.getVehiculoId()));
         ruta.setConductor(servicioConductores.obtenerConductorPorId(ruta.getConductorId()));

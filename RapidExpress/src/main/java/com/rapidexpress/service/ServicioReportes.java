@@ -1,11 +1,14 @@
-package modelo.servicios;
+package com.rapidexpress.service;
 
-import modelo.persistencia.IDaoReportes;
+import com.rapidexpress.model.dao.IDaoReportes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Servicio de generación de reportes del sistema.
+ */
 public class ServicioReportes {
 
     private final IDaoReportes daoReportes;
@@ -14,6 +17,9 @@ public class ServicioReportes {
         this.daoReportes = daoReportes;
     }
 
+    /**
+     * Obtiene el reporte de entregas de un conductor en un rango de fechas.
+     */
     public List<String> obtenerReporteEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) {
         try {
             return daoReportes.obtenerEntregasPorConductor(identificacionConductor, fechaInicio, fechaFin);
@@ -23,6 +29,9 @@ public class ServicioReportes {
         }
     }
 
+    /**
+     * Obtiene el historial de rutas en las que ha participado un vehículo.
+     */
     public List<String> obtenerHistorialRutasVehiculo(String placa) {
         try {
             return daoReportes.obtenerHistorialVehiculo(placa);
