@@ -14,11 +14,11 @@ import modelo.servicios.ServicioVehiculos;
  * registrando todas las operaciones en la auditoría del sistema.
  *
  */
-public class VehiculoController {
+public class ControladorVehiculos {
     private static final String USUARIO_SISTEMA = "SISTEMA";
     private ServicioVehiculos servicioVehiculos;
     private ControladorAuditoria controladorAuditoria;
-    public VehiculoController(ServicioVehiculos servicioVehiculos, ControladorAuditoria controladorAuditoria) {
+    public ControladorVehiculos(ServicioVehiculos servicioVehiculos, ControladorAuditoria controladorAuditoria) {
         this.servicioVehiculos = servicioVehiculos;
         this.controladorAuditoria = controladorAuditoria;
     }
@@ -30,10 +30,14 @@ public class VehiculoController {
      * @param modelo Modelo del vehículo
      * @param anio Año de fabricación
      * @param capacidadMaxima Capacidad máxima de carga en kg
+     * @return true si el vehículo se registró correctamente
      */
-    public void registrarVehiculo(String placa, String marca, String modelo, int anio, double capacidadMaxima){
-        servicioVehiculos.registrarVehiculo(placa, marca, modelo, anio, capacidadMaxima);
-        controladorAuditoria.registrar("VEHICULOS", "CREACION", "Vehículo registrado: " + placa, USUARIO_SISTEMA);
+    public boolean registrarVehiculo(String placa, String marca, String modelo, int anio, double capacidadMaxima){
+        boolean exito = servicioVehiculos.registrarVehiculo(placa, marca, modelo, anio, capacidadMaxima);
+        if (exito) {
+            controladorAuditoria.registrar("VEHICULOS", "CREACION", "Vehículo registrado: " + placa, USUARIO_SISTEMA);
+        }
+        return exito;
     }
     /**
      * Actualiza los datos de un vehículo existente.
@@ -43,10 +47,14 @@ public class VehiculoController {
      * @param modelo Modelo del vehículo
      * @param anio Año de fabricación
      * @param capacidadMaxima Capacidad máxima de carga en kg
+     * @return true si los datos se actualizaron correctamente
      */
-    public void actualizarDatosVehiculo(String placa, String marca, String modelo, int anio, double capacidadMaxima){
-        servicioVehiculos.actualizarDatosVehiculo(placa, marca, modelo, anio, capacidadMaxima);
-        controladorAuditoria.registrar("VEHICULOS", "ACTUALIZACION", "Vehículo actualizado: " + placa, USUARIO_SISTEMA);
+    public boolean actualizarDatosVehiculo(String placa, String marca, String modelo, int anio, double capacidadMaxima){
+        boolean exito = servicioVehiculos.actualizarDatosVehiculo(placa, marca, modelo, anio, capacidadMaxima);
+        if (exito) {
+            controladorAuditoria.registrar("VEHICULOS", "ACTUALIZACION", "Vehículo actualizado: " + placa, USUARIO_SISTEMA);
+        }
+        return exito;
     }
     /**
      * Lista todos los vehículos registrados en el sistema.
@@ -70,10 +78,14 @@ public class VehiculoController {
      *
      * @param placa Placa del vehículo
      * @param nuevoEstado Nuevo estado del vehículo
+     * @return true si el estado se actualizó correctamente
      */
-    public void actualizarEstadoVehiculo(String placa, EstadoVehiculo nuevoEstado){
-        servicioVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
-        controladorAuditoria.registrar("VEHICULOS", "CAMBIO ESTADO", "Vehículo " + placa + " cambió a estado " + nuevoEstado, USUARIO_SISTEMA);
+    public boolean actualizarEstadoVehiculo(String placa, EstadoVehiculo nuevoEstado){
+        boolean exito = servicioVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
+        if (exito) {
+            controladorAuditoria.registrar("VEHICULOS", "CAMBIO ESTADO", "Vehículo " + placa + " cambió a estado " + nuevoEstado, USUARIO_SISTEMA);
+        }
+        return exito;
     }
 
 }

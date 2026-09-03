@@ -22,14 +22,14 @@ public class Paquetes {
     private String direccionOrigen;
     private String direccionDestino;
     private int remitenteId;
-    private int destinatatioId;
+    private int destinatarioId;
     private EstadoPaquete estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
     private Clientes remitente;
     private Clientes destinatario;
 
-    public Paquetes(int id, String codigoSeguimiento, String descripcionContenido, double pesoKg, double largoCm, double anchoCm, double altoCm, double volumenM3, String direccionOrigen, String direccionDestino, int remitenteId, int destinatatioId, EstadoPaquete estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Paquetes(int id, String codigoSeguimiento, String descripcionContenido, double pesoKg, double largoCm, double anchoCm, double altoCm, double volumenM3, String direccionOrigen, String direccionDestino, int remitenteId, int destinatarioId, EstadoPaquete estado, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
         this.codigoSeguimiento = codigoSeguimiento;
         this.descripcionContenido = descripcionContenido;
@@ -41,7 +41,7 @@ public class Paquetes {
         this.direccionOrigen = direccionOrigen;
         this.direccionDestino = direccionDestino;
         this.remitenteId = remitenteId;
-        this.destinatatioId = destinatatioId;
+        this.destinatarioId = destinatarioId;
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
@@ -127,8 +127,8 @@ public class Paquetes {
         return remitenteId;
     }
 
-    public int getDestinatatioId() {
-        return destinatatioId;
+    public int getDestinatarioId() {
+        return destinatarioId;
     }
 
     public LocalDateTime getFechaCreacion() {
@@ -182,8 +182,8 @@ public class Paquetes {
         this.remitenteId = remitenteId;
     }
 
-    public void setDestinatatioId(int destinatatioId) {
-        this.destinatatioId = destinatatioId;
+    public void setDestinatarioId(int destinatarioId) {
+        this.destinatarioId = destinatarioId;
     }
 
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
@@ -207,7 +207,7 @@ public class Paquetes {
                 ", direccionOrigen='" + direccionOrigen + '\'' +
                 ", direccionDestino='" + direccionDestino + '\'' +
                 ", remitenteId=" + remitenteId +
-                ", destinatatioId=" + destinatatioId +
+                ", destinatarioId=" + destinatarioId +
                 ", estado=" + estado +
                 ", fechaCreacion=" + fechaCreacion +
                 ", fechaActualizacion=" + fechaActualizacion +
