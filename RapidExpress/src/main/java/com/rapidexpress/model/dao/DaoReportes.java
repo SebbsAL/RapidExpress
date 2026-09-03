@@ -1,0 +1,60 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.rapidexpress.model.dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+/**
+ * Implementación JDBC de las consultas para reportes operativos.
+ *
+ * @author sergi
+ */
+public class DaoReportes implements IDaoReportes {
+    /** Obtiene las entregas de un conductor en un rango de fechas. */
+    public List<String> obtenerEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) throws SQLException {
+        String sql = "SELECT * FROM vista_reporte_entregas_conductor WHERE numero_identificacion = ? AND fecha_ruta BETWEEN ? AND ?";
+        List<String> lineas = new ArrayList<>();
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, identificacionConductor);
+            ps.setDate(2, new java.sql.Date(fechaInicio.getTime()));
+            ps.setDate(3, new java.sql.Date(fechaFin.getTime()));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lineas.add("Conductor: " + rs.getString("conductor_nombre") +
+                                       " | Ruta: " + rs.getString("codigo_ruta") +
+                                       " | Paquete: " + rs.getString("codigo_seguimiento") +
+                                       " | Estado: " + rs.getString("estado_entrega"));
+                }
+            }
+        }
+        return lineas;
+    }
+
+    /** Obtiene el historial de rutas de un vehículo. */
+    public List<String> obtenerHistorialVehiculo(String placa) throws SQLException {
+        String sql = "SELECT * FROM vista_historial_vehiculos WHERE placa = ?";
+        List<String> lineas = new ArrayList<>();
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, placa);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    lineas.add("Placa: " + rs.getString("placa"));
+                    lineas.add("Rutas Realizadas: " + rs.getInt("total_rutas_realizadas"));
+                    lineas.add("KG Transportados: " + rs.getDouble("total_kg_transportados"));
+                    lineas.add("Mantenimientos: " + rs.getInt("total_mantenimientos_registrados"));
+                }
+            }
+        }
+        return lineas;
+    }
+}
