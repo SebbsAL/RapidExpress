@@ -1,4 +1,4 @@
-package modelo.clases;
+package com.rapidexpress.model.entity;
 
 /**
  * Superclase comun para toda entidad de dominio identificada por un id
