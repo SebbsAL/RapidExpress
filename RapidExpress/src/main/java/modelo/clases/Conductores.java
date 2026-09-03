@@ -8,10 +8,9 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author sergi
+ * @author sergi 
  */
-public class Conductores {
-    private int id;
+public class Conductores extends EntidadBase {
     private String numeroIdentificacion;
     private String nombreCompleto;
     private String tipoLicencia;
@@ -44,10 +43,6 @@ public class Conductores {
         this.estado = estado;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getNumeroIdentificacion() {
         return numeroIdentificacion;
     }
@@ -76,10 +71,6 @@ public class Conductores {
         return fechaActualizacion;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setNumeroIdentificacion(String numeroIdentificacion) {
         this.numeroIdentificacion = numeroIdentificacion;
     }

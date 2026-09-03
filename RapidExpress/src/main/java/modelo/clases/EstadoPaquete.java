@@ -1,7 +1,7 @@
 package modelo.clases;
 
 /**
- * Estados del ciclo de vida de un paquete. Compartido por {@link Paquetes}
+ * Estados del ciclo de vida de un paquete. Compartido por {@link Paquetes} 
  * y {@link HistorialPaquetes} (antes eran dos enums idénticos duplicados).
  */
 public enum EstadoPaquete {

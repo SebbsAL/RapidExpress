@@ -7,7 +7,7 @@ package vistas;
 /**
  * Menu principal del sistema RapidExpress
  * Punto de entrada para la interfaz de consola
- * @author Sebastian
+ * @author Sebastian 
  */
 public class MenuPrincipal {
     private VistaVehiculos vistaVehiculos;
@@ -77,6 +77,9 @@ public class MenuPrincipal {
         try {
             MenuPrincipal menu = new MenuPrincipal();
             menu.mostrarMenuPrincipal();
+        } catch (java.util.NoSuchElementException | IllegalStateException e) {
+            System.out.println("\nEntrada no disponible. Cerrando el sistema.");
+            System.out.println("Hasta pronto.\n");
         } catch (Exception e) {
             System.out.println("\n[ERROR] Error critico al iniciar el sistema:");
             System.out.println("   " + e.getMessage());

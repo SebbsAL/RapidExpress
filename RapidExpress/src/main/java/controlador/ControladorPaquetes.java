@@ -50,7 +50,7 @@ public class ControladorPaquetes {
     /**
      * Consulta la trazabilidad completa de un paquete
      * @param codigoSeguimiento Código de tracking del paquete
-     * @return Lista de eventos del historial del paquete
+     * @return Lista de eventos del historial del paquete 
      */
     public List<HistorialPaquetes> consultarTrazabilidadPaquete(String codigoSeguimiento) {
         return servicioPaquetes.consultarTrazabilidadPaquete(codigoSeguimiento);

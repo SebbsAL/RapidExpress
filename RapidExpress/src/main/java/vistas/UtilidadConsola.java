@@ -6,7 +6,7 @@ package vistas;
 import java.util.Scanner;
 /**
  * Utilidad para manejo de entrada por consola
- * @author Sebastian
+ * @author Sebastian 
  */
 public class UtilidadConsola {
     private static final Scanner scanner = new Scanner(System.in);

@@ -7,12 +7,11 @@ package modelo.clases;
 import java.time.LocalDateTime;
 
 /**
- *
+ * 
  * @author sergi
  */
-public class Vehiculos {
-    
-    private int id;
+public class Vehiculos extends EntidadBase {
+
     private String placa;
     private String marca;
     private String modelo;
@@ -37,10 +36,6 @@ public class Vehiculos {
     public Vehiculos() {
     }
     
-    public int getId() {
-        return id;
-    }
-
     public String getPlaca() {
         return placa;
     }
@@ -69,10 +64,6 @@ public class Vehiculos {
         this.estado = estado;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setPlaca(String placa) {
         this.placa = placa;
     }
