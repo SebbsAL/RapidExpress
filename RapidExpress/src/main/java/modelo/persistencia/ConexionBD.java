@@ -16,7 +16,7 @@ import java.util.Properties;
 
 /**
  * Conexión a la base de datos. La URL, usuario y contraseña se leen del
- * archivo "db.properties" en el directorio de trabajo (mismo nivel que
+ * archivo "db.properties" en el directorio de trabajo (mismo nivel que 
  * pom.xml); si una clave no está presente se usa un valor por defecto para
  * desarrollo local. Así no quedan credenciales en el código fuente.
  * "db.properties" nunca debe subirse al repositorio (ver .gitignore);
@@ -45,20 +45,10 @@ public abstract class ConexionBD {
         return propiedades;
     }
 
-    public static Connection con = null;
-
-    public static Connection MySQLConnection() {
-        con = null;
-        try {
-            con = DriverManager.getConnection(url, user, password);
-
-            if (con != null) {
-                DatabaseMetaData meta = con.getMetaData();
-                System.out.println("Base de datos conectada: " + meta.getDriverName());
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error al conectar la BD: " + ex.getMessage());
-        }
+    public static Connection MySQLConnection() throws SQLException {
+        Connection con = DriverManager.getConnection(url, user, password);
+        DatabaseMetaData meta = con.getMetaData();
+        System.out.println("Base de datos conectada: " + meta.getDriverName());
         return con;
     }
 }

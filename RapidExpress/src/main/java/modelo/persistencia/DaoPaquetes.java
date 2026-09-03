@@ -16,8 +16,8 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoPaquetes {
-    public void insertar(Paquetes paquete) {
+public class DaoPaquetes implements IDaoPaquetes {
+    public void insertar(Paquetes paquete) throws SQLException {
         String sql = "INSERT INTO paquetes (codigo_seguimiento, descripcion_contenido, peso_kg, largo_cm, ancho_cm, alto_cm, volumen_m3, direccion_origen, direccion_destino, remitente_id, destinatario_id, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -31,27 +31,23 @@ public class DaoPaquetes {
             ps.setString(8, paquete.getDireccionOrigen());
             ps.setString(9, paquete.getDireccionDestino());
             ps.setInt(10, paquete.getRemitenteId());
-            ps.setInt(11, paquete.getDestinatatioId()); // Nombre de tu clase (con typo original)
+            ps.setInt(11, paquete.getDestinatarioId());
             ps.setString(12, paquete.getEstado().name());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al insertar paquete: " + e.getMessage());
         }
     }
 
-    public void actualizarEstado(String codigoSeguimiento, EstadoPaquete nuevoEstado) {
+    public void actualizarEstado(String codigoSeguimiento, EstadoPaquete nuevoEstado) throws SQLException {
         String sql = "UPDATE paquetes SET estado=? WHERE codigo_seguimiento=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nuevoEstado.name());
             ps.setString(2, codigoSeguimiento);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar estado del paquete: " + e.getMessage());
         }
     }
 
-    public Paquetes obtenerPorTracking(String codigoSeguimiento) {
+    public Paquetes obtenerPorTracking(String codigoSeguimiento) throws SQLException {
         String sql = "SELECT * FROM paquetes WHERE codigo_seguimiento=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -59,13 +55,11 @@ public class DaoPaquetes {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearPaquete(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener paquete: " + e.getMessage());
         }
         return null;
     }
 
-    public Paquetes obtenerPorId(int id) {
+    public Paquetes obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM paquetes WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -73,13 +67,11 @@ public class DaoPaquetes {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearPaquete(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener paquete: " + e.getMessage());
         }
         return null;
     }
 
-    public List<Paquetes> obtenerPorEstado(String estado) {
+    public List<Paquetes> obtenerPorEstado(String estado) throws SQLException {
         String sql = "SELECT * FROM paquetes WHERE estado=?";
         List<Paquetes> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -88,13 +80,11 @@ public class DaoPaquetes {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) lista.add(mapearPaquete(rs));
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener paquetes por estado: " + e.getMessage());
         }
         return lista;
     }
 
-    public List<Paquetes> obtenerPorRuta(int rutaId) {
+    public List<Paquetes> obtenerPorRuta(int rutaId) throws SQLException {
         String sql = "SELECT p.* FROM paquetes p JOIN ruta_paquetes rp ON p.id = rp.paquete_id WHERE rp.ruta_id=? ORDER BY rp.orden_entrega";
         List<Paquetes> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -103,8 +93,6 @@ public class DaoPaquetes {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) lista.add(mapearPaquete(rs));
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener paquetes de la ruta: " + e.getMessage());
         }
         return lista;
     }
@@ -122,12 +110,10 @@ public class DaoPaquetes {
         p.setDireccionOrigen(rs.getString("direccion_origen"));
         p.setDireccionDestino(rs.getString("direccion_destino"));
         p.setRemitenteId(rs.getInt("remitente_id"));
-        
-        // Uso de nombre idéntico a la clase
-        p.setDestinatatioId(rs.getInt("destinatario_id")); 
-        
+        p.setDestinatarioId(rs.getInt("destinatario_id"));
+
         p.setEstado(EstadoPaquete.valueOf(rs.getString("estado")));
-        
+
         if (rs.getTimestamp("fecha_creacion") != null) {
             p.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
         }
@@ -139,7 +125,7 @@ public class DaoPaquetes {
 
     // --- Métodos de Historial (historial_paquetes) ---
 
-    public void registrarHistorial(HistorialPaquetes historial) {
+    public void registrarHistorial(HistorialPaquetes historial) throws SQLException {
         String sql = "INSERT INTO historial_paquetes (paquete_id, estado, descripcion_evento, ubicacion) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -148,12 +134,10 @@ public class DaoPaquetes {
             ps.setString(3, historial.getDescripcionEvento());
             ps.setString(4, historial.getUbicacion());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al registrar historial: " + e.getMessage());
         }
     }
 
-    public List<HistorialPaquetes> obtenerHistorial(String codigoSeguimiento) {
+    public List<HistorialPaquetes> obtenerHistorial(String codigoSeguimiento) throws SQLException {
         String sql = "SELECT h.* FROM historial_paquetes h JOIN paquetes p ON h.paquete_id = p.id WHERE p.codigo_seguimiento=? ORDER BY h.fecha_registro DESC";
         List<HistorialPaquetes> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -168,14 +152,11 @@ public class DaoPaquetes {
                     h.setDescripcionEvento(rs.getString("descripcion_evento"));
                     h.setUbicacion(rs.getString("ubicacion"));
                     if (rs.getTimestamp("fecha_registro") != null) {
-                        // En tu clase no existe setter para fechaRegistro, deberás agregarlo si deseas poblarlo aquí
-                        // h.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
+                        h.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
                     }
                     lista.add(h);
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener historial: " + e.getMessage());
         }
         return lista;
     }

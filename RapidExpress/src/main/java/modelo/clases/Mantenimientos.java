@@ -9,10 +9,9 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author sergi
+ * @author sergi 
  */
-public class Mantenimientos {
-    private int id;
+public class Mantenimientos extends EntidadBase {
     private int vehiculoId;
     private String tipoMantenimiento;
     private String descripcion;
@@ -39,10 +38,6 @@ public class Mantenimientos {
     public Mantenimientos() {
     }
     
-    public int getId() {
-        return id;
-    }
-
     public int getVehiculoId() {
         return vehiculoId;
     }
@@ -83,10 +78,6 @@ public class Mantenimientos {
         return fechaCreacion;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setVehiculoId(int vehiculoId) {
         this.vehiculoId = vehiculoId;
     }

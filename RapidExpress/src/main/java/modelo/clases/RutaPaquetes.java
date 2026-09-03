@@ -7,11 +7,10 @@ package modelo.clases;
 import java.time.LocalDateTime;
 
 /**
- *
+ * 
  * @author sergi
  */
-public class RutaPaquetes {
-   private int id;
+public class RutaPaquetes extends EntidadBase {
     private int rutaId;
     private int paqueteId;
     private int ordenEntrega;
@@ -33,14 +32,6 @@ public class RutaPaquetes {
     }
 
     public RutaPaquetes() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getRutaId() {
