@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
-import controlador.ControladorPaquetes;
-import controlador.ControladorAuditoria;
-import modelo.clases.Paquetes;
-import modelo.clases.HistorialPaquetes;
-import modelo.persistencia.DaoClientes;
-import modelo.persistencia.DaoPaquetes;
-import modelo.servicios.ServicioAuditoria;
-import modelo.servicios.ServicioClientes;
-import modelo.servicios.ServicioPaquetes;
+package com.rapidexpress.view;
+import com.rapidexpress.controller.ControladorPaquetes;
+import com.rapidexpress.controller.ControladorAuditoria;
+import com.rapidexpress.model.entity.Paquetes;
+import com.rapidexpress.model.entity.HistorialPaquetes;
+import com.rapidexpress.model.dao.DaoClientes;
+import com.rapidexpress.model.dao.DaoPaquetes;
+import com.rapidexpress.service.ServicioAuditoria;
+import com.rapidexpress.service.ServicioClientes;
+import com.rapidexpress.service.ServicioPaquetes;
 import java.util.List;
 /**
  * Vista para gestion de paquetes

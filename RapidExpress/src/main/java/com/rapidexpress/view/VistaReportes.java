@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
+package com.rapidexpress.view;
 
-import controlador.ControladorReportes;
-import controlador.ControladorAuditoria;
-import modelo.persistencia.DaoReportes;
-import modelo.servicios.ServicioReportes;
+import com.rapidexpress.controller.ControladorReportes;
+import com.rapidexpress.controller.ControladorAuditoria;
+import com.rapidexpress.model.dao.DaoReportes;
+import com.rapidexpress.service.ServicioReportes;
 import java.util.Date;
 import java.util.List;
 /**
