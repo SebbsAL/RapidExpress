@@ -1,7 +1,7 @@
 # 🚚 Sistema de Gestión de Flotas y Rutas "RapidExpress"
 
-[![Java Version](https://img.shields.io/badge/Java-17%20LTS-orange.svg)](https://www.oracle.com/java/)
-[![Maven](https://img.shields.io/badge/Apache%20Maven-3.8+-C71A36.svg)](https://maven.apache.org/)
+[![Java Version](https://img.shields.io/badge/Java-21%20LTS-orange.svg)](https://www.oracle.com/java/)
+[![Maven](https://img.shields.io/badge/Apache%20Maven-4+-C71A36.svg)](https://maven.apache.org/)
 [![Database](https://img.shields.io/badge/MySQL-8.0+-4479A1.svg)](https://www.mysql.com/)
 [![Architecture](https://img.shields.io/badge/Architecture-MVC%20%2B%20DAO%20%2B%20Services-blue.svg)](#arquitectura-del-sistema)
 [![Interface](https://img.shields.io/badge/Interface-CLI%20Terminal-2ea44f.svg)](GUIA_DE_USO.md)
