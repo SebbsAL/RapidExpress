@@ -1,4 +1,4 @@
-package modelo.clases;
+package com.rapidexpress.model.entity;
 
 /**
  * Estados del ciclo de vida de un paquete. Compartido por {@link Paquetes} 

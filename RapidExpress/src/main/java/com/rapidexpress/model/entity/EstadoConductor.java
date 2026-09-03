@@ -1,4 +1,4 @@
-package modelo.clases;
+package com.rapidexpress.model.entity;
 
 /**
  * Estados posibles de un conductor. 
