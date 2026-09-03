@@ -3,20 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.rapidexpress.view;
+import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorRutas;
-import com.rapidexpress.controller.ControladorAuditoria;
 import com.rapidexpress.model.entity.Rutas;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.RutaPaquetes;
 import com.rapidexpress.model.entity.EstadoEntrega;
-import com.rapidexpress.model.dao.DaoConductores;
-import com.rapidexpress.model.dao.DaoPaquetes;
-import com.rapidexpress.model.dao.DaoRutas;
-import com.rapidexpress.model.dao.DaoVehiculos;
-import com.rapidexpress.service.ServicioAuditoria;
-import com.rapidexpress.service.ServicioConductores;
-import com.rapidexpress.service.ServicioRutas;
-import com.rapidexpress.service.ServicioVehiculos;
 import java.util.List;
 /**
  * Vista para gestion de rutas
@@ -25,14 +17,8 @@ import java.util.List;
 public class VistaRutas {
     private ControladorRutas controladorRutas;
     public VistaRutas() {
-        DaoRutas daoRutas = new DaoRutas();
-        DaoPaquetes daoPaquetes = new DaoPaquetes();
-        ServicioVehiculos servicioVehiculos = new ServicioVehiculos(new DaoVehiculos());
-        ServicioConductores servicioConductores = new ServicioConductores(new DaoConductores(), servicioVehiculos);
-        ServicioAuditoria servicioAuditoria = new ServicioAuditoria();
-        ServicioRutas servicioRutas = new ServicioRutas(daoRutas, servicioVehiculos, servicioConductores, daoPaquetes, servicioAuditoria);
-        ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
-        this.controladorRutas = new ControladorRutas(servicioRutas, controladorAuditoria);
+        // Fabrica ya conecto Dao -> Servicio -> Controlador; solo se pide el controlador.
+        this.controladorRutas = Fabrica.crearControladorRutas();
     }
     /**
      * Muestra el menu principal de rutas

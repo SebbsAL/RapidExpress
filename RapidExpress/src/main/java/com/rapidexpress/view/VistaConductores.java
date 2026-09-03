@@ -3,14 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.rapidexpress.view;
+import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorConductores;
-import com.rapidexpress.controller.ControladorAuditoria;
 import com.rapidexpress.model.entity.Conductores;
 import com.rapidexpress.model.entity.EstadoConductor;
-import com.rapidexpress.model.dao.DaoConductores;
-import com.rapidexpress.model.dao.DaoVehiculos;
-import com.rapidexpress.service.ServicioConductores;
-import com.rapidexpress.service.ServicioVehiculos;
 import java.util.List;
 /**
  * Vista para gestion de conductores
@@ -19,11 +15,8 @@ import java.util.List;
 public class VistaConductores {
     private ControladorConductores controladorConductores;
     public VistaConductores() {
-        DaoConductores daoConductores = new DaoConductores();
-        ServicioVehiculos servicioVehiculos = new ServicioVehiculos(new DaoVehiculos());
-        ServicioConductores servicioConductores = new ServicioConductores(daoConductores, servicioVehiculos);
-        ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
-        this.controladorConductores = new ControladorConductores(servicioConductores, controladorAuditoria);
+        // Fabrica ya conecto Dao -> Servicio -> Controlador; solo se pide el controlador.
+        this.controladorConductores = Fabrica.crearControladorConductores();
     }
     /**
      * Muestra el menu principal de conductores

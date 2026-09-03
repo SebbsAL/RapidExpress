@@ -3,15 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.rapidexpress.view;
+import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorPaquetes;
-import com.rapidexpress.controller.ControladorAuditoria;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.HistorialPaquetes;
-import com.rapidexpress.model.dao.DaoClientes;
-import com.rapidexpress.model.dao.DaoPaquetes;
-import com.rapidexpress.service.ServicioAuditoria;
-import com.rapidexpress.service.ServicioClientes;
-import com.rapidexpress.service.ServicioPaquetes;
 import java.util.List;
 /**
  * Vista para gestion de paquetes
@@ -20,12 +15,8 @@ import java.util.List;
 public class VistaPaquetes {
     private ControladorPaquetes controladorPaquetes;
     public VistaPaquetes() {
-        DaoPaquetes daoPaquetes = new DaoPaquetes();
-        ServicioAuditoria servicioAuditoria = new ServicioAuditoria();
-        ServicioClientes servicioClientes = new ServicioClientes(new DaoClientes());
-        ServicioPaquetes servicioPaquetes = new ServicioPaquetes(daoPaquetes, servicioAuditoria, servicioClientes);
-        ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
-        this.controladorPaquetes = new ControladorPaquetes(servicioPaquetes, controladorAuditoria);
+        // Fabrica ya conecto Dao -> Servicio -> Controlador; solo se pide el controlador.
+        this.controladorPaquetes = Fabrica.crearControladorPaquetes();
     }
     /**
      * Muestra el menu principal de paquetes
