@@ -1,5 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo.persistencia;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author sergi
  */
 public class DaoRutas {
-    public int insertar(Rutas ruta) {
+    public int insertar(Rutas ruta) throws SQLException {
         String sql = "INSERT INTO rutas (codigo_ruta, vehiculo_id, conductor_id, fecha_ruta, peso_total_asignado_kg, estado) VALUES (?, ?, ?, ?, ?, ?)";
         int idGenerado = 0;
         try (Connection con = ConexionBD.MySQLConnection();
@@ -31,17 +31,15 @@ public class DaoRutas {
             ps.setDouble(5, ruta.getPesoTotalAsignadoKg());
             ps.setString(6, ruta.getEstado().name());
             ps.executeUpdate();
-            
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) idGenerado = rs.getInt(1);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al insertar ruta: " + e.getMessage());
         }
         return idGenerado;
     }
 
-    public void actualizarEstado(String codigoRuta, EstadoRuta nuevoEstado) {
+    public void actualizarEstado(String codigoRuta, EstadoRuta nuevoEstado) throws SQLException {
         String sql = "UPDATE rutas SET estado=?, ";
         if (nuevoEstado == EstadoRuta.EN_PROCESO) {
             sql += "hora_inicio=CURRENT_TIME ";
@@ -57,12 +55,10 @@ public class DaoRutas {
             ps.setString(1, nuevoEstado.name());
             ps.setString(2, codigoRuta);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar estado de ruta: " + e.getMessage());
         }
     }
 
-    public List<Rutas> obtenerActivas() {
+    public List<Rutas> obtenerActivas() throws SQLException {
         String sql = "SELECT * FROM rutas WHERE estado IN ('PLANIFICADA', 'EN_PROCESO')";
         List<Rutas> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -71,13 +67,11 @@ public class DaoRutas {
             while (rs.next()) {
                 lista.add(mapearRuta(rs));
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener rutas activas: " + e.getMessage());
         }
         return lista;
     }
 
-    public Rutas obtenerPorCodigo(String codigoRuta) {
+    public Rutas obtenerPorCodigo(String codigoRuta) throws SQLException {
         String sql = "SELECT * FROM rutas WHERE codigo_ruta=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -85,8 +79,6 @@ public class DaoRutas {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearRuta(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener ruta: " + e.getMessage());
         }
         return null;
     }
@@ -117,7 +109,7 @@ public class DaoRutas {
 
     // --- Métodos de Ruta Paquetes (ruta_paquetes) ---
 
-    public void asociarPaqueteARuta(int rutaId, int paqueteId, int ordenEntrega) {
+    public void asociarPaqueteARuta(int rutaId, int paqueteId, int ordenEntrega) throws SQLException {
         String sql = "INSERT INTO ruta_paquetes (ruta_id, paquete_id, orden_entrega, estado_entrega) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -126,12 +118,10 @@ public class DaoRutas {
             ps.setInt(3, ordenEntrega);
             ps.setString(4, EstadoEntrega.PENDIENTE.name());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al asociar paquete a ruta: " + e.getMessage());
         }
     }
 
-    public void actualizarEstadoEntregaPaquete(String codigoRuta, String codigoSeguimiento, EstadoEntrega estadoEntrega, String observaciones) {
+    public boolean actualizarEstadoEntregaPaquete(String codigoRuta, String codigoSeguimiento, EstadoEntrega estadoEntrega, String observaciones) throws SQLException {
         String sql = "UPDATE ruta_paquetes rp " +
                      "JOIN rutas r ON rp.ruta_id = r.id " +
                      "JOIN paquetes p ON rp.paquete_id = p.id " +
@@ -143,13 +133,11 @@ public class DaoRutas {
             ps.setString(2, observaciones);
             ps.setString(3, codigoRuta);
             ps.setString(4, codigoSeguimiento);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error actualizando entrega de paquete: " + e.getMessage());
+            return ps.executeUpdate() > 0;
         }
     }
 
-    public List<RutaPaquetes> obtenerDetalleEntregas(int rutaId) {
+    public List<RutaPaquetes> obtenerDetalleEntregas(int rutaId) throws SQLException {
         String sql = "SELECT * FROM ruta_paquetes WHERE ruta_id=? ORDER BY orden_entrega";
         List<RutaPaquetes> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -173,8 +161,6 @@ public class DaoRutas {
                     lista.add(rp);
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener detalle de entregas: " + e.getMessage());
         }
         return lista;
     }

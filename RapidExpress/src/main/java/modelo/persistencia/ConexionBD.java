@@ -45,20 +45,10 @@ public abstract class ConexionBD {
         return propiedades;
     }
 
-    public static Connection con = null;
-
-    public static Connection MySQLConnection() {
-        con = null;
-        try {
-            con = DriverManager.getConnection(url, user, password);
-
-            if (con != null) {
-                DatabaseMetaData meta = con.getMetaData();
-                System.out.println("Base de datos conectada: " + meta.getDriverName());
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error al conectar la BD: " + ex.getMessage());
-        }
+    public static Connection MySQLConnection() throws SQLException {
+        Connection con = DriverManager.getConnection(url, user, password);
+        DatabaseMetaData meta = con.getMetaData();
+        System.out.println("Base de datos conectada: " + meta.getDriverName());
         return con;
     }
 }
