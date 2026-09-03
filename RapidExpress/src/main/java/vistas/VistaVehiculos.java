@@ -1,9 +1,9 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template 
  */
 package vistas;
-import controlador.VehiculoController;
+import controlador.ControladorVehiculos;
 import controlador.ControladorAuditoria;
 import controlador.ControladorMantenimientos;
 import modelo.clases.Mantenimientos;
@@ -21,14 +21,14 @@ import java.util.List;
  * @author Sebastian
  */
 public class VistaVehiculos {
-    private VehiculoController controladorVehiculos;
+    private ControladorVehiculos controladorVehiculos;
     private ControladorMantenimientos controladorMantenimientos;
     public VistaVehiculos() {
         // Necesitamos instanciar las dependencias del controlador
         modelo.persistencia.DaoVehiculos daoVehiculos = new modelo.persistencia.DaoVehiculos();
         modelo.servicios.ServicioVehiculos servicioVehiculos = new modelo.servicios.ServicioVehiculos(daoVehiculos);
         ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
-        this.controladorVehiculos = new VehiculoController(servicioVehiculos, controladorAuditoria);
+        this.controladorVehiculos = new ControladorVehiculos(servicioVehiculos, controladorAuditoria);
         DaoMantenimientos daoMantenimientos = new DaoMantenimientos();
         ServicioMantenimientos servicioMantenimientos = new ServicioMantenimientos(daoMantenimientos, servicioVehiculos);
         this.controladorMantenimientos = new ControladorMantenimientos(servicioMantenimientos, controladorAuditoria);

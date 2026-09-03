@@ -1,5 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo.persistencia;
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  *
- * @author sergi
+ * @author sergi 
  */
-public class DaoVehiculos {
-    public void insertar(Vehiculos vehiculo) {
+public class DaoVehiculos implements IDaoVehiculos {
+    public void insertar(Vehiculos vehiculo) throws SQLException {
         String sql = "INSERT INTO vehiculos (placa, marca, modelo, anio_fabricacion, capacidad_maxima_kg, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -27,12 +27,10 @@ public class DaoVehiculos {
             ps.setDouble(5, vehiculo.getCapacidad_maxima_kg());
             ps.setString(6, vehiculo.getEstado().name());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al insertar vehiculo: " + e.getMessage());
         }
     }
-    
-    public void actualizar(Vehiculos vehiculo) {
+
+    public boolean actualizar(Vehiculos vehiculo) throws SQLException {
         String sql = "UPDATE vehiculos SET marca=?, modelo=?, anio_fabricacion=?, capacidad_maxima_kg=? WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -41,25 +39,21 @@ public class DaoVehiculos {
             ps.setInt(3, vehiculo.getAnio_fabricacion());
             ps.setDouble(4, vehiculo.getCapacidad_maxima_kg());
             ps.setString(5, vehiculo.getPlaca());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar vehiculo: " + e.getMessage());
+            return ps.executeUpdate() > 0;
         }
     }
-    
-    public void actualizarEstado(String placa, EstadoVehiculo nuevoEstado) {
+
+    public void actualizarEstado(String placa, EstadoVehiculo nuevoEstado) throws SQLException {
         String sql = "UPDATE vehiculos SET estado=? WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nuevoEstado.name());
             ps.setString(2, placa);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar estado del vehiculo: " + e.getMessage());
         }
     }
 
-    public Vehiculos obtenerPorPlaca(String placa) {
+    public Vehiculos obtenerPorPlaca(String placa) throws SQLException {
         String sql = "SELECT * FROM vehiculos WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -67,14 +61,12 @@ public class DaoVehiculos {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearVehiculo(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener vehiculo: " + e.getMessage());
         }
         return null;
     }
-    
 
-    public Vehiculos obtenerPorId(int id) {
+
+    public Vehiculos obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM vehiculos WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -82,21 +74,17 @@ public class DaoVehiculos {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearVehiculo(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener vehiculo: " + e.getMessage());
         }
         return null;
     }
 
-    public List<Vehiculos> obtenerTodos() {
+    public List<Vehiculos> obtenerTodos() throws SQLException {
         String sql = "SELECT * FROM vehiculos";
         List<Vehiculos> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) lista.add(mapearVehiculo(rs));
-        } catch (SQLException e) {
-            System.err.println("Error al obtener todos los vehiculos: " + e.getMessage());
         }
         return lista;
     }
@@ -109,7 +97,7 @@ public class DaoVehiculos {
         v.setMarca(rs.getString("marca"));
         v.setModelo(rs.getString("modelo"));
         v.setAnio_fabricacion(rs.getInt("anio_fabricacion"));
-        v.setCapacidad_maxima_kg(rs.getInt("capacidad_maxima_kg")); // Basado en tu clase actual
+        v.setCapacidad_maxima_kg(rs.getDouble("capacidad_maxima_kg"));
         v.setEstado(EstadoVehiculo.valueOf(rs.getString("estado")));
         if (rs.getTimestamp("fecha_creacion") != null) {
             v.setFecha_creacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());

@@ -1,10 +1,11 @@
 package modelo.clases;
 
 /**
- * Estados posibles de un conductor.
+ * Estados posibles de un conductor. 
  */
 public enum EstadoConductor {
     ACTIVO,
     DE_VACACIONES,
-    INACTIVO
+    INACTIVO,
+    EN_RUTA
 }

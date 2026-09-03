@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template 
  */
 package modelo.persistencia;
 import modelo.clases.Clientes;
@@ -13,8 +13,8 @@ import java.sql.SQLException;
  *
  * @author sergi
  */
-public class DaoClientes {
-    public Clientes insertar(Clientes cliente) {
+public class DaoClientes implements IDaoClientes {
+    public Clientes insertar(Clientes cliente) throws SQLException {
         String sql = "INSERT INTO clientes (numero_identificacion, nombre_completo, telefono, email, direccion, ciudad) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -33,13 +33,11 @@ public class DaoClientes {
                     return cliente;
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error al insertar cliente: " + e.getMessage());
         }
         return null;
     }
 
-    public Clientes obtenerPorIdentificacion(String identificacion) {
+    public Clientes obtenerPorIdentificacion(String identificacion) throws SQLException {
         String sql = "SELECT * FROM clientes WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -47,13 +45,11 @@ public class DaoClientes {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearCliente(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener cliente: " + e.getMessage());
         }
         return null;
     }
 
-    public Clientes obtenerPorId(int id) {
+    public Clientes obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM clientes WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -61,8 +57,6 @@ public class DaoClientes {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearCliente(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener cliente: " + e.getMessage());
         }
         return null;
     }

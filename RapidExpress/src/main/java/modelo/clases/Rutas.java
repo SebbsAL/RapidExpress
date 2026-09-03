@@ -7,14 +7,14 @@ package modelo.clases;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author sergi
  */
-public class Rutas {
-    private int id;
+public class Rutas extends EntidadBase {
     private String codigoRuta;
     private int vehiculoId;
     private int conductorId;
@@ -54,10 +54,6 @@ public class Rutas {
 
     public void setEstado(EstadoRuta estado) {
         this.estado = estado;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getCodigoRuta() {
@@ -100,10 +96,6 @@ public class Rutas {
         return fechaActualizacion;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setCodigoRuta(String codigoRuta) {
         this.codigoRuta = codigoRuta;
     }
@@ -161,11 +153,11 @@ public class Rutas {
     }
 
     public List<Paquetes> getPaquetes() {
-        return paquetes;
+        return paquetes == null ? null : new ArrayList<>(paquetes);
     }
 
     public void setPaquetes(List<Paquetes> paquetes) {
-        this.paquetes = paquetes;
+        this.paquetes = paquetes == null ? null : new ArrayList<>(paquetes);
     }
 
     @Override

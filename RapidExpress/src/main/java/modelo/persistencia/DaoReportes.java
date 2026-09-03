@@ -1,5 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo.persistencia;
@@ -14,8 +14,8 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoReportes {
-    public List<String> obtenerEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) {
+public class DaoReportes implements IDaoReportes {
+    public List<String> obtenerEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) throws SQLException {
         String sql = "SELECT * FROM vista_reporte_entregas_conductor WHERE numero_identificacion = ? AND fecha_ruta BETWEEN ? AND ?";
         List<String> lineas = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -32,13 +32,11 @@ public class DaoReportes {
                                        " | Estado: " + rs.getString("estado_entrega"));
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error generando reporte: " + e.getMessage());
         }
         return lineas;
     }
 
-    public List<String> obtenerHistorialVehiculo(String placa) {
+    public List<String> obtenerHistorialVehiculo(String placa) throws SQLException {
         String sql = "SELECT * FROM vista_historial_vehiculos WHERE placa = ?";
         List<String> lineas = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
@@ -53,8 +51,6 @@ public class DaoReportes {
                     lineas.add("Mantenimientos: " + rs.getInt("total_mantenimientos_registrados"));
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error consultando historial de vehiculos: " + e.getMessage());
         }
         return lineas;
     }
