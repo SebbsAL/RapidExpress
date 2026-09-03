@@ -170,17 +170,32 @@ public class ServicioRutas {
                 System.err.println("Error: El paquete " + codigoSeguimiento + " no esta asignado a la ruta " + codigoRuta);
                 return false;
             }
-            EstadoPaquete nuevoEstadoPaquete = (estadoEntrega == EstadoEntrega.DEVUELTO) ? EstadoPaquete.DEVUELTO : EstadoPaquete.ENTREGADO;
-            daoPaquetes.actualizarEstado(codigoSeguimiento, nuevoEstadoPaquete);
+
+            // ENTREGADO/DEVUELTO cierran el ciclo del paquete; una INCIDENCIA no cambia
+            // su estado general (sigue EN_TRANSITO hasta que se resuelva).
+            EstadoPaquete nuevoEstadoPaquete = switch (estadoEntrega) {
+                case ENTREGADO -> EstadoPaquete.ENTREGADO;
+                case DEVUELTO -> EstadoPaquete.DEVUELTO;
+                default -> null;
+            };
+            if (nuevoEstadoPaquete != null) {
+                daoPaquetes.actualizarEstado(codigoSeguimiento, nuevoEstadoPaquete);
+            }
+
+            String ubicacion = switch (estadoEntrega) {
+                case ENTREGADO -> paquete.getDireccionDestino();
+                case DEVUELTO -> "Retorno a Bodega";
+                default -> "En Transito - Incidencia reportada";
+            };
 
             HistorialPaquetes h = new HistorialPaquetes();
             h.setPaqueteId(paquete.getId());
-            h.setEstado(nuevoEstadoPaquete);
-            h.setDescripcionEvento(observaciones);
-            h.setUbicacion(paquete.getDireccionDestino());
+            h.setEstado(nuevoEstadoPaquete != null ? nuevoEstadoPaquete : paquete.getEstado());
+            h.setDescripcionEvento(estadoEntrega == EstadoEntrega.INCIDENCIA ? "Incidencia en la entrega: " + observaciones : observaciones);
+            h.setUbicacion(ubicacion);
             daoPaquetes.registrarHistorial(h);
 
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + nuevoEstadoPaquete, "SISTEMA");
+            servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + estadoEntrega, "SISTEMA");
             return true;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al registrar la entrega: " + e.getMessage());
