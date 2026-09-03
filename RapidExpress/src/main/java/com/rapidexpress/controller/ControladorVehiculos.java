@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controlador;
+package com.rapidexpress.controller;
 
 import java.util.List;
-import modelo.clases.Vehiculos;
-import modelo.clases.EstadoVehiculo;
-import modelo.servicios.ServicioVehiculos;
+import com.rapidexpress.model.entity.Vehiculos;
+import com.rapidexpress.model.entity.EstadoVehiculo;
+import com.rapidexpress.service.ServicioVehiculos;
 /**
  * Controlador para la gestión de vehículos del sistema.
  * Maneja las operaciones CRUD y cambios de estado de vehículos, 
