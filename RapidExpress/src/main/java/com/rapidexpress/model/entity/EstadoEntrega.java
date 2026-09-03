@@ -1,4 +1,4 @@
-package modelo.clases;
+package com.rapidexpress.model.entity;
 
 /**
  * Estados de entrega de un paquete dentro de una ruta (tabla ruta_paquetes).
