@@ -29,8 +29,8 @@ La plataforma resuelve las ineficiencias de los procesos manuales y hojas de cá
 
 | Componente / Capa | Tecnología / Herramienta | Versión / Detalle |
 | :--- | :--- | :--- |
-| **Lenguaje de Programación** | Java SE Development Kit (JDK) | **Java 17 LTS** |
-| **Gestor de Construcción** | Apache Maven | **3.8+** |
+| **Lenguaje de Programación** | Java SE Development Kit (JDK) | **Java 21 LTS** |
+| **Gestor de Construcción** | Apache Maven | **4+** |
 | **Motor de Base de Datos** | MySQL Server (Cloud / RDS / Local) | **8.0+** |
 | **Conector de Datos** | MySQL Connector/J | **26.7.0** (`com.mysql:mysql-connector-j`) |
 | **Patrón de Arquitectura** | MVC + Capa de Servicios + DAO | Capas desacopladas (Presentación, Controladores, Servicios, DAOs) |
