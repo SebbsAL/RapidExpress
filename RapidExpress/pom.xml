@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <exec.mainClass>vistas.MenuPrincipal</exec.mainClass>
+        <exec.mainClass>com.rapidexpress.view.MenuPrincipal</exec.mainClass>
     </properties>
     <dependencies>
             <!-- Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
