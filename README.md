@@ -60,12 +60,12 @@ El almacenamiento y persistencia del sistema está respaldado por una base de da
 
 A continuación se muestra el diagrama relacional de la base de datos:
 
-![Diagrama Entidad-Relación](dabase/diagrama_entidad_relacion.png)
+![Diagrama Entidad-Relación](database/diagrama_entidad_relacion.png)
 
 > [!NOTE]
-> Los scripts completos para regenerar la base de datos se encuentran en la carpeta `dabase/`:
-> - [1_schema_ddl.sql](dabase/1_schema_ddl.sql): Definición de tablas, índices y restricciones.
-> - [2_data_dml.sql](dabase/2_data_dml.sql): Inserción de al menos 20 registros sembrados por entidad principal para pruebas funcionales inmediatas.
+> Los scripts completos para regenerar la base de datos se encuentran en la carpeta `database/`:
+> - [1_schema_ddl.sql](database/1_schema_ddl.sql): Definición de tablas, índices y restricciones.
+> - [2_data_dml.sql](database/2_data_dml.sql): Inserción de al menos 20 registros sembrados por entidad principal para pruebas funcionales inmediatas.
 
 ---
 
@@ -92,11 +92,11 @@ Puedes utilizar cualquier proveedor de base de datos MySQL en la nube (ej. **AWS
 2. **Ejecutar el Script DDL (Estructura)**:
    ```bash
    # Vía cliente mysql en consola:
-   mysql -h TU_HOST -P 3306 -u TU_USUARIO -p rapidexpress_db < dabase/1_schema_ddl.sql
+   mysql -h TU_HOST -P 3306 -u TU_USUARIO -p rapidexpress_db < database/1_schema_ddl.sql
    ```
 3. **Ejecutar el Script DML (Datos Semilla)**:
    ```bash
-   mysql -h TU_HOST -P 3306 -u TU_USUARIO -p rapidexpress_db < dabase/2_data_dml.sql
+   mysql -h TU_HOST -P 3306 -u TU_USUARIO -p rapidexpress_db < database/2_data_dml.sql
    ```
 
 ### 3. Configurar las Credenciales de Conexión (`db.properties`)
@@ -142,10 +142,10 @@ mvn exec:java
 mvn clean package
 
 # 2. Ejecutar con las dependencias incluidas (Windows PowerShell/CMD)
-java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" vistas.MenuPrincipal
+java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" com.rapidexpress.view.MenuPrincipal
 
 # En Linux / macOS:
-java -cp "target/RapidExpress-1.0-SNAPSHOT.jar:target/dependency/*" vistas.MenuPrincipal
+java -cp "target/RapidExpress-1.0-SNAPSHOT.jar:target/dependency/*" com.rapidexpress.view.MenuPrincipal
 ```
 
 ---
