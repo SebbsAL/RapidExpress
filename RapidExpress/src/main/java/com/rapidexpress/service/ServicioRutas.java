@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Servicio de gestión de rutas de entrega.
@@ -65,14 +66,20 @@ public class ServicioRutas {
         }
 
         try {
-            List<Paquetes> paquetesSeleccionados = new ArrayList<>();
-            for (String codigo : codigosPaquetes) {
-                Paquetes p = daoPaquetes.obtenerPorTracking(codigo);
-                if (p == null) {
-                    System.err.println("Error: No se encontro el paquete con codigo " + codigo);
-                    return null;
-                }
-                paquetesSeleccionados.add(p);
+            // codigosPaquetes.stream()               -> abre un flujo funcional sobre la lista de codigos recibidos.
+            // .map(this::buscarPaqueteOReportarError) -> por cada codigo del flujo, llama al helper de abajo y lo
+            //                                            reemplaza por el Paquetes encontrado (o por null si no existe;
+            //                                            el helper ya imprime el error especifico de ese codigo).
+            // .collect(Collectors.toList())           -> junta todos los resultados del flujo en una List<Paquetes> nueva,
+            //                                            en el mismo orden en que se ingresaron los codigos.
+            List<Paquetes> paquetesSeleccionados = codigosPaquetes.stream()
+                    .map(this::buscarPaqueteOReportarError)
+                    .collect(Collectors.toList());
+
+            // Si algun codigo no se pudo resolver a un paquete real, paquetesSeleccionados quedo con un hueco (null)
+            // en esa posicion; en ese caso no se puede armar la ruta.
+            if (paquetesSeleccionados.contains(null)) {
+                return null;
             }
 
             double pesoTotal = paquetesSeleccionados.stream()
@@ -117,6 +124,29 @@ public class ServicioRutas {
             return codigoRuta;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al crear la hoja de ruta: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // Helper usado desde el stream de crearHojaDeRuta (via "this::buscarPaqueteOReportarError").
+    // Existe como metodo aparte, en vez de una llamada directa a daoPaquetes.obtenerPorTracking,
+    // porque ese metodo del DAO declara "throws SQLException" y una referencia a metodo usada en
+    // un stream no puede propagar excepciones checked: hay que atraparla aqui adentro.
+    private Paquetes buscarPaqueteOReportarError(String codigo) {
+        try {
+            // Le pide al DAO el paquete real correspondiente a ese codigo de seguimiento.
+            Paquetes p = daoPaquetes.obtenerPorTracking(codigo);
+            // Si no existe, se avisa aqui mismo cual codigo especifico fue el que fallo
+            // (el stream que llama a este metodo ya no sabe, por si solo, cual codigo era).
+            if (p == null) {
+                System.err.println("Error: No se encontro el paquete con codigo " + codigo);
+            }
+            // Devuelve el paquete encontrado, o null si no existia.
+            return p;
+        } catch (SQLException e) {
+            // Un error real de base de datos se reporta igual que un paquete no encontrado,
+            // para que el stream de crearHojaDeRuta lo detecte de la misma forma (con un null).
+            System.err.println("Error de base de datos al buscar el paquete " + codigo + ": " + e.getMessage());
             return null;
         }
     }
