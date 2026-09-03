@@ -16,7 +16,7 @@ import java.util.List;
  * @author sergi
  */
 public class DaoConductores {
-     public void insertar(Conductores conductor) {
+     public void insertar(Conductores conductor) throws SQLException {
         String sql = "INSERT INTO conductores (numero_identificacion, nombre_completo, tipo_licencia, telefono, email, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -27,12 +27,10 @@ public class DaoConductores {
             ps.setString(5, conductor.getEmail());
             ps.setString(6, conductor.getEstado().name());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al insertar conductor: " + e.getMessage());
         }
     }
 
-    public void actualizar(Conductores conductor) {
+    public boolean actualizar(Conductores conductor) throws SQLException {
         String sql = "UPDATE conductores SET nombre_completo=?, tipo_licencia=?, telefono=?, email=? WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -41,25 +39,21 @@ public class DaoConductores {
             ps.setString(3, conductor.getTelefono());
             ps.setString(4, conductor.getEmail());
             ps.setString(5, conductor.getNumeroIdentificacion());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar conductor: " + e.getMessage());
+            return ps.executeUpdate() > 0;
         }
     }
 
-    public void actualizarEstado(String identificacion, EstadoConductor nuevoEstado) {
+    public boolean actualizarEstado(String identificacion, EstadoConductor nuevoEstado) throws SQLException {
         String sql = "UPDATE conductores SET estado=? WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nuevoEstado.name());
             ps.setString(2, identificacion);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar estado del conductor: " + e.getMessage());
+            return ps.executeUpdate() > 0;
         }
     }
 
-    public Conductores obtenerPorIdentificacion(String identificacion) {
+    public Conductores obtenerPorIdentificacion(String identificacion) throws SQLException {
         String sql = "SELECT * FROM conductores WHERE numero_identificacion=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -67,13 +61,11 @@ public class DaoConductores {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearConductor(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener conductor: " + e.getMessage());
         }
         return null;
     }
 
-    public Conductores obtenerPorId(int id) {
+    public Conductores obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM conductores WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -81,21 +73,17 @@ public class DaoConductores {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapearConductor(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener conductor: " + e.getMessage());
         }
         return null;
     }
 
-    public List<Conductores> obtenerTodos() {
+    public List<Conductores> obtenerTodos() throws SQLException {
         String sql = "SELECT * FROM conductores";
         List<Conductores> lista = new ArrayList<>();
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) lista.add(mapearConductor(rs));
-        } catch (SQLException e) {
-            System.err.println("Error al obtener conductores: " + e.getMessage());
         }
         return lista;
     }
@@ -118,7 +106,7 @@ public class DaoConductores {
         return c;
     }
 
-    public boolean tieneAsignacionActiva(String identificacionConductor) {
+    public boolean tieneAsignacionActiva(String identificacionConductor) throws SQLException {
         String sql = "SELECT count(*) AS total FROM asignaciones_vehiculo_conductor a JOIN conductores c ON a.conductor_id = c.id WHERE c.numero_identificacion=? AND a.activo=1";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -126,21 +114,17 @@ public class DaoConductores {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getInt("total") > 0;
             }
-        } catch (SQLException e) {
-            System.err.println("Error validando asignacion: " + e.getMessage());
         }
         return false;
     }
 
-    public void registrarAsignacion(int idVehiculo, int idConductor) {
+    public void registrarAsignacion(int idVehiculo, int idConductor) throws SQLException {
         String sql = "INSERT INTO asignaciones_vehiculo_conductor (vehiculo_id, conductor_id, activo) VALUES (?, ?, 1)";
         try (Connection con = ConexionBD.MySQLConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idVehiculo);
             ps.setInt(2, idConductor);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al registrar asignacion: " + e.getMessage());
         }
     }
 }
