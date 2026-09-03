@@ -149,8 +149,23 @@ public class VistaRutas {
             System.out.println("  Resultado de la entrega:");
             System.out.println("   [1] Entregado");
             System.out.println("   [2] Devuelto");
+            System.out.println("   [3] Incidencia");
             int opcionResultado = UtilidadConsola.leerEntero("  Seleccione una opcion: ");
-            EstadoEntrega estadoEntrega = (opcionResultado == 2) ? EstadoEntrega.DEVUELTO : EstadoEntrega.ENTREGADO;
+            EstadoEntrega estadoEntrega;
+            switch (opcionResultado) {
+                case 1:
+                    estadoEntrega = EstadoEntrega.ENTREGADO;
+                    break;
+                case 2:
+                    estadoEntrega = EstadoEntrega.DEVUELTO;
+                    break;
+                case 3:
+                    estadoEntrega = EstadoEntrega.INCIDENCIA;
+                    break;
+                default:
+                    UtilidadConsola.mostrarError("Opcion no valida");
+                    return;
+            }
             String observaciones = UtilidadConsola.leerTexto("  Observaciones de la entrega (opcional): ");
             boolean exito = controladorRutas.registrarEntregaPaquete(codigoRuta, codigoSeguimiento, observaciones, estadoEntrega);
             if (exito) {

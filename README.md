@@ -17,7 +17,7 @@ La plataforma resuelve las ineficiencias de los procesos manuales y hojas de cá
 - **Gestión del Personal de Conducción:** Administración de conductores, control de categorías de licencias, estados contractuales (`ACTIVO`, `DE_VACACIONES`, `INACTIVO`) y asignaciones individuales a unidades motrices.
 - **Ciclo de Vida de Paquetes:** Admisión de encomiendas con generación automática de **Tracking ID único**, cálculo volumétrico y trazabilidad cronológica paso a paso vinculando remitentes y destinatarios.
 - **Planificación Inteligente de Hojas de Ruta:** Creación de rutas diarias asociando vehículo, conductor y paquetes, incorporando **validación automática contra sobrepeso** (suma de pesos vs. capacidad máxima del vehículo).
-- **Monitoreo Concurrente y Registro de Entregas:** Actualización de estados en ruta (`ENTREGADO` o `DEVUELTO`) y liberación automática de vehículos y choferes al finalizar el recorrido.
+- **Monitoreo Concurrente y Registro de Entregas:** Actualización de estados en ruta (`ENTREGADO`, `DEVUELTO` o `INCIDENCIA`) y liberación automática de vehículos y choferes al finalizar el recorrido.
 - **Auditoría y Reportes:** Trazabilidad forense persistente de operaciones críticas (`rapidexpress_audit.log`) y generación de estadísticas de productividad por conductor y vehículo.
 
 > [!TIP]
@@ -75,8 +75,8 @@ Sigue estos pasos detallados para clonar, configurar la base de datos en la nube
 
 ### 1. Clonar o Descargar el Repositorio
 ```bash
-git clone https://github.com/tu-usuario/rapidexpress.git
-cd rapidexpress
+git clone https://github.com/SebbsAL/RapidExpress.git
+cd RapidExpress
 ```
 
 ### 2. Configurar la Base de Datos en la Nube (o Local)
@@ -101,11 +101,11 @@ Puedes utilizar cualquier proveedor de base de datos MySQL en la nube (ej. **AWS
 
 ### 3. Configurar las Credenciales de Conexión (`db.properties`)
 
-El sistema implementa una arquitectura segura que no expone contraseñas en el código fuente. La clase `ConexionBD` lee las credenciales desde el archivo `db.properties` situado en el submódulo del proyecto (`RapidExpress/RapidExpress/`):
+El sistema implementa una arquitectura segura que no expone contraseñas en el código fuente. La clase `ConexionBD` lee las credenciales desde el archivo `db.properties` situado en la carpeta del proyecto Maven (`RapidExpress/`, junto al `pom.xml`):
 
-1. Dirígete a la carpeta del proyecto Maven:
+1. Dirígete a la carpeta del proyecto Maven (si ya estás en la raíz del repositorio tras el paso 1):
    ```bash
-   cd RapidExpress/RapidExpress
+   cd RapidExpress
    ```
 2. Copia la plantilla de propiedades:
    ```bash
@@ -131,7 +131,7 @@ Una vez configurada la base de datos y el archivo `db.properties`, compila y eje
 
 #### Modo A: Ejecución con Maven (Recomendado)
 ```bash
-# Dentro de RapidExpress/RapidExpress
+# Dentro de RapidExpress (la carpeta con el pom.xml)
 mvn clean compile
 mvn exec:java
 ```
