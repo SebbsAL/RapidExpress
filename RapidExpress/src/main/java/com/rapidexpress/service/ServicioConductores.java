@@ -1,14 +1,17 @@
-package modelo.servicios;
+package com.rapidexpress.service;
 
-import modelo.clases.Conductores;
-import modelo.clases.EstadoConductor;
-import modelo.clases.EstadoVehiculo;
-import modelo.persistencia.IDaoConductores;
+import com.rapidexpress.model.entity.Conductores;
+import com.rapidexpress.model.entity.EstadoConductor;
+import com.rapidexpress.model.entity.EstadoVehiculo;
+import com.rapidexpress.model.dao.IDaoConductores;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Servicio de gestión de conductores.
+ */
 public class ServicioConductores {
 
     private final IDaoConductores daoConductores;
@@ -19,6 +22,9 @@ public class ServicioConductores {
         this.servicioVehiculos = servicioVehiculos;
     }
 
+    /**
+     * Registra un nuevo conductor con estado inicial ACTIVO.
+     */
     public void registrarConductor(String identificacion, String nombre, String licencia, String telefono, String email) {
         Conductores c = new Conductores();
         c.setNumeroIdentificacion(identificacion);
@@ -36,6 +42,9 @@ public class ServicioConductores {
         }
     }
 
+    /**
+     * Actualiza los datos personales y de licencia de un conductor existente.
+     */
     public boolean actualizarDatosConductor(String identificacion, String nombre, String licencia, String telefono, String email) {
         Conductores c = new Conductores();
         c.setNumeroIdentificacion(identificacion);
@@ -58,6 +67,9 @@ public class ServicioConductores {
         }
     }
 
+    /**
+     * Lista todos los conductores registrados, ordenados por nombre.
+     */
     public List<Conductores> listarConductores() {
         try {
             List<Conductores> conductores = daoConductores.obtenerTodos();
@@ -69,6 +81,9 @@ public class ServicioConductores {
         }
     }
 
+    /**
+     * Busca un conductor por su número de identificación.
+     */
     public Conductores buscarConductorPorIdentificacion(String identificacion) {
         try {
             return daoConductores.obtenerPorIdentificacion(identificacion);
@@ -78,6 +93,9 @@ public class ServicioConductores {
         }
     }
 
+    /**
+     * Obtiene un conductor a partir de su identificador interno.
+     */
     public Conductores obtenerConductorPorId(int id) {
         try {
             return daoConductores.obtenerPorId(id);
@@ -87,6 +105,9 @@ public class ServicioConductores {
         }
     }
 
+    /**
+     * Actualiza el estado de un conductor (ACTIVO, EN_RUTA, INACTIVO, etc.).
+     */
     public boolean actualizarEstadoConductor(String identificacion, EstadoConductor nuevoEstado) {
         try {
             boolean actualizado = daoConductores.actualizarEstado(identificacion, nuevoEstado);
@@ -102,6 +123,9 @@ public class ServicioConductores {
         }
     }
 
+    /**
+     * Asigna un vehículo disponible a un conductor activo.
+     */
     public boolean asignarVehiculoAConductor(String identificacionConductor, String placaVehiculo) {
         Conductores conductor = buscarConductorPorIdentificacion(identificacionConductor);
         if (conductor == null || conductor.getEstado() != EstadoConductor.ACTIVO) {

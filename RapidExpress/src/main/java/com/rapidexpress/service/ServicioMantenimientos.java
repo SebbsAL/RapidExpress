@@ -1,15 +1,18 @@
-package modelo.servicios;
+package com.rapidexpress.service;
 
-import modelo.clases.Mantenimientos;
-import modelo.clases.EstadoMantenimiento;
-import modelo.clases.Vehiculos;
-import modelo.clases.EstadoVehiculo;
-import modelo.persistencia.IDaoMantenimientos;
+import com.rapidexpress.model.entity.Mantenimientos;
+import com.rapidexpress.model.entity.EstadoMantenimiento;
+import com.rapidexpress.model.entity.Vehiculos;
+import com.rapidexpress.model.entity.EstadoVehiculo;
+import com.rapidexpress.model.dao.IDaoMantenimientos;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio de gestión de mantenimientos de vehículos.
+ */
 public class ServicioMantenimientos {
 
     private final IDaoMantenimientos daoMantenimientos;
@@ -20,6 +23,9 @@ public class ServicioMantenimientos {
         this.servicioVehiculos = servicioVehiculos;
     }
 
+    /**
+     * Programa un mantenimiento para un vehículo DISPONIBLE.
+     */
     public boolean programarMantenimiento(String placaVehiculo, String tipo, String descripcion, LocalDate fechaProgramada) {
         Vehiculos v = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
         if (v == null) {
@@ -49,6 +55,10 @@ public class ServicioMantenimientos {
         }
     }
 
+    /**
+     * Actualiza estado, costo y observaciones de un mantenimiento; si queda
+     * COMPLETADO, libera el vehículo dejándolo DISPONIBLE.
+     */
     public boolean actualizarEstadoMantenimiento(int idMantenimiento, EstadoMantenimiento nuevoEstado, double costo, String observaciones, String placaVehiculo) {
         try {
             boolean actualizado = daoMantenimientos.actualizarEstadoYCostos(idMantenimiento, nuevoEstado, costo, observaciones);
@@ -68,6 +78,9 @@ public class ServicioMantenimientos {
         }
     }
 
+    /**
+     * Consulta el historial de mantenimientos de un vehículo.
+     */
     public List<Mantenimientos> consultarHistorialMantenimientosPorVehiculo(String placa) {
         try {
             return daoMantenimientos.obtenerPorPlacaVehiculo(placa);
