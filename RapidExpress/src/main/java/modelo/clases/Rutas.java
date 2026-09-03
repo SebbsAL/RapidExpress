@@ -7,6 +7,7 @@ package modelo.clases;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -161,11 +162,11 @@ public class Rutas {
     }
 
     public List<Paquetes> getPaquetes() {
-        return paquetes;
+        return paquetes == null ? null : new ArrayList<>(paquetes);
     }
 
     public void setPaquetes(List<Paquetes> paquetes) {
-        this.paquetes = paquetes;
+        this.paquetes = paquetes == null ? null : new ArrayList<>(paquetes);
     }
 
     @Override

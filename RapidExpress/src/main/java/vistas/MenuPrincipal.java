@@ -77,6 +77,9 @@ public class MenuPrincipal {
         try {
             MenuPrincipal menu = new MenuPrincipal();
             menu.mostrarMenuPrincipal();
+        } catch (java.util.NoSuchElementException | IllegalStateException e) {
+            System.out.println("\nEntrada no disponible. Cerrando el sistema.");
+            System.out.println("Hasta pronto.\n");
         } catch (Exception e) {
             System.out.println("\n[ERROR] Error critico al iniciar el sistema:");
             System.out.println("   " + e.getMessage());
