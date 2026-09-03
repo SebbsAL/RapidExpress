@@ -1,13 +1,16 @@
-package modelo.persistencia;
+package com.rapidexpress.model.dao;
 
-import modelo.clases.Clientes;
+import com.rapidexpress.model.entity.Clientes;
 import java.sql.SQLException;
 
 /**
  * Contrato de persistencia para Clientes.
  */
 public interface IDaoClientes {
+    /** Inserta un nuevo cliente. */
     Clientes insertar(Clientes cliente) throws SQLException;
+    /** Busca un cliente por su número de identificación. */
     Clientes obtenerPorIdentificacion(String identificacion) throws SQLException;
+    /** Busca un cliente por su id interno. */
     Clientes obtenerPorId(int id) throws SQLException;
 }
