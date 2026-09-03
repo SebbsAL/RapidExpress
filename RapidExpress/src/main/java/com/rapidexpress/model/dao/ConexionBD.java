@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.persistencia;
+package com.rapidexpress.model.dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,6 +31,7 @@ public abstract class ConexionBD {
     private static String user = PROPIEDADES.getProperty("DB_USER");
     private static String password = PROPIEDADES.getProperty("DB_PASSWORD");
 
+    /** Carga la configuración de conexión desde db.properties, si existe. */
     private static Properties cargarPropiedades() {
         Properties propiedades = new Properties();
         Path ruta = Path.of("db.properties");
@@ -45,6 +46,7 @@ public abstract class ConexionBD {
         return propiedades;
     }
 
+    /** Abre una nueva conexión a la base de datos MySQL. */
     public static Connection MySQLConnection() throws SQLException {
         Connection con = DriverManager.getConnection(url, user, password);
         DatabaseMetaData meta = con.getMetaData();

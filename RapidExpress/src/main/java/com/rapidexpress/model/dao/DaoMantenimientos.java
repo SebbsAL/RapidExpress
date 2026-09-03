@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.persistencia;
-import modelo.clases.Mantenimientos;
-import modelo.clases.EstadoMantenimiento;
+package com.rapidexpress.model.dao;
+import com.rapidexpress.model.entity.Mantenimientos;
+import com.rapidexpress.model.entity.EstadoMantenimiento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,11 +12,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 /**
+ * Implementación JDBC del acceso a datos de Mantenimientos.
  *
  * @author sergi
  */
 public class DaoMantenimientos implements IDaoMantenimientos {
-    
+
+     /** Inserta un nuevo mantenimiento. */
      public void insertar(Mantenimientos mantenimiento) throws SQLException {
         String sql = "INSERT INTO mantenimientos (vehiculo_id, tipo_mantenimiento, descripcion, fecha_programada, estado) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -30,6 +32,7 @@ public class DaoMantenimientos implements IDaoMantenimientos {
         }
     }
 
+    /** Actualiza el estado, costo y observaciones de un mantenimiento. */
     public boolean actualizarEstadoYCostos(int idMantenimiento, EstadoMantenimiento estado, double costo, String observaciones) throws SQLException {
         String sql = "UPDATE mantenimientos SET estado=?, costo=?, observaciones=?, fecha_realizacion=CURRENT_DATE WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -42,6 +45,7 @@ public class DaoMantenimientos implements IDaoMantenimientos {
         }
     }
 
+    /** Obtiene el historial de mantenimientos de un vehículo por su placa. */
     public List<Mantenimientos> obtenerPorPlacaVehiculo(String placa) throws SQLException {
         String sql = "SELECT m.* FROM mantenimientos m JOIN vehiculos v ON m.vehiculo_id = v.id WHERE v.placa=?";
         List<Mantenimientos> lista = new ArrayList<>();
