@@ -4,7 +4,7 @@ import modelo.clases.Mantenimientos;
 import modelo.clases.EstadoMantenimiento;
 import modelo.clases.Vehiculos;
 import modelo.clases.EstadoVehiculo;
-import modelo.persistencia.DaoMantenimientos;
+import modelo.persistencia.IDaoMantenimientos;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,10 +12,10 @@ import java.util.List;
 
 public class ServicioMantenimientos {
 
-    private final DaoMantenimientos daoMantenimientos;
+    private final IDaoMantenimientos daoMantenimientos;
     private final ServicioVehiculos servicioVehiculos;
 
-    public ServicioMantenimientos(DaoMantenimientos daoMantenimientos, ServicioVehiculos servicioVehiculos) {
+    public ServicioMantenimientos(IDaoMantenimientos daoMantenimientos, ServicioVehiculos servicioVehiculos) {
         this.daoMantenimientos = daoMantenimientos;
         this.servicioVehiculos = servicioVehiculos;
     }

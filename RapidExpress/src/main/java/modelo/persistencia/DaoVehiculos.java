@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author sergi 
  */
-public class DaoVehiculos {
+public class DaoVehiculos implements IDaoVehiculos {
     public void insertar(Vehiculos vehiculo) throws SQLException {
         String sql = "INSERT INTO vehiculos (placa, marca, modelo, anio_fabricacion, capacidad_maxima_kg, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();

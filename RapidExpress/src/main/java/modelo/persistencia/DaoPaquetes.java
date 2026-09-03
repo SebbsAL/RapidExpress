@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoPaquetes {
+public class DaoPaquetes implements IDaoPaquetes {
     public void insertar(Paquetes paquete) throws SQLException {
         String sql = "INSERT INTO paquetes (codigo_seguimiento, descripcion_contenido, peso_kg, largo_cm, ancho_cm, alto_cm, volumen_m3, direccion_origen, direccion_destino, remitente_id, destinatario_id, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();

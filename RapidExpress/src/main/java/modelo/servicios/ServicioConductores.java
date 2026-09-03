@@ -3,17 +3,18 @@ package modelo.servicios;
 import modelo.clases.Conductores;
 import modelo.clases.EstadoConductor;
 import modelo.clases.EstadoVehiculo;
-import modelo.persistencia.DaoConductores;
+import modelo.persistencia.IDaoConductores;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ServicioConductores {
 
-    private final DaoConductores daoConductores;
+    private final IDaoConductores daoConductores;
     private final ServicioVehiculos servicioVehiculos;
 
-    public ServicioConductores(DaoConductores daoConductores, ServicioVehiculos servicioVehiculos) {
+    public ServicioConductores(IDaoConductores daoConductores, ServicioVehiculos servicioVehiculos) {
         this.daoConductores = daoConductores;
         this.servicioVehiculos = servicioVehiculos;
     }
@@ -59,7 +60,9 @@ public class ServicioConductores {
 
     public List<Conductores> listarConductores() {
         try {
-            return daoConductores.obtenerTodos();
+            List<Conductores> conductores = daoConductores.obtenerTodos();
+            conductores.sort(Comparator.comparing(Conductores::getNombreCompleto));
+            return conductores;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al listar conductores: " + e.getMessage());
             return new ArrayList<>();

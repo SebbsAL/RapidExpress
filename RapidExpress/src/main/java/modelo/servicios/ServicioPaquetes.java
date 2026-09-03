@@ -4,7 +4,7 @@ import modelo.clases.Paquetes;
 import modelo.clases.EstadoPaquete;
 import modelo.clases.HistorialPaquetes;
 import modelo.clases.Clientes;
-import modelo.persistencia.DaoPaquetes;
+import modelo.persistencia.IDaoPaquetes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.UUID;
 
 public class ServicioPaquetes {
 
-    private final DaoPaquetes daoPaquetes;
+    private final IDaoPaquetes daoPaquetes;
     private final ServicioAuditoria servicioAuditoria;
     private final ServicioClientes servicioClientes;
 
-    public ServicioPaquetes(DaoPaquetes daoPaquetes, ServicioAuditoria servicioAuditoria, ServicioClientes servicioClientes) {
+    public ServicioPaquetes(IDaoPaquetes daoPaquetes, ServicioAuditoria servicioAuditoria, ServicioClientes servicioClientes) {
         this.daoPaquetes = daoPaquetes;
         this.servicioAuditoria = servicioAuditoria;
         this.servicioClientes = servicioClientes;
@@ -114,9 +114,7 @@ public class ServicioPaquetes {
     public List<Paquetes> listarPaquetesEnBodega() {
         try {
             List<Paquetes> paquetes = daoPaquetes.obtenerPorEstado("EN_BODEGA");
-            for (Paquetes paquete : paquetes) {
-                hidratarClientes(paquete);
-            }
+            paquetes.forEach(this::hidratarClientes);
             return paquetes;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al listar paquetes en bodega: " + e.getMessage());

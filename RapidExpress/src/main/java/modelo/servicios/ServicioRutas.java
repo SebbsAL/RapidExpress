@@ -10,8 +10,8 @@ import modelo.clases.Conductores;
 import modelo.clases.Vehiculos;
 import modelo.clases.EstadoVehiculo;
 import modelo.clases.HistorialPaquetes;
-import modelo.persistencia.DaoRutas;
-import modelo.persistencia.DaoPaquetes;
+import modelo.persistencia.IDaoRutas;
+import modelo.persistencia.IDaoPaquetes;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ import java.util.UUID;
 
 public class ServicioRutas {
 
-    private final DaoRutas daoRutas;
+    private final IDaoRutas daoRutas;
     private final ServicioVehiculos servicioVehiculos;
     private final ServicioConductores servicioConductores;
-    private final DaoPaquetes daoPaquetes;
+    private final IDaoPaquetes daoPaquetes;
     private final ServicioAuditoria servicioAuditoria;
 
-    public ServicioRutas(DaoRutas daoRutas, ServicioVehiculos servicioVehiculos, ServicioConductores servicioConductores,
-                       DaoPaquetes daoPaquetes, ServicioAuditoria servicioAuditoria) {
+    public ServicioRutas(IDaoRutas daoRutas, ServicioVehiculos servicioVehiculos, ServicioConductores servicioConductores,
+                       IDaoPaquetes daoPaquetes, ServicioAuditoria servicioAuditoria) {
         this.daoRutas = daoRutas;
         this.servicioVehiculos = servicioVehiculos;
         this.servicioConductores = servicioConductores;
@@ -60,10 +60,9 @@ public class ServicioRutas {
                 paquetesSeleccionados.add(p);
             }
 
-            double pesoTotal = 0;
-            for (Paquetes p : paquetesSeleccionados) {
-                pesoTotal += p.getPesoKg();
-            }
+            double pesoTotal = paquetesSeleccionados.stream()
+                    .mapToDouble(Paquetes::getPesoKg)
+                    .sum();
 
             if (pesoTotal > vehiculo.getCapacidad_maxima_kg()) {
                 System.err.println("Error: El peso total (" + pesoTotal + "kg) excede la capacidad del vehiculo (" + vehiculo.getCapacidad_maxima_kg() + "kg).");
@@ -224,15 +223,21 @@ public class ServicioRutas {
     public List<Rutas> listarRutasActivas() {
         try {
             List<Rutas> rutas = daoRutas.obtenerActivas();
-            for (Rutas ruta : rutas) {
-                ruta.setVehiculo(servicioVehiculos.obtenerVehiculoPorId(ruta.getVehiculoId()));
-                ruta.setConductor(servicioConductores.obtenerConductorPorId(ruta.getConductorId()));
-                ruta.setPaquetes(daoPaquetes.obtenerPorRuta(ruta.getId()));
-            }
+            rutas.forEach(this::hidratarRuta);
             return rutas;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al listar rutas activas: " + e.getMessage());
             return new ArrayList<>();
+        }
+    }
+
+    private void hidratarRuta(Rutas ruta) {
+        ruta.setVehiculo(servicioVehiculos.obtenerVehiculoPorId(ruta.getVehiculoId()));
+        ruta.setConductor(servicioConductores.obtenerConductorPorId(ruta.getConductorId()));
+        try {
+            ruta.setPaquetes(daoPaquetes.obtenerPorRuta(ruta.getId()));
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al obtener los paquetes de la ruta " + ruta.getCodigoRuta() + ": " + e.getMessage());
         }
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoConductores {
+public class DaoConductores implements IDaoConductores {
      public void insertar(Conductores conductor) throws SQLException {
         String sql = "INSERT INTO conductores (numero_identificacion, nombre_completo, tipo_licencia, telefono, email, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();

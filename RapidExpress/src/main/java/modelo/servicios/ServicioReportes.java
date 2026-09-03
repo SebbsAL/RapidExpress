@@ -1,6 +1,6 @@
 package modelo.servicios;
 
-import modelo.persistencia.DaoReportes;
+import modelo.persistencia.IDaoReportes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ServicioReportes {
 
-    private final DaoReportes daoReportes;
+    private final IDaoReportes daoReportes;
 
-    public ServicioReportes(DaoReportes daoReportes) {
+    public ServicioReportes(IDaoReportes daoReportes) {
         this.daoReportes = daoReportes;
     }
 
