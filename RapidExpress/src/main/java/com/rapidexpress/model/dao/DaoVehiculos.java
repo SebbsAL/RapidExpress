@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.persistencia;
-import modelo.clases.EstadoVehiculo;
-import modelo.clases.Vehiculos;
+package com.rapidexpress.model.dao;
+import com.rapidexpress.model.entity.EstadoVehiculo;
+import com.rapidexpress.model.entity.Vehiculos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +12,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 /**
+ * Implementación JDBC del acceso a datos de Vehiculos.
  *
- * @author sergi 
+ * @author sergi
  */
 public class DaoVehiculos implements IDaoVehiculos {
+    /** Inserta un nuevo vehículo. */
     public void insertar(Vehiculos vehiculo) throws SQLException {
         String sql = "INSERT INTO vehiculos (placa, marca, modelo, anio_fabricacion, capacidad_maxima_kg, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -30,6 +32,7 @@ public class DaoVehiculos implements IDaoVehiculos {
         }
     }
 
+    /** Actualiza los datos de un vehículo existente. */
     public boolean actualizar(Vehiculos vehiculo) throws SQLException {
         String sql = "UPDATE vehiculos SET marca=?, modelo=?, anio_fabricacion=?, capacidad_maxima_kg=? WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -43,6 +46,7 @@ public class DaoVehiculos implements IDaoVehiculos {
         }
     }
 
+    /** Actualiza el estado de un vehículo. */
     public void actualizarEstado(String placa, EstadoVehiculo nuevoEstado) throws SQLException {
         String sql = "UPDATE vehiculos SET estado=? WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -53,6 +57,7 @@ public class DaoVehiculos implements IDaoVehiculos {
         }
     }
 
+    /** Busca un vehículo por su placa. */
     public Vehiculos obtenerPorPlaca(String placa) throws SQLException {
         String sql = "SELECT * FROM vehiculos WHERE placa=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -66,6 +71,7 @@ public class DaoVehiculos implements IDaoVehiculos {
     }
 
 
+    /** Busca un vehículo por su id interno. */
     public Vehiculos obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM vehiculos WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -78,6 +84,7 @@ public class DaoVehiculos implements IDaoVehiculos {
         return null;
     }
 
+    /** Obtiene todos los vehículos registrados. */
     public List<Vehiculos> obtenerTodos() throws SQLException {
         String sql = "SELECT * FROM vehiculos";
         List<Vehiculos> lista = new ArrayList<>();
@@ -90,6 +97,7 @@ public class DaoVehiculos implements IDaoVehiculos {
     }
     
 
+    /** Convierte una fila del ResultSet en un objeto Vehiculos. */
     private Vehiculos mapearVehiculo(ResultSet rs) throws SQLException {
         Vehiculos v = new Vehiculos();
         v.setId(rs.getInt("id"));
