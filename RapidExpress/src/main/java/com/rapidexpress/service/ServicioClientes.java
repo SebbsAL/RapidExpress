@@ -1,9 +1,12 @@
-package modelo.servicios;
+package com.rapidexpress.service;
 
-import modelo.clases.Clientes;
-import modelo.persistencia.IDaoClientes;
+import com.rapidexpress.model.entity.Clientes;
+import com.rapidexpress.model.dao.IDaoClientes;
 import java.sql.SQLException;
 
+/**
+ * Servicio de gestión de clientes (registro y consulta).
+ */
 public class ServicioClientes {
 
     private final IDaoClientes daoClientes;
@@ -12,6 +15,9 @@ public class ServicioClientes {
         this.daoClientes = daoClientes;
     }
 
+    /**
+     * Registra un cliente nuevo o retorna el existente si ya está registrado.
+     */
     public Clientes registrarOObtenerCliente(String identificacion, String nombre, String telefono, String email, String direccion, String ciudad) {
         try {
             Clientes existente = daoClientes.obtenerPorIdentificacion(identificacion);
@@ -34,6 +40,9 @@ public class ServicioClientes {
         }
     }
 
+    /**
+     * Obtiene un cliente a partir de su identificador interno.
+     */
     public Clientes obtenerClientePorId(int id) {
         try {
             return daoClientes.obtenerPorId(id);
