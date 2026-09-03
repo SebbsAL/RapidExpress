@@ -2,21 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
-import controlador.ControladorRutas;
-import controlador.ControladorAuditoria;
-import modelo.clases.Rutas;
-import modelo.clases.Paquetes;
-import modelo.clases.RutaPaquetes;
-import modelo.clases.EstadoEntrega;
-import modelo.persistencia.DaoConductores;
-import modelo.persistencia.DaoPaquetes;
-import modelo.persistencia.DaoRutas;
-import modelo.persistencia.DaoVehiculos;
-import modelo.servicios.ServicioAuditoria;
-import modelo.servicios.ServicioConductores;
-import modelo.servicios.ServicioRutas;
-import modelo.servicios.ServicioVehiculos;
+package com.rapidexpress.view;
+import com.rapidexpress.controller.ControladorRutas;
+import com.rapidexpress.controller.ControladorAuditoria;
+import com.rapidexpress.model.entity.Rutas;
+import com.rapidexpress.model.entity.Paquetes;
+import com.rapidexpress.model.entity.RutaPaquetes;
+import com.rapidexpress.model.entity.EstadoEntrega;
+import com.rapidexpress.model.dao.DaoConductores;
+import com.rapidexpress.model.dao.DaoPaquetes;
+import com.rapidexpress.model.dao.DaoRutas;
+import com.rapidexpress.model.dao.DaoVehiculos;
+import com.rapidexpress.service.ServicioAuditoria;
+import com.rapidexpress.service.ServicioConductores;
+import com.rapidexpress.service.ServicioRutas;
+import com.rapidexpress.service.ServicioVehiculos;
 import java.util.List;
 /**
  * Vista para gestion de rutas

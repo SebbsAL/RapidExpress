@@ -2,16 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template 
  */
-package vistas;
-import controlador.ControladorVehiculos;
-import controlador.ControladorAuditoria;
-import controlador.ControladorMantenimientos;
-import modelo.clases.Mantenimientos;
-import modelo.clases.EstadoMantenimiento;
-import modelo.clases.Vehiculos;
-import modelo.clases.EstadoVehiculo;
-import modelo.persistencia.DaoMantenimientos;
-import modelo.servicios.ServicioMantenimientos;
+package com.rapidexpress.view;
+import com.rapidexpress.controller.ControladorVehiculos;
+import com.rapidexpress.controller.ControladorAuditoria;
+import com.rapidexpress.controller.ControladorMantenimientos;
+import com.rapidexpress.model.entity.Mantenimientos;
+import com.rapidexpress.model.entity.EstadoMantenimiento;
+import com.rapidexpress.model.entity.Vehiculos;
+import com.rapidexpress.model.entity.EstadoVehiculo;
+import com.rapidexpress.model.dao.DaoMantenimientos;
+import com.rapidexpress.model.dao.DaoVehiculos;
+import com.rapidexpress.service.ServicioMantenimientos;
+import com.rapidexpress.service.ServicioVehiculos;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -25,8 +27,8 @@ public class VistaVehiculos {
     private ControladorMantenimientos controladorMantenimientos;
     public VistaVehiculos() {
         // Necesitamos instanciar las dependencias del controlador
-        modelo.persistencia.DaoVehiculos daoVehiculos = new modelo.persistencia.DaoVehiculos();
-        modelo.servicios.ServicioVehiculos servicioVehiculos = new modelo.servicios.ServicioVehiculos(daoVehiculos);
+        DaoVehiculos daoVehiculos = new DaoVehiculos();
+        ServicioVehiculos servicioVehiculos = new ServicioVehiculos(daoVehiculos);
         ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
         this.controladorVehiculos = new ControladorVehiculos(servicioVehiculos, controladorAuditoria);
         DaoMantenimientos daoMantenimientos = new DaoMantenimientos();
