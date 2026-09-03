@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.persistencia;
-import modelo.clases.Paquetes;
-import modelo.clases.EstadoPaquete;
-import modelo.clases.HistorialPaquetes;
+package com.rapidexpress.model.dao;
+import com.rapidexpress.model.entity.Paquetes;
+import com.rapidexpress.model.entity.EstadoPaquete;
+import com.rapidexpress.model.entity.HistorialPaquetes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +13,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 /**
+ * Implementación JDBC del acceso a datos de Paquetes y su historial.
  *
  * @author sergi
  */
 public class DaoPaquetes implements IDaoPaquetes {
+    /** Inserta un nuevo paquete. */
     public void insertar(Paquetes paquete) throws SQLException {
         String sql = "INSERT INTO paquetes (codigo_seguimiento, descripcion_contenido, peso_kg, largo_cm, ancho_cm, alto_cm, volumen_m3, direccion_origen, direccion_destino, remitente_id, destinatario_id, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -37,6 +39,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         }
     }
 
+    /** Actualiza el estado de un paquete. */
     public void actualizarEstado(String codigoSeguimiento, EstadoPaquete nuevoEstado) throws SQLException {
         String sql = "UPDATE paquetes SET estado=? WHERE codigo_seguimiento=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -47,6 +50,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         }
     }
 
+    /** Busca un paquete por su código de seguimiento. */
     public Paquetes obtenerPorTracking(String codigoSeguimiento) throws SQLException {
         String sql = "SELECT * FROM paquetes WHERE codigo_seguimiento=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -59,6 +63,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         return null;
     }
 
+    /** Busca un paquete por su id interno. */
     public Paquetes obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM paquetes WHERE id=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -71,6 +76,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         return null;
     }
 
+    /** Obtiene los paquetes que están en un estado dado. */
     public List<Paquetes> obtenerPorEstado(String estado) throws SQLException {
         String sql = "SELECT * FROM paquetes WHERE estado=?";
         List<Paquetes> lista = new ArrayList<>();
@@ -84,6 +90,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         return lista;
     }
 
+    /** Obtiene los paquetes asignados a una ruta, en orden de entrega. */
     public List<Paquetes> obtenerPorRuta(int rutaId) throws SQLException {
         String sql = "SELECT p.* FROM paquetes p JOIN ruta_paquetes rp ON p.id = rp.paquete_id WHERE rp.ruta_id=? ORDER BY rp.orden_entrega";
         List<Paquetes> lista = new ArrayList<>();
@@ -97,6 +104,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         return lista;
     }
 
+    /** Convierte una fila del ResultSet en un objeto Paquetes. */
     private Paquetes mapearPaquete(ResultSet rs) throws SQLException {
         Paquetes p = new Paquetes();
         p.setId(rs.getInt("id"));
@@ -125,6 +133,7 @@ public class DaoPaquetes implements IDaoPaquetes {
 
     // --- Métodos de Historial (historial_paquetes) ---
 
+    /** Registra un evento en el historial de un paquete. */
     public void registrarHistorial(HistorialPaquetes historial) throws SQLException {
         String sql = "INSERT INTO historial_paquetes (paquete_id, estado, descripcion_evento, ubicacion) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -137,6 +146,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         }
     }
 
+    /** Obtiene el historial de eventos de un paquete, del más reciente al más antiguo. */
     public List<HistorialPaquetes> obtenerHistorial(String codigoSeguimiento) throws SQLException {
         String sql = "SELECT h.* FROM historial_paquetes h JOIN paquetes p ON h.paquete_id = p.id WHERE p.codigo_seguimiento=? ORDER BY h.fecha_registro DESC";
         List<HistorialPaquetes> lista = new ArrayList<>();

@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.persistencia;
-import modelo.clases.Rutas;
-import modelo.clases.EstadoRuta;
-import modelo.clases.RutaPaquetes;
-import modelo.clases.EstadoEntrega;
+package com.rapidexpress.model.dao;
+import com.rapidexpress.model.entity.Rutas;
+import com.rapidexpress.model.entity.EstadoRuta;
+import com.rapidexpress.model.entity.RutaPaquetes;
+import com.rapidexpress.model.entity.EstadoEntrega;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +15,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 /**
+ * Implementación JDBC del acceso a datos de Rutas y ruta_paquetes.
  *
  * @author sergi
  */
 public class DaoRutas implements IDaoRutas {
+    /** Inserta una nueva ruta y devuelve su id generado. */
     public int insertar(Rutas ruta) throws SQLException {
         String sql = "INSERT INTO rutas (codigo_ruta, vehiculo_id, conductor_id, fecha_ruta, peso_total_asignado_kg, estado) VALUES (?, ?, ?, ?, ?, ?)";
         int idGenerado = 0;
@@ -39,6 +41,7 @@ public class DaoRutas implements IDaoRutas {
         return idGenerado;
     }
 
+    /** Actualiza el estado de una ruta, registrando hora de inicio o fin según corresponda. */
     public void actualizarEstado(String codigoRuta, EstadoRuta nuevoEstado) throws SQLException {
         String sql = "UPDATE rutas SET estado=?, ";
         if (nuevoEstado == EstadoRuta.EN_PROCESO) {
@@ -58,6 +61,7 @@ public class DaoRutas implements IDaoRutas {
         }
     }
 
+    /** Obtiene las rutas en estado PLANIFICADA o EN_PROCESO. */
     public List<Rutas> obtenerActivas() throws SQLException {
         String sql = "SELECT * FROM rutas WHERE estado IN ('PLANIFICADA', 'EN_PROCESO')";
         List<Rutas> lista = new ArrayList<>();
@@ -71,6 +75,7 @@ public class DaoRutas implements IDaoRutas {
         return lista;
     }
 
+    /** Busca una ruta por su código. */
     public Rutas obtenerPorCodigo(String codigoRuta) throws SQLException {
         String sql = "SELECT * FROM rutas WHERE codigo_ruta=?";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -83,6 +88,7 @@ public class DaoRutas implements IDaoRutas {
         return null;
     }
 
+    /** Convierte una fila del ResultSet en un objeto Rutas. */
     private Rutas mapearRuta(ResultSet rs) throws SQLException {
         Rutas r = new Rutas();
         r.setId(rs.getInt("id"));
@@ -109,6 +115,7 @@ public class DaoRutas implements IDaoRutas {
 
     // --- Métodos de Ruta Paquetes (ruta_paquetes) ---
 
+    /** Asocia un paquete a una ruta con su orden de entrega, en estado PENDIENTE. */
     public void asociarPaqueteARuta(int rutaId, int paqueteId, int ordenEntrega) throws SQLException {
         String sql = "INSERT INTO ruta_paquetes (ruta_id, paquete_id, orden_entrega, estado_entrega) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();
@@ -121,6 +128,7 @@ public class DaoRutas implements IDaoRutas {
         }
     }
 
+    /** Actualiza el estado de entrega de un paquete dentro de una ruta. */
     public boolean actualizarEstadoEntregaPaquete(String codigoRuta, String codigoSeguimiento, EstadoEntrega estadoEntrega, String observaciones) throws SQLException {
         String sql = "UPDATE ruta_paquetes rp " +
                      "JOIN rutas r ON rp.ruta_id = r.id " +
@@ -137,6 +145,7 @@ public class DaoRutas implements IDaoRutas {
         }
     }
 
+    /** Obtiene el detalle de entregas de una ruta, en orden de entrega. */
     public List<RutaPaquetes> obtenerDetalleEntregas(int rutaId) throws SQLException {
         String sql = "SELECT * FROM ruta_paquetes WHERE ruta_id=? ORDER BY orden_entrega";
         List<RutaPaquetes> lista = new ArrayList<>();

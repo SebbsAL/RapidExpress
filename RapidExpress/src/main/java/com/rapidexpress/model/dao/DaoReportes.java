@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.persistencia;
+package com.rapidexpress.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
+ * Implementación JDBC de las consultas para reportes operativos.
  *
  * @author sergi
  */
 public class DaoReportes implements IDaoReportes {
+    /** Obtiene las entregas de un conductor en un rango de fechas. */
     public List<String> obtenerEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) throws SQLException {
         String sql = "SELECT * FROM vista_reporte_entregas_conductor WHERE numero_identificacion = ? AND fecha_ruta BETWEEN ? AND ?";
         List<String> lineas = new ArrayList<>();
@@ -36,6 +38,7 @@ public class DaoReportes implements IDaoReportes {
         return lineas;
     }
 
+    /** Obtiene el historial de rutas de un vehículo. */
     public List<String> obtenerHistorialVehiculo(String placa) throws SQLException {
         String sql = "SELECT * FROM vista_historial_vehiculos WHERE placa = ?";
         List<String> lineas = new ArrayList<>();
