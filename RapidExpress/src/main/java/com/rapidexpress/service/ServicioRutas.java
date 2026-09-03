@@ -66,15 +66,11 @@ public class ServicioRutas {
         }
 
         try {
-            // codigosPaquetes.stream()               -> abre un flujo funcional sobre la lista de codigos recibidos.
-            // .map(this::buscarPaqueteOReportarError) -> por cada codigo del flujo, llama al helper de abajo y lo
-            //                                            reemplaza por el Paquetes encontrado (o por null si no existe;
+            List<Paquetes> paquetesSeleccionados = codigosPaquetes.stream() // abre un flujo funcional sobre la lista de codigos recibidos.
+                    .map(this::buscarPaqueteOReportarError) // por cada codigo del flujo, llama al helper de abajo y lo reemplaza por el Paquetes encontrado (o por null si no existe;
             //                                            el helper ya imprime el error especifico de ese codigo).
-            // .collect(Collectors.toList())           -> junta todos los resultados del flujo en una List<Paquetes> nueva,
+                    .collect(Collectors.toList()); // junta todos los resultados del flujo en una List<Paquetes> nueva,
             //                                            en el mismo orden en que se ingresaron los codigos.
-            List<Paquetes> paquetesSeleccionados = codigosPaquetes.stream()
-                    .map(this::buscarPaqueteOReportarError)
-                    .collect(Collectors.toList());
 
             // Si algun codigo no se pudo resolver a un paquete real, paquetesSeleccionados quedo con un hueco (null)
             // en esa posicion; en ese caso no se puede armar la ruta.
