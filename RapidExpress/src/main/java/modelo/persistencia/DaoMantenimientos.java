@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoMantenimientos {
+public class DaoMantenimientos implements IDaoMantenimientos {
     
      public void insertar(Mantenimientos mantenimiento) throws SQLException {
         String sql = "INSERT INTO mantenimientos (vehiculo_id, tipo_mantenimiento, descripcion, fecha_programada, estado) VALUES (?, ?, ?, ?, ?)";

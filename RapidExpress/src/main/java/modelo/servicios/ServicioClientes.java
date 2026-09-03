@@ -1,14 +1,14 @@
 package modelo.servicios;
 
 import modelo.clases.Clientes;
-import modelo.persistencia.DaoClientes;
+import modelo.persistencia.IDaoClientes;
 import java.sql.SQLException;
 
 public class ServicioClientes {
 
-    private final DaoClientes daoClientes;
+    private final IDaoClientes daoClientes;
 
-    public ServicioClientes(DaoClientes daoClientes) {
+    public ServicioClientes(IDaoClientes daoClientes) {
         this.daoClientes = daoClientes;
     }
 

@@ -13,7 +13,7 @@ import java.sql.SQLException;
  *
  * @author sergi
  */
-public class DaoClientes {
+public class DaoClientes implements IDaoClientes {
     public Clientes insertar(Clientes cliente) throws SQLException {
         String sql = "INSERT INTO clientes (numero_identificacion, nombre_completo, telefono, email, direccion, ciudad) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.MySQLConnection();

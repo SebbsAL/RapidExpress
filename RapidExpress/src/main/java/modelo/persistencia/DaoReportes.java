@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoReportes {
+public class DaoReportes implements IDaoReportes {
     public List<String> obtenerEntregasPorConductor(String identificacionConductor, Date fechaInicio, Date fechaFin) throws SQLException {
         String sql = "SELECT * FROM vista_reporte_entregas_conductor WHERE numero_identificacion = ? AND fecha_ruta BETWEEN ? AND ?";
         List<String> lineas = new ArrayList<>();

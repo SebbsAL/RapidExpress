@@ -73,9 +73,7 @@ public class VistaReportes {
                 System.out.println("  Conductor: " + identificacionConductor);
                 System.out.println("  Periodo: " + fechaInicioStr + " a " + fechaFinStr);
                 System.out.println("---------------------------------------");
-                for (String linea : reporte) {
-                    System.out.println("  " + linea);
-                }
+                reporte.forEach(linea -> System.out.println("  " + linea));
                 System.out.println("---------------------------------------");
                 UtilidadConsola.mostrarExito("Reporte generado: " + reporte.size() + " registros");
             } else {
@@ -101,9 +99,7 @@ public class VistaReportes {
                 System.out.println("\n---------------------------------------");
                 System.out.println("   HISTORIAL DE RUTAS - VEHICULO: " + placa);
                 System.out.println("---------------------------------------");
-                for (String linea : reporte) {
-                    System.out.println("  " + linea);
-                }
+                reporte.forEach(linea -> System.out.println("  " + linea));
                 System.out.println("---------------------------------------");
                 UtilidadConsola.mostrarExito("Historial generado: " + reporte.size() + " rutas");
             } else {

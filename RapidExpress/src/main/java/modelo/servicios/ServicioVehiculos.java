@@ -2,16 +2,17 @@ package modelo.servicios;
 
 import modelo.clases.EstadoVehiculo;
 import modelo.clases.Vehiculos;
-import modelo.persistencia.DaoVehiculos;
+import modelo.persistencia.IDaoVehiculos;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ServicioVehiculos {
 
-    private final DaoVehiculos daoVehiculos;
+    private final IDaoVehiculos daoVehiculos;
 
-    public ServicioVehiculos(DaoVehiculos daoVehiculos) {
+    public ServicioVehiculos(IDaoVehiculos daoVehiculos) {
         this.daoVehiculos = daoVehiculos;
     }
 
@@ -71,7 +72,9 @@ public class ServicioVehiculos {
 
     public List<Vehiculos> listarVehiculos() {
         try {
-            return daoVehiculos.obtenerTodos();
+            List<Vehiculos> vehiculos = daoVehiculos.obtenerTodos();
+            vehiculos.sort(Comparator.comparing(Vehiculos::getPlaca));
+            return vehiculos;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al listar vehiculos: " + e.getMessage());
             return new ArrayList<>();

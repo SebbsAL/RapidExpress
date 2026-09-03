@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author sergi
  */
-public class DaoRutas {
+public class DaoRutas implements IDaoRutas {
     public int insertar(Rutas ruta) throws SQLException {
         String sql = "INSERT INTO rutas (codigo_ruta, vehiculo_id, conductor_id, fecha_ruta, peso_total_asignado_kg, estado) VALUES (?, ?, ?, ?, ?, ?)";
         int idGenerado = 0;
