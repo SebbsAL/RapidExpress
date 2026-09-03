@@ -5,6 +5,8 @@ import modelo.clases.EstadoPaquete;
 import modelo.clases.HistorialPaquetes;
 import modelo.clases.Clientes;
 import modelo.persistencia.DaoPaquetes;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +20,7 @@ public class ServicioPaquetes {
         this.daoPaquetes = daoPaquetes;
         this.servicioAuditoria = servicioAuditoria;
         this.servicioClientes = servicioClientes;
-    } 
+    }
 
     public String registrarPaquete(String descripcion, double peso, String dimensiones, String dirOrigen, String dirDestino,
                                    String remitenteIdentificacion, String remitenteNombre, String remitenteTelefono, String remitenteEmail, String remitenteDireccion, String remitenteCiudad,
@@ -60,43 +62,66 @@ public class ServicioPaquetes {
         paquete.setDireccionOrigen(dirOrigen);
         paquete.setDireccionDestino(dirDestino);
         paquete.setRemitenteId(remitente.getId());
-        paquete.setDestinatatioId(destinatario.getId()); // Typo idéntico al de tu clase
+        paquete.setDestinatarioId(destinatario.getId());
         paquete.setEstado(EstadoPaquete.EN_BODEGA);
 
-        daoPaquetes.insertar(paquete);
+        try {
+            daoPaquetes.insertar(paquete);
 
-        // Obtenemos el paquete insertado para conocer su ID autogenerado
-        Paquetes insertado = daoPaquetes.obtenerPorTracking(trackingId);
-        if(insertado != null) {
+            // Obtenemos el paquete insertado para confirmar que realmente se guardo y conocer su ID autogenerado
+            Paquetes insertado = daoPaquetes.obtenerPorTracking(trackingId);
+            if (insertado == null) {
+                System.err.println("Error: No se pudo registrar el paquete en la base de datos.");
+                return null;
+            }
+
             HistorialPaquetes historial = new HistorialPaquetes();
             historial.setPaqueteId(insertado.getId());
             historial.setEstado(EstadoPaquete.EN_BODEGA);
             historial.setDescripcionEvento("Ingresado en Bodega Central");
             historial.setUbicacion("Bodega Central");
             daoPaquetes.registrarHistorial(historial);
+
+            servicioAuditoria.registrarOperacionCritica("PAQUETES", "REGISTRO", "Paquete registrado: " + trackingId, "SISTEMA");
+
+            return trackingId;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al registrar paquete: " + e.getMessage());
+            return null;
         }
-
-        servicioAuditoria.registrarOperacionCritica("PAQUETES", "REGISTRO", "Paquete registrado: " + trackingId, "SISTEMA");
-
-        return trackingId;
     }
 
     public Paquetes buscarPaquetePorTracking(String codigoSeguimiento) {
-        Paquetes paquete = daoPaquetes.obtenerPorTracking(codigoSeguimiento);
-        hidratarClientes(paquete);
-        return paquete;
+        try {
+            Paquetes paquete = daoPaquetes.obtenerPorTracking(codigoSeguimiento);
+            hidratarClientes(paquete);
+            return paquete;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al buscar paquete: " + e.getMessage());
+            return null;
+        }
     }
 
     public List<HistorialPaquetes> consultarTrazabilidadPaquete(String codigoSeguimiento) {
-        return daoPaquetes.obtenerHistorial(codigoSeguimiento);
+        try {
+            return daoPaquetes.obtenerHistorial(codigoSeguimiento);
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al consultar trazabilidad: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public List<Paquetes> listarPaquetesEnBodega() {
-        List<Paquetes> paquetes = daoPaquetes.obtenerPorEstado("EN_BODEGA");
-        for (Paquetes paquete : paquetes) {
-            hidratarClientes(paquete);
+        try {
+            List<Paquetes> paquetes = daoPaquetes.obtenerPorEstado("EN_BODEGA");
+            for (Paquetes paquete : paquetes) {
+                hidratarClientes(paquete);
+            }
+            return paquetes;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al listar paquetes en bodega: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return paquetes;
     }
 
     private void hidratarClientes(Paquetes paquete) {
@@ -104,10 +129,13 @@ public class ServicioPaquetes {
             return;
         }
         paquete.setRemitente(servicioClientes.obtenerClientePorId(paquete.getRemitenteId()));
-        paquete.setDestinatario(servicioClientes.obtenerClientePorId(paquete.getDestinatatioId()));
+        paquete.setDestinatario(servicioClientes.obtenerClientePorId(paquete.getDestinatarioId()));
     }
 
     private double[] parsearDimensiones(String dimensiones) {
+        if (dimensiones == null) {
+            throw new NumberFormatException("Dimensiones no puede ser nulo");
+        }
         String[] partes = dimensiones.split("[xX]");
         if (partes.length != 3) {
             throw new NumberFormatException("Formato de dimensiones inválido: " + dimensiones);
