@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
-import controlador.ControladorClientes;
-import modelo.clases.Clientes;
-import modelo.persistencia.DaoClientes;
-import modelo.servicios.ServicioClientes;
+package com.rapidexpress.view;
+import com.rapidexpress.controller.ControladorClientes;
+import com.rapidexpress.model.entity.Clientes;
+import com.rapidexpress.model.dao.DaoClientes;
+import com.rapidexpress.service.ServicioClientes;
 /**
  * Vista para gestion de clientes 
  * @author Sebastian
