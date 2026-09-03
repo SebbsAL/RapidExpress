@@ -3,20 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.rapidexpress.view;
+import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorClientes;
 import com.rapidexpress.model.entity.Clientes;
-import com.rapidexpress.model.dao.DaoClientes;
-import com.rapidexpress.service.ServicioClientes;
 /**
- * Vista para gestion de clientes 
+ * Vista para gestion de clientes
  * @author Sebastian
  */
 public class VistaClientes {
     private ControladorClientes controladorClientes;
     public VistaClientes() {
-        DaoClientes daoClientes = new DaoClientes();
-        ServicioClientes servicioClientes = new ServicioClientes(daoClientes);
-        this.controladorClientes = new ControladorClientes(servicioClientes);
+        // Fabrica ya conecto Dao -> Servicio -> Controlador; solo se pide el controlador.
+        this.controladorClientes = Fabrica.crearControladorClientes();
     }
     /**
      * Muestra el menu principal de clientes

@@ -4,10 +4,8 @@
  */
 package com.rapidexpress.view;
 
+import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorReportes;
-import com.rapidexpress.controller.ControladorAuditoria;
-import com.rapidexpress.model.dao.DaoReportes;
-import com.rapidexpress.service.ServicioReportes;
 import java.util.Date;
 import java.util.List;
 /**
@@ -17,10 +15,8 @@ import java.util.List;
 public class VistaReportes {
     private ControladorReportes controladorReportes;
     public VistaReportes() {
-        DaoReportes daoReportes = new DaoReportes();
-        ServicioReportes servicioReportes = new ServicioReportes(daoReportes);
-        ControladorAuditoria controladorAuditoria = new ControladorAuditoria();
-        this.controladorReportes = new ControladorReportes(servicioReportes, controladorAuditoria);
+        // Fabrica ya conecto Dao -> Servicio -> Controlador; solo se pide el controlador.
+        this.controladorReportes = Fabrica.crearControladorReportes();
     }
     /**
      * Muestra el menu principal de reportes
