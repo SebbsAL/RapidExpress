@@ -153,4 +153,28 @@ public class ServicioConductores {
             return false;
         }
     }
+
+    /**
+     * Termina la asignación de vehículo activa de un conductor, dejándolo libre
+     * para asignarse a otro vehículo más adelante.
+     */
+    public boolean desasignarVehiculoDeConductor(String identificacionConductor) {
+        Conductores conductor = buscarConductorPorIdentificacion(identificacionConductor);
+        if (conductor == null) {
+            System.err.println("Error: Conductor no existe.");
+            return false;
+        }
+        try {
+            boolean desasignado = daoConductores.desasignarVehiculo(identificacionConductor);
+            if (!desasignado) {
+                System.err.println("Error: El conductor " + identificacionConductor + " no tiene una asignacion activa.");
+                return false;
+            }
+            System.out.println("Conductor " + identificacionConductor + " desasignado de su vehiculo.");
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al desasignar vehiculo: " + e.getMessage());
+            return false;
+        }
+    }
 }

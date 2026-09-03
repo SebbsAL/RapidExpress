@@ -137,4 +137,17 @@ public class DaoConductores implements IDaoConductores {
             ps.executeUpdate();
         }
     }
+
+    /** Cierra (desactiva) la asignación de vehículo activa de un conductor. */
+    public boolean desasignarVehiculo(String identificacionConductor) throws SQLException {
+        String sql = "UPDATE asignaciones_vehiculo_conductor a " +
+                     "JOIN conductores c ON a.conductor_id = c.id " +
+                     "SET a.activo = 0, a.fecha_desasignacion = CURRENT_TIMESTAMP " +
+                     "WHERE c.numero_identificacion = ? AND a.activo = 1";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, identificacionConductor);
+            return ps.executeUpdate() > 0;
+        }
+    }
 }

@@ -73,4 +73,15 @@ public class ControladorConductores {
         }
         return exito;
     }
+
+    /**
+     * Desasigna el vehículo activo de un conductor y deja constancia en la auditoría.
+     */
+    public boolean desasignarVehiculoDeConductor(String identificacion){
+        boolean exito = servicioConductores.desasignarVehiculoDeConductor(identificacion);
+        if (exito) {
+            controladorAuditoria.registrar("CONDUCTORES", "DESASIGNACION_VEHICULO", "Conductor "+identificacion+" desasignado de su vehiculo", USUARIO_SISTEMA);
+        }
+        return exito;
+    }
 }
