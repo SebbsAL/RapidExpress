@@ -215,7 +215,7 @@ mvn exec:java
 ```
 
 > [!TIP]
-> Dado que `pom.xml` define `<exec.mainClass>vistas.MenuPrincipal</exec.mainClass>`, el comando `mvn exec:java` arranca automáticamente el menú interactivo sin necesidad de especificar flags adicionales.
+> Dado que `pom.xml` define `<exec.mainClass>com.rapidexpress.view.MenuPrincipal</exec.mainClass>`, el comando `mvn exec:java` arranca automáticamente el menú interactivo sin necesidad de especificar flags adicionales.
 
 #### Opción B: Empaquetado JAR y Ejecución Nativa de Java (Producción)
 ```powershell
@@ -223,7 +223,7 @@ mvn exec:java
 mvn clean package
 
 # 2. Ejecutar con el classpath de dependencias incluido
-java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" vistas.MenuPrincipal
+java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" com.rapidexpress.view.MenuPrincipal
 ```
 *(En Linux/macOS sustituir `;` por `:` en el classpath).*
 
@@ -235,7 +235,7 @@ java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" vistas.MenuP
 
 ```text
 ==================================================
-        MENU PRINCIPAL (vistas.MenuPrincipal)
+        MENU PRINCIPAL (com.rapidexpress.view.MenuPrincipal)
 ==================================================
   [1] Gestion de Vehiculos
        ├── 1) Registrar vehiculo
