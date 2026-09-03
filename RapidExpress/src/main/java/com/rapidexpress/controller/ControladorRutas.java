@@ -3,12 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controlador;
+package com.rapidexpress.controller;
 import java.util.List;
-import modelo.clases.Rutas;
-import modelo.clases.RutaPaquetes;
-import modelo.clases.EstadoEntrega;
-import modelo.servicios.ServicioRutas;
+import com.rapidexpress.model.entity.Rutas;
+import com.rapidexpress.model.entity.RutaPaquetes;
+import com.rapidexpress.model.entity.EstadoEntrega;
+import com.rapidexpress.service.ServicioRutas;
 /**
  *
  * @author Sebastian 
