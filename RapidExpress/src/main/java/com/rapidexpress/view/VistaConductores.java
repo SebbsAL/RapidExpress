@@ -28,7 +28,8 @@ public class VistaConductores {
             "Buscar conductor por identificacion",
             "Actualizar datos de conductor",
             "Actualizar estado de conductor",
-            "Asignar vehiculo a conductor"
+            "Asignar vehiculo a conductor",
+            "Desasignar vehiculo de conductor"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE CONDUCTORES", opciones);
@@ -50,6 +51,9 @@ public class VistaConductores {
                     break;
                 case 6:
                     asignarVehiculoAConductor();
+                    break;
+                case 7:
+                    desasignarVehiculoDeConductor();
                     break;
                 case 0:
                     return;
@@ -204,6 +208,25 @@ public class VistaConductores {
             UtilidadConsola.mostrarExito("Vehiculo " + placaVehiculo + " asignado al conductor " + identificacion);
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al asignar vehiculo: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Termina la asignacion de vehiculo activa de un conductor
+     */
+    private void desasignarVehiculoDeConductor() {
+        System.out.println("\nDESASIGNAR VEHICULO DE CONDUCTOR");
+        System.out.println("---------------------------------------");
+        try {
+            String identificacion = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
+            boolean exito = controladorConductores.desasignarVehiculoDeConductor(identificacion);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Conductor " + identificacion + " desasignado de su vehiculo");
+            } else {
+                UtilidadConsola.mostrarError("No se pudo desasignar. Verifique que el conductor tenga una asignacion activa.");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al desasignar vehiculo: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
