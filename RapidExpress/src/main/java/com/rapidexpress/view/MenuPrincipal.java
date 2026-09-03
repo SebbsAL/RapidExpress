@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
+package com.rapidexpress.view;
 
 /**
  * Menu principal del sistema RapidExpress
@@ -87,6 +87,9 @@ public class MenuPrincipal {
         }
     }
 
+    /**
+     * Imprime el encabezado con el nombre del sistema y un subtítulo.
+     */
     private static void mostrarEncabezado(String subtitulo) {
         System.out.println("\n========================================");
         System.out.println("             RAPID EXPRESS");

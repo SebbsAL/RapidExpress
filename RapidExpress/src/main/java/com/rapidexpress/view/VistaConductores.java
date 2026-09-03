@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vistas;
-import controlador.ControladorConductores;
-import controlador.ControladorAuditoria;
-import modelo.clases.Conductores;
-import modelo.clases.EstadoConductor;
-import modelo.persistencia.DaoConductores;
-import modelo.persistencia.DaoVehiculos;
-import modelo.servicios.ServicioConductores;
-import modelo.servicios.ServicioVehiculos;
+package com.rapidexpress.view;
+import com.rapidexpress.controller.ControladorConductores;
+import com.rapidexpress.controller.ControladorAuditoria;
+import com.rapidexpress.model.entity.Conductores;
+import com.rapidexpress.model.entity.EstadoConductor;
+import com.rapidexpress.model.dao.DaoConductores;
+import com.rapidexpress.model.dao.DaoVehiculos;
+import com.rapidexpress.service.ServicioConductores;
+import com.rapidexpress.service.ServicioVehiculos;
 import java.util.List;
 /**
  * Vista para gestion de conductores
