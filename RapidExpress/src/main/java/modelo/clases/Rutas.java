@@ -14,8 +14,7 @@ import java.util.List;
  * 
  * @author sergi
  */
-public class Rutas {
-    private int id;
+public class Rutas extends EntidadBase {
     private String codigoRuta;
     private int vehiculoId;
     private int conductorId;
@@ -55,10 +54,6 @@ public class Rutas {
 
     public void setEstado(EstadoRuta estado) {
         this.estado = estado;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getCodigoRuta() {
@@ -101,10 +96,6 @@ public class Rutas {
         return fechaActualizacion;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setCodigoRuta(String codigoRuta) {
         this.codigoRuta = codigoRuta;
     }

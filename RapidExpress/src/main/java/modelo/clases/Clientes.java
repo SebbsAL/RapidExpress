@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
  *
  * @author sergi 
  */
-public class Clientes {
-    private int id;
+public class Clientes extends EntidadBase {
     private String  numeroIdentificacion;
     private String nombreCompleto;
     private String telefono;
@@ -35,10 +34,6 @@ public class Clientes {
     }
 
     
-    public int getId() {
-        return id;
-    }
-
     public String getNumeroIdentificacion() {
         return numeroIdentificacion;
     }
@@ -67,10 +62,6 @@ public class Clientes {
         return fechaCreacion;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setNumeroIdentificacion(String numeroIdentificacion) {
         this.numeroIdentificacion = numeroIdentificacion;
     }

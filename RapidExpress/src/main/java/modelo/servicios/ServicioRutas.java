@@ -7,6 +7,7 @@ import modelo.clases.EstadoPaquete;
 import modelo.clases.RutaPaquetes;
 import modelo.clases.EstadoEntrega;
 import modelo.clases.Conductores;
+import modelo.clases.EstadoConductor;
 import modelo.clases.Vehiculos;
 import modelo.clases.EstadoVehiculo;
 import modelo.clases.HistorialPaquetes;
@@ -46,6 +47,14 @@ public class ServicioRutas {
 
         if (vehiculo == null || conductor == null) {
             System.err.println("Error: Vehiculo o conductor no encontrados.");
+            return null;
+        }
+        if (vehiculo.getEstado() != EstadoVehiculo.DISPONIBLE) {
+            System.err.println("Error: El vehiculo " + placaVehiculo + " no esta DISPONIBLE (estado actual: " + vehiculo.getEstado() + ").");
+            return null;
+        }
+        if (conductor.getEstado() != EstadoConductor.ACTIVO) {
+            System.err.println("Error: El conductor " + identificacionConductor + " no esta ACTIVO (estado actual: " + conductor.getEstado() + ").");
             return null;
         }
 
@@ -123,6 +132,7 @@ public class ServicioRutas {
 
             daoRutas.actualizarEstado(codigoRuta, EstadoRuta.EN_PROCESO);
             servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), EstadoVehiculo.EN_RUTA);
+            servicioConductores.actualizarEstadoConductor(conductor.getNumeroIdentificacion(), EstadoConductor.EN_RUTA);
 
             for (Paquetes p : paquetesDeRuta) {
                 daoPaquetes.actualizarEstado(p.getCodigoSeguimiento(), EstadoPaquete.EN_TRANSITO);
@@ -143,7 +153,7 @@ public class ServicioRutas {
         }
     }
 
-    public boolean registrarEntregaPaquete(String codigoRuta, String codigoSeguimiento, String observaciones) {
+    public boolean registrarEntregaPaquete(String codigoRuta, String codigoSeguimiento, String observaciones, EstadoEntrega estadoEntrega) {
         try {
             Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
             if (ruta == null) {
@@ -155,21 +165,22 @@ public class ServicioRutas {
                 System.err.println("Error: No se encontro el paquete " + codigoSeguimiento);
                 return false;
             }
-            boolean actualizado = daoRutas.actualizarEstadoEntregaPaquete(codigoRuta, codigoSeguimiento, EstadoEntrega.ENTREGADO, observaciones);
+            boolean actualizado = daoRutas.actualizarEstadoEntregaPaquete(codigoRuta, codigoSeguimiento, estadoEntrega, observaciones);
             if (!actualizado) {
                 System.err.println("Error: El paquete " + codigoSeguimiento + " no esta asignado a la ruta " + codigoRuta);
                 return false;
             }
-            daoPaquetes.actualizarEstado(codigoSeguimiento, EstadoPaquete.ENTREGADO);
+            EstadoPaquete nuevoEstadoPaquete = (estadoEntrega == EstadoEntrega.DEVUELTO) ? EstadoPaquete.DEVUELTO : EstadoPaquete.ENTREGADO;
+            daoPaquetes.actualizarEstado(codigoSeguimiento, nuevoEstadoPaquete);
 
             HistorialPaquetes h = new HistorialPaquetes();
             h.setPaqueteId(paquete.getId());
-            h.setEstado(EstadoPaquete.ENTREGADO);
+            h.setEstado(nuevoEstadoPaquete);
             h.setDescripcionEvento(observaciones);
             h.setUbicacion(paquete.getDireccionDestino());
             daoPaquetes.registrarHistorial(h);
 
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + EstadoPaquete.ENTREGADO, "SISTEMA");
+            servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + nuevoEstadoPaquete, "SISTEMA");
             return true;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al registrar la entrega: " + e.getMessage());
@@ -193,6 +204,7 @@ public class ServicioRutas {
 
             daoRutas.actualizarEstado(codigoRuta, EstadoRuta.COMPLETADA);
             servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), EstadoVehiculo.DISPONIBLE);
+            servicioConductores.actualizarEstadoConductor(conductor.getNumeroIdentificacion(), EstadoConductor.ACTIVO);
 
             servicioAuditoria.registrarOperacionCritica("RUTAS", "FIN", "Ruta finalizada: " + codigoRuta, "SISTEMA");
             return true;

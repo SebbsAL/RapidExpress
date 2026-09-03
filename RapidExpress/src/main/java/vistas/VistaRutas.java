@@ -8,6 +8,7 @@ import controlador.ControladorAuditoria;
 import modelo.clases.Rutas;
 import modelo.clases.Paquetes;
 import modelo.clases.RutaPaquetes;
+import modelo.clases.EstadoEntrega;
 import modelo.persistencia.DaoConductores;
 import modelo.persistencia.DaoPaquetes;
 import modelo.persistencia.DaoRutas;
@@ -145,13 +146,18 @@ public class VistaRutas {
         try {
             String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
             String codigoSeguimiento = UtilidadConsola.leerTexto("  Codigo de seguimiento del paquete: ");
+            System.out.println("  Resultado de la entrega:");
+            System.out.println("   [1] Entregado");
+            System.out.println("   [2] Devuelto");
+            int opcionResultado = UtilidadConsola.leerEntero("  Seleccione una opcion: ");
+            EstadoEntrega estadoEntrega = (opcionResultado == 2) ? EstadoEntrega.DEVUELTO : EstadoEntrega.ENTREGADO;
             String observaciones = UtilidadConsola.leerTexto("  Observaciones de la entrega (opcional): ");
-            boolean exito = controladorRutas.registrarEntregaPaquete(codigoRuta, codigoSeguimiento, observaciones);
+            boolean exito = controladorRutas.registrarEntregaPaquete(codigoRuta, codigoSeguimiento, observaciones, estadoEntrega);
             if (exito) {
                 System.out.println("\nENTREGA REGISTRADA EXITOSAMENTE:");
                 System.out.println("  Ruta: " + codigoRuta);
                 System.out.println("  Paquete: " + codigoSeguimiento);
-                System.out.println("  Estado: ENTREGADO");
+                System.out.println("  Estado: " + estadoEntrega);
                 UtilidadConsola.mostrarExito("Entrega registrada correctamente");
             } else {
                 UtilidadConsola.mostrarError("No se pudo registrar la entrega. Verifique los codigos ingresados.");
