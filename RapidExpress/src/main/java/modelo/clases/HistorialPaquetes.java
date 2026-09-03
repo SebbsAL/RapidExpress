@@ -10,9 +10,8 @@ import java.time.LocalDateTime;
  *
  * @author sergi 
  */
-public class HistorialPaquetes {
-    private int id;
-    private int paqueteId;    
+public class HistorialPaquetes extends EntidadBase {
+    private int paqueteId;
     private EstadoPaquete estado;
     private String descripcionEvento;
     private String ubicacion;
@@ -30,10 +29,6 @@ public class HistorialPaquetes {
     public HistorialPaquetes() {
     }
     
-    public int getId() {
-        return id;
-    }
-
     public int getPaqueteId() {
         return paqueteId;
     }
@@ -66,10 +61,6 @@ public class HistorialPaquetes {
         return fechaRegistro;
     }
     
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setPaqueteId(int paqueteId) {
         this.paqueteId = paqueteId;
     }

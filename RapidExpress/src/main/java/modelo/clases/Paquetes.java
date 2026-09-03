@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
  *
  * @author sergi 
  */
-public class Paquetes {
-    private int id;
+public class Paquetes extends EntidadBase {
     private String codigoSeguimiento;
     private String descripcionContenido;
     private double pesoKg;
@@ -57,10 +56,6 @@ public class Paquetes {
 
     public void setEstado(EstadoPaquete estado) {
         this.estado = estado;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getCodigoSeguimiento() {
@@ -138,10 +133,6 @@ public class Paquetes {
     public LocalDateTime getFechaActualizacion() {
         return fechaActualizacion;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setCodigoSeguimiento(String codigoSeguimiento) {
         this.codigoSeguimiento = codigoSeguimiento;
     }

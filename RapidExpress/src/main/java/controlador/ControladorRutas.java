@@ -7,6 +7,7 @@ package controlador;
 import java.util.List;
 import modelo.clases.Rutas;
 import modelo.clases.RutaPaquetes;
+import modelo.clases.EstadoEntrega;
 import modelo.servicios.ServicioRutas;
 /**
  *
@@ -53,10 +54,10 @@ public class ControladorRutas {
      * @param observaciones Observaciones sobre la entrega
      * @return true si se registró correctamente
      */
-    public boolean registrarEntregaPaquete(String codigoRuta, String codigoSeguimiento, String observaciones) {
-        boolean exito = servicioRutas.registrarEntregaPaquete(codigoRuta, codigoSeguimiento, observaciones);
+    public boolean registrarEntregaPaquete(String codigoRuta, String codigoSeguimiento, String observaciones, EstadoEntrega estadoEntrega) {
+        boolean exito = servicioRutas.registrarEntregaPaquete(codigoRuta, codigoSeguimiento, observaciones, estadoEntrega);
         if (exito) {
-            controladorAuditoria.registrar("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + " en ruta " + codigoRuta, USUARIO_SISTEMA);
+            controladorAuditoria.registrar("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + " en ruta " + codigoRuta + " (" + estadoEntrega + ")", USUARIO_SISTEMA);
         }
         return exito;
     }

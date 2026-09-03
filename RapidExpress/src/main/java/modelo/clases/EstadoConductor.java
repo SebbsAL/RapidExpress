@@ -6,5 +6,6 @@ package modelo.clases;
 public enum EstadoConductor {
     ACTIVO,
     DE_VACACIONES,
-    INACTIVO
+    INACTIVO,
+    EN_RUTA
 }
