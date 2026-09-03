@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controlador;
+package com.rapidexpress.controller;
 
-import modelo.servicios.ServicioAuditoria;
+import com.rapidexpress.service.ServicioAuditoria;
 
 /**
  *
@@ -21,6 +21,9 @@ public class ControladorAuditoria {
         this.servicioAuditoria = servicioAuditoria;
     }
     
+    /**
+     * Registra una operación crítica en la auditoría del sistema.
+     */
     public void registrar(String modulo, String accion, String detalle, String usuario){
         servicioAuditoria.registrarOperacionCritica(modulo, accion, detalle, usuario);
     }

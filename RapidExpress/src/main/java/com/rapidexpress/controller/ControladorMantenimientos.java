@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controlador;
+package com.rapidexpress.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-import modelo.clases.Mantenimientos;
-import modelo.clases.EstadoMantenimiento;
-import modelo.servicios.ServicioMantenimientos;
+import com.rapidexpress.model.entity.Mantenimientos;
+import com.rapidexpress.model.entity.EstadoMantenimiento;
+import com.rapidexpress.service.ServicioMantenimientos;
 
 /**
  *
@@ -26,6 +26,9 @@ public class ControladorMantenimientos {
     
     
     
+    /**
+     * Programa un mantenimiento para un vehículo y deja constancia en la auditoría.
+     */
     public boolean programarMantenimiento(String placaVehiculo, String tipo, String descripcion, LocalDate fechaProgramada){
         boolean exito = serviciosMantenimientos.programarMantenimiento(placaVehiculo, tipo, descripcion, fechaProgramada);
         if (exito) {
@@ -33,7 +36,10 @@ public class ControladorMantenimientos {
         }
         return exito;
     }
-    
+
+    /**
+     * Actualiza el estado de un mantenimiento y deja constancia en la auditoría.
+     */
     public boolean actualizarEstadoMantenimiento(int idMantenimiento, EstadoMantenimiento nuevoEstado, double costo, String observaciones, String placaVehiculo){
         boolean exito = serviciosMantenimientos.actualizarEstadoMantenimiento(idMantenimiento, nuevoEstado, costo, observaciones, placaVehiculo);
         if (exito) {
@@ -41,7 +47,10 @@ public class ControladorMantenimientos {
         }
         return exito;
     }
-    
+
+    /**
+     * Consulta el historial de mantenimientos de un vehículo.
+     */
     public List<Mantenimientos> consultarHistorialMantenimientosPorVehiculo(String placa){
         return serviciosMantenimientos.consultarHistorialMantenimientosPorVehiculo(placa);
     }

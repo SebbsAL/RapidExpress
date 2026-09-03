@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controlador;
+package com.rapidexpress.controller;
 
 import java.util.List;
-import modelo.clases.Conductores;
-import modelo.clases.EstadoConductor;
-import modelo.servicios.ServicioConductores;
+import com.rapidexpress.model.entity.Conductores;
+import com.rapidexpress.model.entity.EstadoConductor;
+import com.rapidexpress.service.ServicioConductores;
 
 /**
  *
@@ -23,23 +23,38 @@ public class ControladorConductores {
         this.controladorAuditoria = controladorAuditoria;
     }
     
+    /**
+     * Actualiza los datos personales y de licencia de un conductor.
+     */
     public boolean actualizarDatosConductor(String identificacion, String nombre, String licencia, String telefono, String email){
         return servicioConductores.actualizarDatosConductor(identificacion, nombre, licencia, telefono, email);
     }
-    
+
+    /**
+     * Lista todos los conductores registrados.
+     */
     public List<Conductores> listarConductores(){
         return servicioConductores.listarConductores();
     }
-    
+
+    /**
+     * Busca un conductor por su número de identificación.
+     */
     public Conductores buscarConductorPorIdentificacion(String identificacion){
         return servicioConductores.buscarConductorPorIdentificacion(identificacion);
     }
-    
+
+    /**
+     * Registra un nuevo conductor y deja constancia en la auditoría.
+     */
     public void registrarConductor(String identificacion, String nombre, String licencia, String telefono, String email){
         servicioConductores.registrarConductor(identificacion, nombre, licencia, telefono, email);
         controladorAuditoria.registrar("CONDUCTORES", "CREACION","Conductor registrado: "+identificacion,USUARIO_SISTEMA);
     }
-    
+
+    /**
+     * Actualiza el estado de un conductor y deja constancia en la auditoría.
+     */
     public boolean actualizarEstadoConductor(String identificacion, EstadoConductor nuevoEstado){
         boolean exito = servicioConductores.actualizarEstadoConductor(identificacion, nuevoEstado);
         if (exito) {
@@ -47,7 +62,10 @@ public class ControladorConductores {
         }
         return exito;
     }
-    
+
+    /**
+     * Asigna un vehículo a un conductor y deja constancia en la auditoría.
+     */
     public boolean asignarVehiculoAConductor(String identificacion, String placaVehiculo){
         boolean exito = servicioConductores.asignarVehiculoAConductor(identificacion, placaVehiculo);
         if (exito) {
