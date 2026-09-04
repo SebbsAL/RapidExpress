@@ -127,6 +127,19 @@ public class DaoConductores implements IDaoConductores {
         return false;
     }
 
+    /** Indica si el vehículo ya tiene un conductor con asignación activa. */
+    public boolean vehiculoTieneAsignacionActiva(int idVehiculo) throws SQLException {
+        String sql = "SELECT count(*) AS total FROM asignaciones_vehiculo_conductor WHERE vehiculo_id=? AND activo=1";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idVehiculo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("total") > 0;
+            }
+        }
+        return false;
+    }
+
     /** Registra la asignación activa de un vehículo a un conductor. */
     public void registrarAsignacion(int idVehiculo, int idConductor) throws SQLException {
         String sql = "INSERT INTO asignaciones_vehiculo_conductor (vehiculo_id, conductor_id, activo) VALUES (?, ?, 1)";

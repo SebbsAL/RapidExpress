@@ -45,6 +45,19 @@ public class DaoMantenimientos implements IDaoMantenimientos {
         }
     }
 
+    /** Busca un mantenimiento por su id. */
+    public Mantenimientos obtenerPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM mantenimientos WHERE id=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapearMantenimiento(rs);
+            }
+        }
+        return null;
+    }
+
     /** Obtiene el historial de mantenimientos de un vehículo por su placa. */
     public List<Mantenimientos> obtenerPorPlacaVehiculo(String placa) throws SQLException {
         String sql = "SELECT m.* FROM mantenimientos m JOIN vehiculos v ON m.vehiculo_id = v.id WHERE v.placa=?";
@@ -54,30 +67,35 @@ public class DaoMantenimientos implements IDaoMantenimientos {
             ps.setString(1, placa);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    Mantenimientos m = new Mantenimientos();
-                    m.setId(rs.getInt("id"));
-                    m.setVehiculoId(rs.getInt("vehiculo_id"));
-                    m.setTipoMantenimiento(rs.getString("tipo_mantenimiento"));
-                    m.setDescripcion(rs.getString("descripcion"));
-
-                    if (rs.getDate("fecha_programada") != null) {
-                        m.setFechaProgramada(rs.getDate("fecha_programada").toLocalDate());
-                    }
-                    if (rs.getDate("fecha_realizacion") != null) {
-                        m.setFechaRealizacion(rs.getDate("fecha_realizacion").toLocalDate());
-                    }
-
-                    m.setCosto(rs.getDouble("costo"));
-                    m.setEstado(EstadoMantenimiento.valueOf(rs.getString("estado")));
-                    m.setObservaciones(rs.getString("observaciones"));
-
-                    if (rs.getTimestamp("fecha_creacion") != null) {
-                        m.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
-                    }
-                    lista.add(m);
+                    lista.add(mapearMantenimiento(rs));
                 }
             }
         }
         return lista;
+    }
+
+    /** Convierte una fila del ResultSet en un objeto Mantenimientos. */
+    private Mantenimientos mapearMantenimiento(ResultSet rs) throws SQLException {
+        Mantenimientos m = new Mantenimientos();
+        m.setId(rs.getInt("id"));
+        m.setVehiculoId(rs.getInt("vehiculo_id"));
+        m.setTipoMantenimiento(rs.getString("tipo_mantenimiento"));
+        m.setDescripcion(rs.getString("descripcion"));
+
+        if (rs.getDate("fecha_programada") != null) {
+            m.setFechaProgramada(rs.getDate("fecha_programada").toLocalDate());
+        }
+        if (rs.getDate("fecha_realizacion") != null) {
+            m.setFechaRealizacion(rs.getDate("fecha_realizacion").toLocalDate());
+        }
+
+        m.setCosto(rs.getDouble("costo"));
+        m.setEstado(EstadoMantenimiento.valueOf(rs.getString("estado")));
+        m.setObservaciones(rs.getString("observaciones"));
+
+        if (rs.getTimestamp("fecha_creacion") != null) {
+            m.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+        }
+        return m;
     }
 }
