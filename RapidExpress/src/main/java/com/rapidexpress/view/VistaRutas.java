@@ -71,8 +71,8 @@ public class VistaRutas {
         System.out.println("\nCREAR HOJA DE RUTA");
         System.out.println("---------------------------------------");
         try {
-            String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
-            String identificacionConductor = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
+            String placaVehiculo = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
+            String identificacionConductor = UtilidadConsola.leerTextoObligatorio("  Identificacion del conductor: ");
             System.out.println("\n PAQUETES A ASIGNAR (ingrese codigos de seguimiento):");
             System.out.println("  (Ingrese un codigo vacio cuando termine)");
             List<String> codigosPaquetes = new java.util.ArrayList<>();
@@ -112,7 +112,7 @@ public class VistaRutas {
         System.out.println("\nINICIAR RUTA");
         System.out.println("---------------------------------------");
         try {
-            String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
+            String codigoRuta = UtilidadConsola.leerTextoObligatorio("  Codigo de ruta: ");
             boolean exito = controladorRutas.iniciarRuta(codigoRuta);
             if (exito) {
                 System.out.println("\nRUTA INICIADA EXITOSAMENTE:");
@@ -134,8 +134,8 @@ public class VistaRutas {
         System.out.println("\nREGISTRAR ENTREGA DE PAQUETE");
         System.out.println("---------------------------------------");
         try {
-            String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
-            String codigoSeguimiento = UtilidadConsola.leerTexto("  Codigo de seguimiento del paquete: ");
+            String codigoRuta = UtilidadConsola.leerTextoObligatorio("  Codigo de ruta: ");
+            String codigoSeguimiento = UtilidadConsola.leerTextoObligatorio("  Codigo de seguimiento del paquete: ");
             System.out.println("  Resultado de la entrega:");
             System.out.println("   [1] Entregado");
             System.out.println("   [2] Devuelto");
@@ -179,7 +179,7 @@ public class VistaRutas {
         System.out.println("\nFINALIZAR RUTA");
         System.out.println("---------------------------------------");
         try {
-            String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
+            String codigoRuta = UtilidadConsola.leerTextoObligatorio("  Codigo de ruta: ");
             boolean exito = controladorRutas.finalizarRuta(codigoRuta);
             if (exito) {
                 System.out.println("\nRUTA FINALIZADA EXITOSAMENTE:");
@@ -237,7 +237,7 @@ public class VistaRutas {
         System.out.println("\nDETALLE DE ENTREGAS DE LA RUTA");
         System.out.println("---------------------------------------");
         try {
-            String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
+            String codigoRuta = UtilidadConsola.leerTextoObligatorio("  Codigo de ruta: ");
             List<RutaPaquetes> detalle = controladorRutas.obtenerDetalleEntregas(codigoRuta);
             if (detalle == null || detalle.isEmpty()) {
                 UtilidadConsola.mostrarInfo("No hay paquetes asignados a la ruta: " + codigoRuta);
@@ -270,7 +270,7 @@ public class VistaRutas {
         System.out.println("\nCANCELAR RUTA PLANIFICADA");
         System.out.println("---------------------------------------");
         try {
-            String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
+            String codigoRuta = UtilidadConsola.leerTextoObligatorio("  Codigo de ruta: ");
             boolean exito = controladorRutas.cancelarRuta(codigoRuta);
             if (exito) {
                 System.out.println("\nRUTA CANCELADA EXITOSAMENTE:");

@@ -49,7 +49,7 @@ public class VistaReportes {
         System.out.println("\nREPORTE DE ENTREGAS POR CONDUCTOR");
         System.out.println("---------------------------------------");
         try {
-            String identificacionConductor = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
+            String identificacionConductor = UtilidadConsola.leerTextoObligatorio("  Identificacion del conductor: ");
             System.out.println("\n RANGO DE FECHAS:");
             System.out.println("  Formato: dd/MM/yyyy");
             String fechaInicioStr = UtilidadConsola.leerTexto("    Fecha inicio: ");
@@ -89,7 +89,7 @@ public class VistaReportes {
         System.out.println("\nHISTORIAL DE RUTAS POR VEHICULO");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            String placa = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
             List<String> reporte = controladorReportes.generarHistorialRutasVehiculo(placa);
             if (reporte != null && !reporte.isEmpty()) {
                 System.out.println("\n---------------------------------------");

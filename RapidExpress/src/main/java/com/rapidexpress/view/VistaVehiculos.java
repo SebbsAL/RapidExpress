@@ -82,9 +82,9 @@ public class VistaVehiculos {
         System.out.println("\nREGISTRO DE VEHICULO");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa: ");
-            String marca = UtilidadConsola.leerTexto("  Marca: ");
-            String modelo = UtilidadConsola.leerTexto("  Modelo: ");
+            String placa = UtilidadConsola.leerTextoObligatorio("  Placa: ");
+            String marca = UtilidadConsola.leerTextoObligatorio("  Marca: ");
+            String modelo = UtilidadConsola.leerTextoObligatorio("  Modelo: ");
             int anioFabricacion = UtilidadConsola.leerEntero("  Ano de fabricacion: ");
             double capacidadMaxima = UtilidadConsola.leerDouble("  Capacidad maxima (kg): ");
             boolean exito = controladorVehiculos.registrarVehiculo(
@@ -138,7 +138,7 @@ public class VistaVehiculos {
         System.out.println("\nBUSQUEDA DE VEHICULO POR PLACA");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto(" Ingrese la placa a buscar: ");
+            String placa = UtilidadConsola.leerTextoObligatorio(" Ingrese la placa a buscar: ");
             Vehiculos vehiculo = controladorVehiculos.buscarVehiculoPorPlaca(placa);
             if (vehiculo != null) {
                 System.out.println("\nVEHICULO ENCONTRADO:");
@@ -163,9 +163,9 @@ public class VistaVehiculos {
         System.out.println("\n ACTUALIZACION DE DATOS DE VEHICULO");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo a actualizar: ");
-            String nuevaMarca = UtilidadConsola.leerTexto("  Nueva marca: ");
-            String nuevoModelo = UtilidadConsola.leerTexto("  Nuevo modelo: ");
+            String placa = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo a actualizar: ");
+            String nuevaMarca = UtilidadConsola.leerTextoObligatorio("  Nueva marca: ");
+            String nuevoModelo = UtilidadConsola.leerTextoObligatorio("  Nuevo modelo: ");
             int nuevoAnio = UtilidadConsola.leerEntero("  Nuevo ano de fabricacion: ");
             double nuevaCapacidad = UtilidadConsola.leerDouble("  Nueva capacidad maxima (kg): ");
             boolean exito = controladorVehiculos.actualizarDatosVehiculo(
@@ -188,7 +188,7 @@ public class VistaVehiculos {
         System.out.println("\nACTUALIZACION DE ESTADO DE VEHICULO");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            String placa = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
             System.out.println("\n Estados disponibles:");
             System.out.println("  [1] DISPONIBLE");
             System.out.println("  [2] EN_MANTENIMIENTO");
@@ -227,9 +227,9 @@ public class VistaVehiculos {
         System.out.println("\nPROGRAMAR MANTENIMIENTO");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
-            String tipo = UtilidadConsola.leerTexto("  Tipo de mantenimiento (ej. PREVENTIVO, CORRECTIVO): ");
-            String descripcion = UtilidadConsola.leerTexto("  Descripcion: ");
+            String placa = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
+            String tipo = UtilidadConsola.leerTextoObligatorio("  Tipo de mantenimiento (ej. PREVENTIVO, CORRECTIVO): ");
+            String descripcion = UtilidadConsola.leerTextoObligatorio("  Descripcion: ");
             String fechaProgramadaStr = UtilidadConsola.leerTexto("  Fecha programada (dd/MM/yyyy): ");
             LocalDate fechaProgramada = LocalDate.parse(fechaProgramadaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             boolean exito = controladorMantenimientos.programarMantenimiento(placa, tipo, descripcion, fechaProgramada);
@@ -254,7 +254,7 @@ public class VistaVehiculos {
         System.out.println("---------------------------------------");
         try {
             int idMantenimiento = UtilidadConsola.leerEntero("  ID del mantenimiento: ");
-            String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            String placaVehiculo = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
             System.out.println("\n Estados disponibles:");
             System.out.println("  [1] EN_PROCESO");
             System.out.println("  [2] COMPLETADO");
@@ -295,7 +295,7 @@ public class VistaVehiculos {
         System.out.println("\nHISTORIAL DE MANTENIMIENTOS");
         System.out.println("---------------------------------------");
         try {
-            String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            String placa = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
             List<Mantenimientos> historial = controladorMantenimientos.consultarHistorialMantenimientosPorVehiculo(placa);
             if (historial == null || historial.isEmpty()) {
                 UtilidadConsola.mostrarInfo("No hay mantenimientos registrados para el vehiculo: " + placa);
