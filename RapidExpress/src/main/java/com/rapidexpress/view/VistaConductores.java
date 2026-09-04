@@ -69,10 +69,10 @@ public class VistaConductores {
         System.out.println("\nREGISTRO DE CONDUCTOR");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto("  Numero de identificacion: ");
-            String nombreCompleto = UtilidadConsola.leerTexto("  Nombre completo: ");
-            String tipoLicencia = UtilidadConsola.leerTexto("  Tipo de licencia: ");
-            String telefono = UtilidadConsola.leerTexto("  Telefono: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Numero de identificacion: ");
+            String nombreCompleto = UtilidadConsola.leerTextoObligatorio("  Nombre completo: ");
+            String tipoLicencia = UtilidadConsola.leerTextoObligatorio("  Tipo de licencia: ");
+            String telefono = UtilidadConsola.leerTextoObligatorio("  Telefono: ");
             String email = UtilidadConsola.leerTexto("  Email: ");
             controladorConductores.registrarConductor(
                 identificacion, nombreCompleto, tipoLicencia, telefono, email
@@ -121,7 +121,7 @@ public class VistaConductores {
         System.out.println("\nBUSQUEDA DE CONDUCTOR POR IDENTIFICACION");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto(" Ingrese la identificacion a buscar: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio(" Ingrese la identificacion a buscar: ");
             Conductores conductor = controladorConductores.buscarConductorPorIdentificacion(identificacion);
             if (conductor != null) {
                 System.out.println("\nCONDUCTOR ENCONTRADO:");
@@ -146,10 +146,10 @@ public class VistaConductores {
         System.out.println("\n ACTUALIZACION DE DATOS DE CONDUCTOR");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
-            String nombreCompleto = UtilidadConsola.leerTexto("  Nuevo nombre completo: ");
-            String tipoLicencia = UtilidadConsola.leerTexto("  Nuevo tipo de licencia: ");
-            String telefono = UtilidadConsola.leerTexto("  Nuevo telefono: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Identificacion del conductor: ");
+            String nombreCompleto = UtilidadConsola.leerTextoObligatorio("  Nuevo nombre completo: ");
+            String tipoLicencia = UtilidadConsola.leerTextoObligatorio("  Nuevo tipo de licencia: ");
+            String telefono = UtilidadConsola.leerTextoObligatorio("  Nuevo telefono: ");
             String email = UtilidadConsola.leerTexto("  Nuevo email: ");
             boolean exito = controladorConductores.actualizarDatosConductor(
                 identificacion, nombreCompleto, tipoLicencia, telefono, email
@@ -171,7 +171,7 @@ public class VistaConductores {
         System.out.println("\nACTUALIZACION DE ESTADO DE CONDUCTOR");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Identificacion del conductor: ");
             System.out.println("\n Estados disponibles:");
             System.out.println("  [1] ACTIVO");
             System.out.println("  [2] DE_VACACIONES");
@@ -210,8 +210,8 @@ public class VistaConductores {
         System.out.println("\nASIGNAR VEHICULO A CONDUCTOR");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
-            String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Identificacion del conductor: ");
+            String placaVehiculo = UtilidadConsola.leerTextoObligatorio("  Placa del vehiculo: ");
             boolean exito = controladorConductores.asignarVehiculoAConductor(identificacion, placaVehiculo);
             if (exito) {
                 UtilidadConsola.mostrarExito("Vehiculo " + placaVehiculo + " asignado al conductor " + identificacion);
@@ -230,7 +230,7 @@ public class VistaConductores {
         System.out.println("\nDESASIGNAR VEHICULO DE CONDUCTOR");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Identificacion del conductor: ");
             boolean exito = controladorConductores.desasignarVehiculoDeConductor(identificacion);
             if (exito) {
                 UtilidadConsola.mostrarExito("Conductor " + identificacion + " desasignado de su vehiculo");

@@ -19,6 +19,20 @@ public class UtilidadConsola {
         return scanner.nextLine().trim();
     }
     /**
+     * Lee una linea de texto desde la consola, repitiendo la pregunta hasta
+     * recibir algo distinto de vacio (mismo criterio de reintento que
+     * leerEntero/leerDouble, pero para campos de texto obligatorios).
+     */
+    public static String leerTextoObligatorio(String mensaje) {
+        while (true) {
+            String valor = leerTexto(mensaje);
+            if (!valor.isEmpty()) {
+                return valor;
+            }
+            System.out.println("[ERROR] Este campo es obligatorio, no puede quedar vacio.");
+        }
+    }
+    /**
      * Lee un numero entero desde la consola
      */
     public static int leerEntero(String mensaje) {

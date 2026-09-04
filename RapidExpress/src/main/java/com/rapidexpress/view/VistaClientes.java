@@ -43,12 +43,12 @@ public class VistaClientes {
         System.out.println("\nREGISTRO/BUSQUEDA DE CLIENTE");
         System.out.println("---------------------------------------");
         try {
-            String identificacion = UtilidadConsola.leerTexto("  Numero de identificacion: ");
-            String nombreCompleto = UtilidadConsola.leerTexto("  Nombre completo: ");
-            String telefono = UtilidadConsola.leerTexto("  Telefono: ");
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Numero de identificacion: ");
+            String nombreCompleto = UtilidadConsola.leerTextoObligatorio("  Nombre completo: ");
+            String telefono = UtilidadConsola.leerTextoObligatorio("  Telefono: ");
             String email = UtilidadConsola.leerTexto("  Email: ");
-            String direccion = UtilidadConsola.leerTexto("  Direccion: ");
-            String ciudad = UtilidadConsola.leerTexto("  Ciudad: ");
+            String direccion = UtilidadConsola.leerTextoObligatorio("  Direccion: ");
+            String ciudad = UtilidadConsola.leerTextoObligatorio("  Ciudad: ");
             Clientes cliente = controladorClientes.registrarBuscarCliente(
                 identificacion, nombreCompleto, telefono, email, direccion, ciudad
             );

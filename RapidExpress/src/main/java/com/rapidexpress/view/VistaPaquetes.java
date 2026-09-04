@@ -57,25 +57,25 @@ public class VistaPaquetes {
         System.out.println("\nREGISTRO DE NUEVO PAQUETE");
         System.out.println("---------------------------------------");
         try {
-            String descripcion = UtilidadConsola.leerTexto("  Descripcion del contenido: ");
+            String descripcion = UtilidadConsola.leerTextoObligatorio("  Descripcion del contenido: ");
             double peso = UtilidadConsola.leerDouble("  Peso (kg): ");
-            String dimensiones = UtilidadConsola.leerTexto("  Dimensiones (alto x ancho x largo): ");
-            String direccionOrigen = UtilidadConsola.leerTexto("  Direccion de origen: ");
-            String direccionDestino = UtilidadConsola.leerTexto("  Direccion de destino: ");
+            String dimensiones = UtilidadConsola.leerTextoObligatorio("  Dimensiones (alto x ancho x largo): ");
+            String direccionOrigen = UtilidadConsola.leerTextoObligatorio("  Direccion de origen: ");
+            String direccionDestino = UtilidadConsola.leerTextoObligatorio("  Direccion de destino: ");
             System.out.println("\n DATOS DEL REMITENTE:");
-            String remitenteIdentificacion = UtilidadConsola.leerTexto("    Numero de identificacion: ");
-            String remitenteNombre = UtilidadConsola.leerTexto("    Nombre completo: ");
-            String remitenteTelefono = UtilidadConsola.leerTexto("    Telefono: ");
+            String remitenteIdentificacion = UtilidadConsola.leerTextoObligatorio("    Numero de identificacion: ");
+            String remitenteNombre = UtilidadConsola.leerTextoObligatorio("    Nombre completo: ");
+            String remitenteTelefono = UtilidadConsola.leerTextoObligatorio("    Telefono: ");
             String remitenteEmail = UtilidadConsola.leerTexto("    Email: ");
-            String remitenteDireccion = UtilidadConsola.leerTexto("    Direccion: ");
-            String remitenteCiudad = UtilidadConsola.leerTexto("    Ciudad: ");
+            String remitenteDireccion = UtilidadConsola.leerTextoObligatorio("    Direccion: ");
+            String remitenteCiudad = UtilidadConsola.leerTextoObligatorio("    Ciudad: ");
             System.out.println("\n DATOS DEL DESTINATARIO:");
-            String destinatarioIdentificacion = UtilidadConsola.leerTexto("    Numero de identificacion: ");
-            String destinatarioNombre = UtilidadConsola.leerTexto("    Nombre completo: ");
-            String destinatarioTelefono = UtilidadConsola.leerTexto("    Telefono: ");
+            String destinatarioIdentificacion = UtilidadConsola.leerTextoObligatorio("    Numero de identificacion: ");
+            String destinatarioNombre = UtilidadConsola.leerTextoObligatorio("    Nombre completo: ");
+            String destinatarioTelefono = UtilidadConsola.leerTextoObligatorio("    Telefono: ");
             String destinatarioEmail = UtilidadConsola.leerTexto("    Email: ");
-            String destinatarioDireccion = UtilidadConsola.leerTexto("    Direccion: ");
-            String destinatarioCiudad = UtilidadConsola.leerTexto("    Ciudad: ");
+            String destinatarioDireccion = UtilidadConsola.leerTextoObligatorio("    Direccion: ");
+            String destinatarioCiudad = UtilidadConsola.leerTextoObligatorio("    Ciudad: ");
             String codigoSeguimiento = controladorPaquetes.registrarPaquete(
                 descripcion, peso, dimensiones, direccionOrigen, direccionDestino,
                 remitenteIdentificacion, remitenteNombre, remitenteTelefono, remitenteEmail, remitenteDireccion, remitenteCiudad,
@@ -100,7 +100,7 @@ public class VistaPaquetes {
         System.out.println("\nBUSQUEDA DE PAQUETE POR TRACKING");
         System.out.println("---------------------------------------");
         try {
-            String codigoSeguimiento = UtilidadConsola.leerTexto("  Codigo de seguimiento: ");
+            String codigoSeguimiento = UtilidadConsola.leerTextoObligatorio("  Codigo de seguimiento: ");
             Paquetes paquete = controladorPaquetes.buscarPaquetePorTracking(codigoSeguimiento);
             if (paquete != null) {
                 System.out.println("\nPAQUETE ENCONTRADO:");
@@ -137,7 +137,7 @@ public class VistaPaquetes {
         System.out.println("\nCONSULTAR TRAZABILIDAD DE PAQUETE");
         System.out.println("---------------------------------------");
         try {
-            String codigoSeguimiento = UtilidadConsola.leerTexto("  Codigo de seguimiento: ");
+            String codigoSeguimiento = UtilidadConsola.leerTextoObligatorio("  Codigo de seguimiento: ");
             List<HistorialPaquetes> historial = controladorPaquetes.consultarTrazabilidadPaquete(codigoSeguimiento);
             if (historial != null && !historial.isEmpty()) {
                 System.out.println("\nTRAZABILIDAD DEL PAQUETE: " + codigoSeguimiento);
