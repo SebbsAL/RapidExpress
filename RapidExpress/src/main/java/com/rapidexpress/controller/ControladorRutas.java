@@ -36,6 +36,18 @@ public class ControladorRutas {
         return codigoRuta;
     }
     /**
+     * Cancela una ruta que todavía no ha iniciado
+     * @param codigoRuta Código de la ruta a cancelar
+     * @return true si se canceló correctamente
+     */
+    public boolean cancelarRuta(String codigoRuta) {
+        boolean exito = servicioRutas.cancelarRuta(codigoRuta);
+        if (exito) {
+            controladorAuditoria.registrar("RUTAS", "CANCELACION", "Ruta cancelada: " + codigoRuta, USUARIO_SISTEMA);
+        }
+        return exito;
+    }
+    /**
      * Inicia una ruta cambiando el estado de vehículo, conductor y paquetes
      * @param codigoRuta Código de la ruta a iniciar
      * @return true si se inició correctamente

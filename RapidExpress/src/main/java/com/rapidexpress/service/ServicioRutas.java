@@ -148,6 +148,44 @@ public class ServicioRutas {
     }
 
     /**
+     * Cancela una ruta que todavía no ha iniciado, devolviendo sus paquetes a EN_BODEGA.
+     * Solo se puede cancelar una ruta en estado PLANIFICADA: una vez iniciada, vehículo,
+     * conductor y paquetes ya están comprometidos y se debe usar finalizarRuta.
+     */
+    public boolean cancelarRuta(String codigoRuta) {
+        try {
+            Rutas ruta = daoRutas.obtenerPorCodigo(codigoRuta);
+            if (ruta == null) {
+                System.err.println("Error: No se encontro la ruta " + codigoRuta);
+                return false;
+            }
+            if (ruta.getEstado() != EstadoRuta.PLANIFICADA) {
+                System.err.println("Error: Solo se puede cancelar una ruta en estado PLANIFICADA (estado actual: " + ruta.getEstado() + ").");
+                return false;
+            }
+
+            List<Paquetes> paquetesDeRuta = daoPaquetes.obtenerPorRuta(ruta.getId());
+            for (Paquetes p : paquetesDeRuta) {
+                daoPaquetes.actualizarEstado(p.getCodigoSeguimiento(), EstadoPaquete.EN_BODEGA);
+
+                HistorialPaquetes h = new HistorialPaquetes();
+                h.setPaqueteId(p.getId());
+                h.setEstado(EstadoPaquete.EN_BODEGA);
+                h.setDescripcionEvento("Ruta " + codigoRuta + " cancelada; paquete devuelto a bodega");
+                h.setUbicacion("Centro de Distribución");
+                daoPaquetes.registrarHistorial(h);
+            }
+
+            daoRutas.actualizarEstado(codigoRuta, EstadoRuta.CANCELADA);
+            servicioAuditoria.registrarOperacionCritica("RUTAS", "CANCELACION", "Ruta cancelada: " + codigoRuta + " (" + paquetesDeRuta.size() + " paquetes devueltos a bodega)", "SISTEMA");
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al cancelar la ruta: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Inicia una ruta planificada y pone en tránsito vehículo, conductor y paquetes.
      */
     public boolean iniciarRuta(String codigoRuta) {

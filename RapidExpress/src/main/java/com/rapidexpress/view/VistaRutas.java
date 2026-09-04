@@ -30,7 +30,8 @@ public class VistaRutas {
             "Registrar entrega de paquete",
             "Finalizar ruta",
             "Listar rutas activas",
-            "Ver detalle de entregas de una ruta"
+            "Ver detalle de entregas de una ruta",
+            "Cancelar ruta planificada"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE RUTAS", opciones);
@@ -52,6 +53,9 @@ public class VistaRutas {
                     break;
                 case 6:
                     verDetalleEntregas();
+                    break;
+                case 7:
+                    cancelarRuta();
                     break;
                 case 0:
                     return;
@@ -256,6 +260,29 @@ public class VistaRutas {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al consultar detalle de entregas: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Cancela una ruta que todavia no ha iniciado (estado PLANIFICADA)
+     */
+    private void cancelarRuta() {
+        System.out.println("\nCANCELAR RUTA PLANIFICADA");
+        System.out.println("---------------------------------------");
+        try {
+            String codigoRuta = UtilidadConsola.leerTexto("  Codigo de ruta: ");
+            boolean exito = controladorRutas.cancelarRuta(codigoRuta);
+            if (exito) {
+                System.out.println("\nRUTA CANCELADA EXITOSAMENTE:");
+                System.out.println("  Codigo de ruta: " + codigoRuta);
+                System.out.println("  Estado: CANCELADA");
+                System.out.println("  Paquetes devueltos a bodega");
+                UtilidadConsola.mostrarExito("Ruta cancelada correctamente");
+            } else {
+                UtilidadConsola.mostrarError("No se pudo cancelar la ruta. Solo se pueden cancelar rutas en estado PLANIFICADA.");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al cancelar ruta: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }
