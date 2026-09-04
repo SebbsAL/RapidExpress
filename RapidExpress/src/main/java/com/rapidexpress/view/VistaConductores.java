@@ -151,10 +151,14 @@ public class VistaConductores {
             String tipoLicencia = UtilidadConsola.leerTexto("  Nuevo tipo de licencia: ");
             String telefono = UtilidadConsola.leerTexto("  Nuevo telefono: ");
             String email = UtilidadConsola.leerTexto("  Nuevo email: ");
-            controladorConductores.actualizarDatosConductor(
+            boolean exito = controladorConductores.actualizarDatosConductor(
                 identificacion, nombreCompleto, tipoLicencia, telefono, email
             );
-            UtilidadConsola.mostrarExito("Datos del conductor actualizados correctamente");
+            if (exito) {
+                UtilidadConsola.mostrarExito("Datos del conductor actualizados correctamente");
+            } else {
+                UtilidadConsola.mostrarError("No se pudo actualizar. Verifique que la identificacion exista.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar datos: " + e.getMessage());
         }
@@ -188,8 +192,12 @@ public class VistaConductores {
                     UtilidadConsola.mostrarError("Estado no valido");
                     return;
             }
-            controladorConductores.actualizarEstadoConductor(identificacion, nuevoEstado);
-            UtilidadConsola.mostrarExito("Estado del conductor actualizado a: " + nuevoEstado);
+            boolean exito = controladorConductores.actualizarEstadoConductor(identificacion, nuevoEstado);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Estado del conductor actualizado a: " + nuevoEstado);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo actualizar el estado. Verifique que la identificacion exista.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar estado: " + e.getMessage());
         }
@@ -204,8 +212,12 @@ public class VistaConductores {
         try {
             String identificacion = UtilidadConsola.leerTexto("  Identificacion del conductor: ");
             String placaVehiculo = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
-            controladorConductores.asignarVehiculoAConductor(identificacion, placaVehiculo);
-            UtilidadConsola.mostrarExito("Vehiculo " + placaVehiculo + " asignado al conductor " + identificacion);
+            boolean exito = controladorConductores.asignarVehiculoAConductor(identificacion, placaVehiculo);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Vehiculo " + placaVehiculo + " asignado al conductor " + identificacion);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo asignar. Verifique que el conductor este ACTIVO, el vehiculo este DISPONIBLE, y que ninguno de los dos tenga ya una asignacion activa.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al asignar vehiculo: " + e.getMessage());
         }

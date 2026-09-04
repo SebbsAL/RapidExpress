@@ -188,19 +188,31 @@ JOIN rutas r ON c.id = r.conductor_id
 JOIN ruta_paquetes rp ON r.id = rp.ruta_id
 JOIN paquetes p ON rp.paquete_id = p.id;
 
+-- Nota: rutas y mantenimientos se pre-agregan por separado antes de unirlos a
+-- vehiculos. Unirlos directamente en un solo SELECT con dos LEFT JOIN produce
+-- un producto cartesiano (N rutas x M mantenimientos) que infla los SUM.
 CREATE OR REPLACE VIEW vista_historial_vehiculos AS
-SELECT 
+SELECT
     v.id AS vehiculo_id,
     v.placa,
     v.marca,
     v.modelo,
     v.capacidad_maxima_kg,
     v.estado AS estado_actual,
-    COUNT(DISTINCT r.id) AS total_rutas_realizadas,
-    COALESCE(SUM(r.peso_total_asignado_kg), 0) AS total_kg_transportados,
-    COUNT(DISTINCT m.id) AS total_mantenimientos_registrados,
-    COALESCE(SUM(m.costo), 0) AS costo_total_mantenimiento
+    COALESCE(r.total_rutas_realizadas, 0) AS total_rutas_realizadas,
+    COALESCE(r.total_kg_transportados, 0) AS total_kg_transportados,
+    COALESCE(m.total_mantenimientos_registrados, 0) AS total_mantenimientos_registrados,
+    COALESCE(m.costo_total_mantenimiento, 0) AS costo_total_mantenimiento
 FROM vehiculos v
-LEFT JOIN rutas r ON v.id = r.vehiculo_id AND r.estado = 'COMPLETADA'
-LEFT JOIN mantenimientos m ON v.id = m.vehiculo_id AND m.estado = 'COMPLETADO'
-GROUP BY v.id, v.placa, v.marca, v.modelo, v.capacidad_maxima_kg, v.estado;
+LEFT JOIN (
+    SELECT vehiculo_id, COUNT(*) AS total_rutas_realizadas, SUM(peso_total_asignado_kg) AS total_kg_transportados
+    FROM rutas
+    WHERE estado = 'COMPLETADA'
+    GROUP BY vehiculo_id
+) r ON v.id = r.vehiculo_id
+LEFT JOIN (
+    SELECT vehiculo_id, COUNT(*) AS total_mantenimientos_registrados, SUM(costo) AS costo_total_mantenimiento
+    FROM mantenimientos
+    WHERE estado = 'COMPLETADO'
+    GROUP BY vehiculo_id
+) m ON v.id = m.vehiculo_id;

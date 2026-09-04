@@ -87,10 +87,14 @@ public class VistaVehiculos {
             String modelo = UtilidadConsola.leerTexto("  Modelo: ");
             int anioFabricacion = UtilidadConsola.leerEntero("  Ano de fabricacion: ");
             double capacidadMaxima = UtilidadConsola.leerDouble("  Capacidad maxima (kg): ");
-            controladorVehiculos.registrarVehiculo(
+            boolean exito = controladorVehiculos.registrarVehiculo(
                 placa, marca, modelo, anioFabricacion, capacidadMaxima
             );
-            UtilidadConsola.mostrarExito("Vehiculo registrado exitosamente con placa: " + placa);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Vehiculo registrado exitosamente con placa: " + placa);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo registrar el vehiculo. Verifique que la placa no exista y que el ano/capacidad sean validos.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al registrar vehiculo: " + e.getMessage());
         }
@@ -164,10 +168,14 @@ public class VistaVehiculos {
             String nuevoModelo = UtilidadConsola.leerTexto("  Nuevo modelo: ");
             int nuevoAnio = UtilidadConsola.leerEntero("  Nuevo ano de fabricacion: ");
             double nuevaCapacidad = UtilidadConsola.leerDouble("  Nueva capacidad maxima (kg): ");
-            controladorVehiculos.actualizarDatosVehiculo(
+            boolean exito = controladorVehiculos.actualizarDatosVehiculo(
                 placa, nuevaMarca, nuevoModelo, nuevoAnio, nuevaCapacidad
             );
-            UtilidadConsola.mostrarExito("Datos del vehiculo actualizados correctamente");
+            if (exito) {
+                UtilidadConsola.mostrarExito("Datos del vehiculo actualizados correctamente");
+            } else {
+                UtilidadConsola.mostrarError("No se pudo actualizar. Verifique que la placa exista y los datos sean validos.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar datos: " + e.getMessage());
         }
@@ -183,8 +191,10 @@ public class VistaVehiculos {
             String placa = UtilidadConsola.leerTexto("  Placa del vehiculo: ");
             System.out.println("\n Estados disponibles:");
             System.out.println("  [1] DISPONIBLE");
-            System.out.println("  [2] EN_RUTA");
-            System.out.println("  [3] EN_MANTENIMIENTO");
+            System.out.println("  [2] EN_MANTENIMIENTO");
+            // EN_RUTA no se ofrece aqui a proposito: ese estado solo debe alcanzarse
+            // automaticamente via ServicioRutas.iniciarRuta, nunca de forma manual,
+            // porque iniciarRuta tambien crea la ruta que respalda ese estado.
             int opcionEstado = UtilidadConsola.leerEntero("  Seleccione el nuevo estado: ");
             EstadoVehiculo nuevoEstado;
             switch (opcionEstado) {
@@ -192,17 +202,18 @@ public class VistaVehiculos {
                     nuevoEstado = EstadoVehiculo.DISPONIBLE;
                     break;
                 case 2:
-                    nuevoEstado = EstadoVehiculo.EN_RUTA;
-                    break;
-                case 3:
                     nuevoEstado = EstadoVehiculo.EN_MANTENIMIENTO;
                     break;
                 default:
                     UtilidadConsola.mostrarError("Estado no valido");
                     return;
             }
-            controladorVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
-            UtilidadConsola.mostrarExito("Estado del vehiculo actualizado a: " + nuevoEstado);
+            boolean exito = controladorVehiculos.actualizarEstadoVehiculo(placa, nuevoEstado);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Estado del vehiculo actualizado a: " + nuevoEstado);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo actualizar el estado. Verifique que la placa exista.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar estado: " + e.getMessage());
         }
@@ -221,8 +232,12 @@ public class VistaVehiculos {
             String descripcion = UtilidadConsola.leerTexto("  Descripcion: ");
             String fechaProgramadaStr = UtilidadConsola.leerTexto("  Fecha programada (dd/MM/yyyy): ");
             LocalDate fechaProgramada = LocalDate.parse(fechaProgramadaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            controladorMantenimientos.programarMantenimiento(placa, tipo, descripcion, fechaProgramada);
-            UtilidadConsola.mostrarExito("Mantenimiento programado para el vehiculo: " + placa);
+            boolean exito = controladorMantenimientos.programarMantenimiento(placa, tipo, descripcion, fechaProgramada);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Mantenimiento programado para el vehiculo: " + placa);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo programar. Verifique que el vehiculo exista y este DISPONIBLE.");
+            }
         } catch (DateTimeParseException e) {
             UtilidadConsola.mostrarError("Formato de fecha invalido. Use dd/MM/yyyy");
         } catch (Exception e) {
@@ -262,8 +277,12 @@ public class VistaVehiculos {
             }
             double costo = UtilidadConsola.leerDouble("  Costo (0 si no aplica): ");
             String observaciones = UtilidadConsola.leerTexto("  Observaciones: ");
-            controladorMantenimientos.actualizarEstadoMantenimiento(idMantenimiento, nuevoEstado, costo, observaciones, placaVehiculo);
-            UtilidadConsola.mostrarExito("Mantenimiento actualizado a estado: " + nuevoEstado);
+            boolean exito = controladorMantenimientos.actualizarEstadoMantenimiento(idMantenimiento, nuevoEstado, costo, observaciones, placaVehiculo);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Mantenimiento actualizado a estado: " + nuevoEstado);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo actualizar. Verifique que el ID exista y pertenezca al vehiculo indicado.");
+            }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al actualizar mantenimiento: " + e.getMessage());
         }

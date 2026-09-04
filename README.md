@@ -50,7 +50,7 @@ El almacenamiento y persistencia del sistema está respaldado por una base de da
 3. **`mantenimientos`**: Historial técnico individual por vehículo, tipo de servicio, fecha programada, fecha de realización, costos y estado de la orden.
 4. **`asignaciones_vehiculo_conductor`**: Registro histórico y validación de unicidad para evitar que un chofer opere más de una unidad simultáneamente.
 5. **`clientes`**: Directorio de remitentes y destinatarios (vinculación idempotente por documento de identidad).
-6. **`paquetes`**: Encomiendas con código de seguimiento único (`TRK-XXXXX`), peso en kg, dimensiones, direcciones de origen/destino y estado (`EN_BODEGA`, `ASIGNADO_A_RUTA`, `EN_TRANSITO`, `ENTREGADO`, `DEVUELTO`).
+6. **`paquetes`**: Encomiendas con código de seguimiento único (`RPX-XXXXXXXX`), peso en kg, dimensiones, direcciones de origen/destino y estado (`EN_BODEGA`, `ASIGNADO_A_RUTA`, `EN_TRANSITO`, `ENTREGADO`, `DEVUELTO`).
 7. **`historial_paquetes`**: Trazabilidad cronológica de hitos, estados históricos, descripciones y ubicaciones.
 8. **`rutas`**: Hojas de ruta diarias con código único (`RUT-XXXXX`), vehículo y conductor asignados, fecha, peso total calculado y estado de avance (`PLANIFICADA`, `EN_PROCESO`, `COMPLETADA`, `CANCELADA`).
 9. **`ruta_paquetes`**: Tabla asociativa muchos a muchos entre rutas y paquetes, con orden de parada, estado de entrega (`PENDIENTE`, `ENTREGADO`, `DEVUELTO`) y observaciones.

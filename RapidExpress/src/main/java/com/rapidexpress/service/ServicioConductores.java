@@ -144,6 +144,10 @@ public class ServicioConductores {
                 System.err.println("Error: El conductor ya tiene un vehiculo asignado activo.");
                 return false;
             }
+            if (daoConductores.vehiculoTieneAsignacionActiva(vehiculo.getId())) {
+                System.err.println("Error: El vehiculo " + placaVehiculo + " ya tiene un conductor asignado activo.");
+                return false;
+            }
 
             daoConductores.registrarAsignacion(vehiculo.getId(), conductor.getId());
             System.out.println("Vehiculo " + placaVehiculo + " asignado exitosamente al conductor " + identificacionConductor);

@@ -37,6 +37,7 @@
     - [4.2.4. Actualizar Datos de Conductor](#424-actualizar-datos-de-conductor)
     - [4.2.5. Actualizar Estado de Conductor](#425-actualizar-estado-de-conductor)
     - [4.2.6. Asignar Vehículo a Conductor](#426-asignar-vehículo-a-conductor)
+    - [4.2.7. Desasignar Vehículo de Conductor](#427-desasignar-vehículo-de-conductor)
   - [4.3. Módulo 3: Gestión de Clientes (Remitentes / Destinatarios)](#43-módulo-3-gestión-de-clientes-remitentes--destinatarios)
     - [4.3.1. Registrar / Buscar Cliente](#431-registrar--buscar-cliente)
   - [4.4. Módulo 4: Gestión de Paquetes y Envíos](#44-módulo-4-gestión-de-paquetes-y-envíos)
@@ -51,6 +52,7 @@
     - [4.5.4. Finalizar Ruta](#454-finalizar-ruta)
     - [4.5.5. Listar Rutas Activas](#455-listar-rutas-activas)
     - [4.5.6. Ver Detalle de Entregas de una Ruta](#456-ver-detalle-de-entregas-de-una-ruta)
+    - [4.5.7. Cancelar Ruta Planificada](#457-cancelar-ruta-planificada)
   - [4.6. Módulo 6: Generación de Reportes](#46-módulo-6-generación-de-reportes)
     - [4.6.1. Reporte de Entregas por Conductor en Rango de Fechas](#461-reporte-de-entregas-por-conductor-en-rango-de-fechas)
     - [4.6.2. Historial de Rutas por Vehículo](#462-historial-de-rutas-por-vehículo)
@@ -181,12 +183,12 @@ Antes de iniciar el sistema, se deben ejecutar los scripts DDL y DML situados en
    ```
 
 ### 2.3. Configuración de Credenciales (`db.properties`)
-El archivo de conexión `ConexionBD` lee los parámetros de acceso desde el archivo `db.properties` ubicado en la raíz del submódulo `RapidExpress/RapidExpress/` (al mismo nivel que `pom.xml`).
+El archivo de conexión `ConexionBD` lee los parámetros de acceso desde el archivo `db.properties` ubicado en la carpeta del proyecto Maven `RapidExpress/` (al mismo nivel que `pom.xml`).
 
 1. Copia la plantilla de ejemplo:
    ```bash
    # En Windows PowerShell
-   Copy-Item "RapidExpress/RapidExpress/db.properties.example" "RapidExpress/RapidExpress/db.properties"
+   Copy-Item "RapidExpress/db.properties.example" "RapidExpress/db.properties"
    ```
 2. Edita `db.properties` con tus credenciales reales (sin comillas alrededor de los valores):
    ```properties
@@ -201,11 +203,11 @@ El archivo de conexión `ConexionBD` lee los parámetros de acceso desde el arch
 ### 2.4. Compilación y Ejecución desde la Terminal
 
 #### Opción A: Ejecución Directa mediante Plugin de Maven (Recomendada para Desarrollo)
-Abre la terminal en la carpeta donde reside el `pom.xml` (`RapidExpress/RapidExpress`):
+Abre la terminal en la carpeta donde reside el `pom.xml` (`RapidExpress`):
 
 ```powershell
 # 1. Navegar al directorio del proyecto Maven
-cd "RapidExpress/RapidExpress"
+cd "RapidExpress"
 
 # 2. Compilar el proyecto y descargar dependencias
 mvn clean compile
@@ -254,6 +256,7 @@ java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" com.rapidexp
        ├── 4) Actualizar datos de conductor
        ├── 5) Actualizar estado de conductor
        ├── 6) Asignar vehiculo a conductor
+       ├── 7) Desasignar vehiculo de conductor
        └── 0) Volver al Menu Principal
   [3] Gestion de Clientes
        ├── 1) Registrar un nuevo cliente / busqueda
@@ -271,6 +274,7 @@ java -cp "target/RapidExpress-1.0-SNAPSHOT.jar;target/dependency/*" com.rapidexp
        ├── 4) Finalizar ruta
        ├── 5) Listar rutas activas
        ├── 6) Ver detalle de entregas de una ruta
+       ├── 7) Cancelar ruta planificada
        └── 0) Volver al Menu Principal
   [6] Reportes
        ├── 1) Generar reporte de entregas por conductor
@@ -427,6 +431,16 @@ Administra el recurso humano de transportistas, sus estados contractuales y su h
   - El vehículo debe estar `DISPONIBLE`.
   - Un conductor **no puede estar asignado a más de un vehículo simultáneamente**.
 
+#### 4.2.7. Desasignar Vehículo de Conductor
+- **Opción de Menú**: `2 -> 7`
+- **Descripción**: Cierra la asignación de vehículo activa de un conductor, dejándolo libre para asignarse a otro vehículo más adelante.
+- **Parámetros Solicitados**:
+  - `Identificacion del conductor`: Documento del conductor cuya asignación se desea cerrar.
+- **Impacto**:
+  - En `asignaciones_vehiculo_conductor`, la fila con `activo=1` para ese conductor pasa a `activo=0` y se registra `fecha_desasignacion`.
+- **Validaciones del Sistema**:
+  - El conductor debe tener una asignación activa vigente; de lo contrario, el sistema informa el error y no realiza ningún cambio.
+
 ---
 
 ### 4.3. Módulo 3: Gestión de Clientes (Remitentes / Destinatarios)
@@ -454,7 +468,7 @@ Gestiona la admisión, almacenamiento en bodega y trazabilidad individual de las
      - `Direccion de destino`: Destino final de entrega.
   2. *Datos del Remitente*: Cédula, Nombre, Teléfono, Correo, Dirección, Ciudad.
   3. *Datos del Destinatario*: Cédula, Nombre, Teléfono, Correo, Dirección, Ciudad.
-- **Generación del Tracking ID**: El sistema genera automáticamente una clave con formato `TRK-XXXXX` (donde `XXXXX` es un segmento hash hexadecimal único en mayúsculas).
+- **Generación del Tracking ID**: El sistema genera automáticamente una clave con formato `RPX-XXXXXXXX` (donde `XXXXXXXX` es un segmento hash hexadecimal único de 8 caracteres en mayúsculas).
 - **Estado Asignado**: `EN_BODEGA`.
 - **Evento de Trazabilidad**: Se registra el hito inicial en `historial_paquetes`: *"Ingresado a bodega central"*.
 
@@ -467,7 +481,7 @@ Gestiona la admisión, almacenamiento en bodega y trazabilidad individual de las
 - **Descripción**: Proporciona la auditoría histórica paso a paso del paquete desde su recepción hasta su entrega o retorno.
 - **Salida en Consola**:
   ```text
-  TRAZABILIDAD DEL PAQUETE: TRK-A1B2C
+  TRAZABILIDAD DEL PAQUETE: RPX-A1B2C3D4
   ---------------------------------------
     Fecha: 2026-09-01 08:30:00
      Evento: Ingresado a bodega central
@@ -538,15 +552,16 @@ Este módulo constituye el núcleo de la operación logística de transporte de 
 - **Descripción**: Permite al despachador reportar el desenlace de la entrega de un paquete individual mientras la ruta está activa.
 - **Parámetros**:
   - `Codigo de ruta`: Ruta a la que pertenece el paquete.
-  - `Codigo de seguimiento del paquete`: Tracking ID (ej. `TRK-A1B2C`).
+  - `Codigo de seguimiento del paquete`: Tracking ID (ej. `RPX-A1B2C3D4`).
   - `Resultado de la entrega`:
     - `[1] Entregado`: El paquete fue recibido con éxito.
     - `[2] Devuelto`: No se pudo entregar (dirección errónea, destinatario ausente, etc.).
+    - `[3] Incidencia`: Ocurrió un problema durante el intento de entrega (ej. acceso bloqueado, cliente solicitó reprogramación) que no cierra el caso.
   - `Observaciones de la entrega`: Texto libre descriptivo.
 - **Impacto**:
-  - Se actualiza `ruta_paquetes.estado_entrega` a `ENTREGADO` o `DEVUELTO`.
+  - Se actualiza `ruta_paquetes.estado_entrega` a `ENTREGADO`, `DEVUELTO` o `INCIDENCIA` según el resultado elegido.
   - Se fija la marca temporal `fecha_entrega_real`.
-  - El estado maestro del paquete pasa a `ENTREGADO` o `DEVUELTO`.
+  - El estado maestro del paquete pasa a `ENTREGADO` o `DEVUELTO` únicamente en esos dos casos; con `Incidencia` el paquete **no** cambia de estado general y permanece `EN_TRANSITO` — solo queda registrado el evento en su historial, a la espera de un nuevo intento de entrega.
   - Se inserta el evento final en el historial del paquete con la dirección y observaciones.
 
 #### 4.5.4. Finalizar Ruta
@@ -565,7 +580,19 @@ Este módulo constituye el núcleo de la operación logística de transporte de 
 
 #### 4.5.6. Ver Detalle de Entregas de una Ruta
 - **Opción de Menú**: `5 -> 6`
-- **Descripción**: Consulta pormenorizada de los paquetes asignados a una ruta particular: muestra orden de parada, tracking, estado de entrega (`PENDIENTE`, `ENTREGADO`, `DEVUELTO`), fecha estimada/real y notas de entrega.
+- **Descripción**: Consulta pormenorizada de los paquetes asignados a una ruta particular: muestra orden de parada, tracking, estado de entrega (`PENDIENTE`, `ENTREGADO`, `DEVUELTO`, `INCIDENCIA`), fecha estimada/real y notas de entrega.
+
+#### 4.5.7. Cancelar Ruta Planificada
+- **Opción de Menú**: `5 -> 7`
+- **Descripción**: Cancela una hoja de ruta que todavía no ha salido a calle, devolviendo todos sus paquetes a bodega.
+- **Parámetros Solicitados**:
+  - `Codigo de ruta`: Código de la ruta a cancelar.
+- **Restricción**: Solo aplica a rutas en estado `PLANIFICADA`. Una ruta que ya está `EN_PROCESO` o `COMPLETADA` no se puede cancelar por esta vía (para revertir una ruta activa, primero debe gestionarse mediante `Finalizar ruta`).
+- **Impacto**:
+  - Estado de la Ruta: `PLANIFICADA` -> **`CANCELADA`**.
+  - Estado de cada paquete que estaba asignado a la ruta: vuelve a `EN_BODEGA`.
+  - Trazabilidad: se registra el hito *"Ruta [código] cancelada; paquete devuelto a bodega"* para cada paquete afectado.
+  - Vehículo y conductor no se ven afectados, porque una ruta `PLANIFICADA` todavía no los había puesto `EN_RUTA`.
 
 ---
 
@@ -673,14 +700,14 @@ A continuación se describe el flujo completo para despachar un paquete real des
    - *Destinatario*: ID `10203040`, Nombre `Hospital Central`, Tel `3112223344`, Correo `suministros@hospital.org`, Dir `Carrera 43A #1-50`, Ciudad `Medellin`.
 2. **Resultado**: El sistema confirma:
    ```text
-   [OK] Paquete registrado con codigo: TRK-7B3A9
+   [OK] Paquete registrado con codigo: RPX-7B3A9C2F
    ```
 
 ### Paso 3: Crear la Hoja de Ruta Diaria
 1. Ingrese a `[5] Gestion de Rutas` -> `[1] Crear hoja de ruta`.
    - Placa del vehículo: `EXP-500`
    - Identificación del conductor: `1098765432`
-   - Paquete 1: `TRK-7B3A9`
+   - Paquete 1: `RPX-7B3A9C2F`
    - Paquete 2 (o Enter para terminar): *(Presionar Enter)*
 2. **Resultado**:
    ```text
@@ -695,12 +722,12 @@ A continuación se describe el flujo completo para despachar un paquete real des
    - Estado de la ruta: `EN_PROCESO`.
    - Vehículo `EXP-500`: pasa a `EN_RUTA`.
    - Conductor `1098765432`: pasa a `EN_RUTA`.
-   - Paquete `TRK-7B3A9`: pasa a `EN_TRANSITO`.
+   - Paquete `RPX-7B3A9C2F`: pasa a `EN_TRANSITO`.
 
 ### Paso 5: Confirmar la Entrega al Destinatario
 1. En `[5] Gestion de Rutas`, seleccione `[3] Registrar entrega de paquete`.
    - Código de ruta: `RUT-4D912`
-   - Código de seguimiento: `TRK-7B3A9`
+   - Código de seguimiento: `RPX-7B3A9C2F`
    - Resultado: Seleccionar `[1] Entregado`
    - Observaciones: `Entregado en almacén general a Dr. Perez con firma de acta`
 2. **Resultado**: Confirmación de entrega exitosa en consola.
@@ -722,7 +749,7 @@ A continuación se describe el flujo completo para despachar un paquete real des
 
 | Síntoma / Error en Terminal | Causa Raíz Probable | Procedimiento de Solución |
 | :--- | :--- | :--- |
-| `Communications link failure` o `SQLException: Access denied` | Error de credenciales, puerto o IP en `db.properties`. | 1. Verifique que el archivo `RapidExpress/RapidExpress/db.properties` exista y tenga formato clave-valor sin comillas.<br>2. Verifique la conectividad al host con `ping` o `Test-NetConnection -Port 3306`.<br>3. Valide usuario y contraseña directamente con la CLI de MySQL. |
+| `Communications link failure` o `SQLException: Access denied` | Error de credenciales, puerto o IP en `db.properties`. | 1. Verifique que el archivo `RapidExpress/db.properties` exista y tenga formato clave-valor sin comillas.<br>2. Verifique la conectividad al host con `ping` o `Test-NetConnection -Port 3306`.<br>3. Valide usuario y contraseña directamente con la CLI de MySQL. |
 | `[ERROR] Error: El peso total excede la capacidad del vehiculo` | La suma de pesos (`peso_kg`) de los paquetes asignados supera la `capacidad_maxima_kg` del vehículo seleccionado. | 1. Seleccione un vehículo con mayor capacidad disponible.<br>2. Divida los paquetes en dos o más hojas de ruta independientes. |
 | `[ERROR] No se pudo crear la hoja de ruta. Verifique que el vehiculo y conductor esten disponibles.` | El vehículo está en `EN_RUTA` o `EN_MANTENIMIENTO`, o el conductor está `EN_RUTA`, `DE_VACACIONES` o `INACTIVO`. | 1. Consulte el estado del vehículo en `1 -> 2` y del chofer en `2 -> 2`.<br>2. Finalice la ruta previa que los mantiene ocupados o asigne unidades disponibles. |
 | `Formato de fecha invalido. Use dd/MM/yyyy` | La fecha se digitó con guiones (`2026-10-15`) o en orden incorrecto (`MM/dd/yyyy`). | Ingrese estrictamente la fecha con barras diagonales en orden día/mes/año: ej. `15/10/2026`. |
@@ -733,7 +760,7 @@ A continuación se describe el flujo completo para despachar un paquete real des
 
 ## 8. Glosario de Términos
 
-- **Tracking ID (Código de Seguimiento)**: Identificador alfanumérico generado de manera unívoca para cada paquete ingresado al sistema (`TRK-XXXXX`).
+- **Tracking ID (Código de Seguimiento)**: Identificador alfanumérico generado de manera unívoca para cada paquete ingresado al sistema (`RPX-XXXXXXXX`).
 - **Hoja de Ruta**: Plan operativo diario que agrupa un vehículo, un chofer y un conjunto de órdenes de despacho (`RUT-XXXXX`).
 - **Capacidad de Carga**: Carga física máxima autorizada expresada en kilogramos que puede transportar una unidad automotriz sin comprometer la seguridad ni infringir los límites normativos.
 - **Auditoría (Audit Log)**: Mecanismo de persistencia forense en disco que registra qué usuario/proceso ejecutó qué modificación de estado y en qué momento exacto.

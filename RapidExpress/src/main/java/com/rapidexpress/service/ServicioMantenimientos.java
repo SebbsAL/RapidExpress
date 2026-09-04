@@ -61,6 +61,20 @@ public class ServicioMantenimientos {
      */
     public boolean actualizarEstadoMantenimiento(int idMantenimiento, EstadoMantenimiento nuevoEstado, double costo, String observaciones, String placaVehiculo) {
         try {
+            // Verifica que el mantenimiento realmente pertenezca al vehiculo indicado antes
+            // de tocar nada; sin esto, un error de tipeo en la placa podria liberar (DISPONIBLE)
+            // el vehiculo equivocado al completar el mantenimiento.
+            Mantenimientos mantenimiento = daoMantenimientos.obtenerPorId(idMantenimiento);
+            if (mantenimiento == null) {
+                System.err.println("Error: No se encontro el mantenimiento con id " + idMantenimiento);
+                return false;
+            }
+            Vehiculos vehiculo = servicioVehiculos.buscarVehiculoPorPlaca(placaVehiculo);
+            if (vehiculo == null || mantenimiento.getVehiculoId() != vehiculo.getId()) {
+                System.err.println("Error: El mantenimiento " + idMantenimiento + " no pertenece al vehiculo " + placaVehiculo);
+                return false;
+            }
+
             boolean actualizado = daoMantenimientos.actualizarEstadoYCostos(idMantenimiento, nuevoEstado, costo, observaciones);
             if (!actualizado) {
                 System.err.println("Error: No se encontro el mantenimiento con id " + idMantenimiento);

@@ -29,15 +29,15 @@ public class ServicioRutas {
     private final ServicioVehiculos servicioVehiculos;
     private final ServicioConductores servicioConductores;
     private final IDaoPaquetes daoPaquetes;
-    private final ServicioAuditoria servicioAuditoria;
 
+    // La auditoria de cada operacion de rutas la hace ControladorRutas (una sola vez);
+    // este Servicio ya no la duplica.
     public ServicioRutas(IDaoRutas daoRutas, ServicioVehiculos servicioVehiculos, ServicioConductores servicioConductores,
-                       IDaoPaquetes daoPaquetes, ServicioAuditoria servicioAuditoria) {
+                       IDaoPaquetes daoPaquetes) {
         this.daoRutas = daoRutas;
         this.servicioVehiculos = servicioVehiculos;
         this.servicioConductores = servicioConductores;
         this.daoPaquetes = daoPaquetes;
-        this.servicioAuditoria = servicioAuditoria;
     }
 
     /**
@@ -116,7 +116,6 @@ public class ServicioRutas {
                 daoPaquetes.registrarHistorial(h);
             }
 
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "CREACION", "Ruta creada: " + codigoRuta + " con " + paquetesSeleccionados.size() + " paquetes.", "SISTEMA");
             return codigoRuta;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al crear la hoja de ruta: " + e.getMessage());
@@ -136,8 +135,15 @@ public class ServicioRutas {
             // (el stream que llama a este metodo ya no sabe, por si solo, cual codigo era).
             if (p == null) {
                 System.err.println("Error: No se encontro el paquete con codigo " + codigo);
+                return null;
             }
-            // Devuelve el paquete encontrado, o null si no existia.
+            // Un paquete ya asignado a otra ruta, en transito, entregado o devuelto no puede
+            // volver a agregarse a una ruta nueva: solo los que siguen EN_BODEGA califican.
+            if (p.getEstado() != EstadoPaquete.EN_BODEGA) {
+                System.err.println("Error: El paquete " + codigo + " no esta EN_BODEGA (estado actual: " + p.getEstado() + "), no se puede agregar a una ruta.");
+                return null;
+            }
+            // Devuelve el paquete encontrado y disponible.
             return p;
         } catch (SQLException e) {
             // Un error real de base de datos se reporta igual que un paquete no encontrado,
@@ -177,7 +183,6 @@ public class ServicioRutas {
             }
 
             daoRutas.actualizarEstado(codigoRuta, EstadoRuta.CANCELADA);
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "CANCELACION", "Ruta cancelada: " + codigoRuta + " (" + paquetesDeRuta.size() + " paquetes devueltos a bodega)", "SISTEMA");
             return true;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al cancelar la ruta: " + e.getMessage());
@@ -218,7 +223,6 @@ public class ServicioRutas {
                 daoPaquetes.registrarHistorial(h);
             }
 
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "INICIO", "Ruta en proceso: " + codigoRuta, "SISTEMA");
             return true;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al iniciar la ruta: " + e.getMessage());
@@ -271,7 +275,6 @@ public class ServicioRutas {
             h.setUbicacion(ubicacion);
             daoPaquetes.registrarHistorial(h);
 
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "ENTREGA", "Entrega registrada para paquete " + codigoSeguimiento + ": " + estadoEntrega, "SISTEMA");
             return true;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al registrar la entrega: " + e.getMessage());
@@ -300,7 +303,6 @@ public class ServicioRutas {
             servicioVehiculos.actualizarEstadoVehiculo(vehiculo.getPlaca(), EstadoVehiculo.DISPONIBLE);
             servicioConductores.actualizarEstadoConductor(conductor.getNumeroIdentificacion(), EstadoConductor.ACTIVO);
 
-            servicioAuditoria.registrarOperacionCritica("RUTAS", "FIN", "Ruta finalizada: " + codigoRuta, "SISTEMA");
             return true;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al finalizar la ruta: " + e.getMessage());

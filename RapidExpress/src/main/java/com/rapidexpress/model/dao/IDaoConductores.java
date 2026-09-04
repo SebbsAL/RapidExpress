@@ -23,6 +23,8 @@ public interface IDaoConductores {
     List<Conductores> obtenerTodos() throws SQLException;
     /** Indica si el conductor tiene una asignación de vehículo activa. */
     boolean tieneAsignacionActiva(String identificacionConductor) throws SQLException;
+    /** Indica si el vehículo ya tiene un conductor con asignación activa. */
+    boolean vehiculoTieneAsignacionActiva(int idVehiculo) throws SQLException;
     /** Registra la asignación de un vehículo a un conductor. */
     void registrarAsignacion(int idVehiculo, int idConductor) throws SQLException;
     /** Cierra (desactiva) la asignación de vehículo activa de un conductor. */

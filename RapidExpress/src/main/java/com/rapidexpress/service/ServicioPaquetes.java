@@ -16,12 +16,12 @@ import java.util.UUID;
 public class ServicioPaquetes {
 
     private final IDaoPaquetes daoPaquetes;
-    private final ServicioAuditoria servicioAuditoria;
     private final ServicioClientes servicioClientes;
 
-    public ServicioPaquetes(IDaoPaquetes daoPaquetes, ServicioAuditoria servicioAuditoria, ServicioClientes servicioClientes) {
+    // La auditoria de "registro de paquete" la hace ControladorPaquetes (una sola vez);
+    // este Servicio ya no la duplica.
+    public ServicioPaquetes(IDaoPaquetes daoPaquetes, ServicioClientes servicioClientes) {
         this.daoPaquetes = daoPaquetes;
-        this.servicioAuditoria = servicioAuditoria;
         this.servicioClientes = servicioClientes;
     }
 
@@ -87,8 +87,6 @@ public class ServicioPaquetes {
             historial.setDescripcionEvento("Ingresado en Bodega Central");
             historial.setUbicacion("Bodega Central");
             daoPaquetes.registrarHistorial(historial);
-
-            servicioAuditoria.registrarOperacionCritica("PAQUETES", "REGISTRO", "Paquete registrado: " + trackingId, "SISTEMA");
 
             return trackingId;
         } catch (SQLException e) {
