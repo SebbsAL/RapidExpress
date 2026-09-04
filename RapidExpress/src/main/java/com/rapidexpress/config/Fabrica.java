@@ -8,6 +8,7 @@ import com.rapidexpress.controller.ControladorPaquetes;
 import com.rapidexpress.controller.ControladorReportes;
 import com.rapidexpress.controller.ControladorRutas;
 import com.rapidexpress.controller.ControladorVehiculos;
+import com.rapidexpress.model.dao.DaoAuditoria;
 import com.rapidexpress.model.dao.DaoClientes;
 import com.rapidexpress.model.dao.DaoConductores;
 import com.rapidexpress.model.dao.DaoMantenimientos;
@@ -42,8 +43,9 @@ public final class Fabrica {
     private static final DaoRutas DAO_RUTAS = new DaoRutas();
     private static final DaoMantenimientos DAO_MANTENIMIENTOS = new DaoMantenimientos();
     private static final DaoReportes DAO_REPORTES = new DaoReportes();
+    private static final DaoAuditoria DAO_AUDITORIA = new DaoAuditoria();
 
-    private static final ServicioAuditoria SERVICIO_AUDITORIA = new ServicioAuditoria();
+    private static final ServicioAuditoria SERVICIO_AUDITORIA = new ServicioAuditoria(DAO_AUDITORIA);
     private static final ServicioVehiculos SERVICIO_VEHICULOS = new ServicioVehiculos(DAO_VEHICULOS);
     private static final ServicioConductores SERVICIO_CONDUCTORES = new ServicioConductores(DAO_CONDUCTORES, SERVICIO_VEHICULOS);
     private static final ServicioClientes SERVICIO_CLIENTES = new ServicioClientes(DAO_CLIENTES);

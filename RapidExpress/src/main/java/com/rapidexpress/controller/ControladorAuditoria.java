@@ -4,17 +4,18 @@
  */
 package com.rapidexpress.controller;
 
+import com.rapidexpress.model.dao.DaoAuditoria;
 import com.rapidexpress.service.ServicioAuditoria;
 
 /**
  *
- * @author sergi 
+ * @author sergi
  */
 public class ControladorAuditoria {
     private final ServicioAuditoria servicioAuditoria;
 
     public ControladorAuditoria() {
-        this(new ServicioAuditoria());
+        this(new ServicioAuditoria(new DaoAuditoria()));
     }
 
     public ControladorAuditoria(ServicioAuditoria servicioAuditoria) {
