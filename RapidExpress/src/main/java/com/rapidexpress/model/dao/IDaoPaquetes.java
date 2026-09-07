@@ -30,6 +30,7 @@ public interface IDaoPaquetes {
     /** Busca paquetes que llevan mas de N dias sin actualizarse. */
     List<Paquetes> buscarPorDiasSinActualizar(int diasSinActualizar) throws SQLException;
     
+    /** Cuenta los envios de cada remitente, solo de los que tienen 3 o mas. */
     Map<String, Integer> contarPedidosPorRemitente() throws SQLException;
 
     /** Cuenta cuántos paquetes ha enviado (como remitente) el cliente con esa identificación. */

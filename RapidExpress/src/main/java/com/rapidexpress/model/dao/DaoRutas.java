@@ -75,6 +75,7 @@ public class DaoRutas implements IDaoRutas {
         return lista;
     }
     
+    /** Obtiene todas las rutas en estado COMPLETADA. */
     public List<Rutas> detallesRutasCompletadas() throws SQLException{
         List<Rutas> lista = new ArrayList<>();
         String sql = "SELECT * FROM rutas WHERE estado='COMPLETADA'";

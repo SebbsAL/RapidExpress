@@ -64,18 +64,37 @@ public class ControladorPaquetes {
         return servicioPaquetes.listarPaquetesEnBodega();
     }
     
+    /**
+     * Lista los paquetes que llevan N o mas dias sin actualizarse
+     * @param diasMora Cantidad minima de dias sin actualizacion
+     * @return Lista de paquetes en mora
+     */
     public List<Paquetes> buscarPorDiasMora(int diasMora){
         return servicioPaquetes.consultarPorDiasDemora(diasMora);
     }
 
+    /**
+     * Obtiene cuantos paquetes ha enviado cada remitente con 3 o mas envios
+     * @return Mapa de nombre del remitente a cantidad de envios
+     */
     public Map<String, Integer> contarPedidosPorRemitente(){
         return servicioPaquetes.contarPedidosPorRemitente();
     }
 
+    /**
+     * Cuenta los paquetes que un cliente ha enviado como remitente
+     * @param identificacion Numero de identificacion del cliente
+     * @return Cantidad de paquetes enviados
+     */
     public int contarEnviados(String identificacion){
         return servicioPaquetes.contarEnviados(identificacion);
     }
 
+    /**
+     * Cuenta los paquetes que un cliente ha recibido como destinatario
+     * @param identificacion Numero de identificacion del cliente
+     * @return Cantidad de paquetes recibidos
+     */
     public int contarRecibidos(String identificacion){
         return servicioPaquetes.contarRecibidos(identificacion);
     }

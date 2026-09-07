@@ -333,6 +333,12 @@ public class ServicioRutas {
         }
     }
     
+    /**
+     * Calcula, sobre las rutas COMPLETADAS, el peso promedio transportado y la
+     * duracion promedio en minutos. Retorna {pesoPromedio, duracionPromedio,
+     * cantidadDeRutas}: el tercer valor permite a la Vista distinguir "no hay
+     * rutas" de "el promedio dio cero".
+     */
     public double[] calcularPromediosRutasCompletadas(){
         try{
         

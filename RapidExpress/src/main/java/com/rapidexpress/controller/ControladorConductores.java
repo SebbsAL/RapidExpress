@@ -74,6 +74,9 @@ public class ControladorConductores {
         return exito;
     }
     
+    /**
+     * Lista los conductores que actualmente no tienen ningun vehiculo asignado.
+     */
     public List<Conductores> conductoresSinVehiculoAsignado(){
         return servicioConductores.conductoresSinVehiculoAsignado();
     }

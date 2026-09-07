@@ -94,6 +94,9 @@ public class ServicioMantenimientos {
         }
     }
     
+    /**
+     * Obtiene el costo total en mantenimientos completados de cada vehiculo.
+     */
     public Map<String, Double> totalGastadoEnMantenimientos(){
         try {
             return daoMantenimientos.totalGastadoEnMantenimientos();

@@ -19,5 +19,6 @@ public interface IDaoMantenimientos {
     /** Obtiene el historial de mantenimientos de un vehículo por su placa. */
     List<Mantenimientos> obtenerPorPlacaVehiculo(String placa) throws SQLException;
     
+    /** Suma el costo de los mantenimientos COMPLETADOS de cada vehiculo. */
     Map<String, Double> totalGastadoEnMantenimientos()throws SQLException;
 }

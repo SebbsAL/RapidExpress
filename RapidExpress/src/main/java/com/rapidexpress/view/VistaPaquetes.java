@@ -207,6 +207,9 @@ public class VistaPaquetes {
     
     
 
+    /**
+     * Muestra los paquetes que llevan N o mas dias sin actualizarse
+     */
     private void consultarPaqueteSinXdiasSinActualizar() {
         System.out.println("Consultar paquetes que llevan X dias sin actualizarse");
         System.out.println("-------------------------------------------------------");
@@ -232,6 +235,9 @@ public class VistaPaquetes {
         UtilidadConsola.pausar();
     }
     
+    /**
+     * Muestra los remitentes que han enviado 3 o mas paquetes, con su total
+     */
     private void contarPedidosPorRemitente(){
         System.out.println("----------------------------------------------------------------");
         System.out.println("Lista de remitentes con mas de 3 envios");
@@ -252,6 +258,9 @@ public class VistaPaquetes {
         UtilidadConsola.pausar();
     }
 
+    /**
+     * Muestra cuantos paquetes ha enviado y recibido un cliente, y el total
+     */
     private void consultarEnviadosYRecibidos() {
         System.out.println("\nCONSULTAR PAQUETES ENVIADOS Y RECIBIDOS POR CLIENTE");
         System.out.println("---------------------------------------");

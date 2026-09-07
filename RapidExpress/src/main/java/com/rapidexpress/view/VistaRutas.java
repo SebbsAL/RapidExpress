@@ -291,6 +291,9 @@ public class VistaRutas {
         UtilidadConsola.pausar();
     }
     
+    /**
+     * Muestra el peso y la duracion promedio de las rutas completadas
+     */
     private void calcularPromedioRutasCompletadas(){
         try{
         double[] promTiempoYPeso = controladorRutas.calcularPromedioRutasCompletadas();    

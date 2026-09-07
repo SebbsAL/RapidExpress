@@ -102,6 +102,10 @@ public class ControladorRutas {
         return servicioRutas.obtenerDetalleEntregas(codigoRuta);
     }
     
+    /**
+     * Calcula el peso y la duracion promedio de las rutas completadas
+     * @return Arreglo con {pesoPromedio, duracionPromedioMinutos, cantidadDeRutas}
+     */
     public double[] calcularPromedioRutasCompletadas(){
         return servicioRutas.calcularPromediosRutasCompletadas();
     }

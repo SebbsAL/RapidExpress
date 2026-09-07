@@ -173,6 +173,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         return lista;
     }
     
+    /** Busca los paquetes cuya ultima actualizacion tiene N o mas dias de antiguedad. */
     public List<Paquetes> buscarPorDiasSinActualizar(int diasSinActualizar) throws SQLException{
         String sql = "SELECT * FROM paquetes WHERE fecha_actualizacion <= NOW() - INTERVAL ? DAY";
         List<Paquetes> lista = new ArrayList<>();
@@ -186,6 +187,7 @@ public class DaoPaquetes implements IDaoPaquetes {
     }
 
     
+    /** Cuenta los envios de cada remitente, solo de los que tienen 3 o mas. */
     public Map<String, Integer> contarPedidosPorRemitente() throws SQLException {
         String sql = " SELECT c.nombre_completo, COUNT(*) AS total FROM paquetes p JOIN clientes c ON p.remitente_id = c.id GROUP BY c.id HAVING COUNT(*) >= 3";
         LinkedHashMap<String, Integer> mapa = new LinkedHashMap<>();

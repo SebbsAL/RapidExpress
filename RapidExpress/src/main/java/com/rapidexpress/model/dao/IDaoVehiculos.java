@@ -24,7 +24,8 @@ public interface IDaoVehiculos {
     /** Obtiene todos los vehículos registrados. */
     List<Vehiculos> obtenerTodos() throws SQLException;
     
+    /** Obtiene los vehiculos DISPONIBLES con capacidad suficiente para una carga dada. */
     List<Vehiculos> ListarVehiculoPorAptitudes(double kg) throws SQLException;
-    
+    /** Cuenta cuantos vehiculos hay en cada estado. */
     Map<String, Integer> ContabilizarEstados() throws SQLException;
 }

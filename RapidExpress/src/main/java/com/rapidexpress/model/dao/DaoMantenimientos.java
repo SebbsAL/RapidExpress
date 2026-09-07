@@ -76,6 +76,7 @@ public class DaoMantenimientos implements IDaoMantenimientos {
         return lista;
     }
     
+    /** Suma el costo de los mantenimientos COMPLETADOS de cada vehiculo, por placa. */
     public Map<String, Double> totalGastadoEnMantenimientos()throws SQLException{
         String sql = "SELECT vh.placa, SUM(mt.costo) AS total from vehiculos vh JOIN mantenimientos mt on vh.id = mt.vehiculo_id WHERE mt.estado='COMPLETADO' GROUP BY vh.placa;";
         LinkedHashMap<String, Double> gastoPorPlaca = new LinkedHashMap<>();

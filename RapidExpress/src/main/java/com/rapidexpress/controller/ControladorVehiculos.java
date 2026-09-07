@@ -75,10 +75,21 @@ public class ControladorVehiculos {
         return servicioVehiculos.buscarVehiculoPorPlaca(placa);
     }
     
+    /**
+     * Lista los vehiculos disponibles que pueden transportar la carga indicada.
+     *
+     * @param kg Peso de la carga en kilogramos
+     * @return Lista de vehiculos DISPONIBLES con capacidad suficiente
+     */
     public List<Vehiculos> ListarVehiculoPorAptitudes(double kg){
         return servicioVehiculos.ListarVehiculoPorAptitudes(kg);
     }
-    
+
+    /**
+     * Obtiene el resumen de cuantos vehiculos hay en cada estado.
+     *
+     * @return Mapa de estado a cantidad de vehiculos
+     */
     public Map<String, Integer> ContabilizarEstados(){
         return servicioVehiculos.ContabilizarEstados();
     }

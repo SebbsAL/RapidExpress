@@ -123,6 +123,9 @@ public class ServicioPaquetes {
         }
     }
     
+    /**
+     * Consulta los paquetes que llevan N o mas dias sin recibir una actualizacion.
+     */
     public List<Paquetes> consultarPorDiasDemora(int diasDemora){
         try {
             return daoPaquetes.buscarPorDiasSinActualizar(diasDemora);
@@ -132,6 +135,9 @@ public class ServicioPaquetes {
         }
     }
     
+    /**
+     * Obtiene cuantos paquetes ha enviado cada remitente con 3 o mas envios.
+     */
     public Map<String, Integer> contarPedidosPorRemitente(){
         try {
             return daoPaquetes.contarPedidosPorRemitente();

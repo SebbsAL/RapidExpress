@@ -56,6 +56,11 @@ public class ControladorMantenimientos {
         return serviciosMantenimientos.consultarHistorialMantenimientosPorVehiculo(placa);
     }
     
+    /**
+     * Obtiene el costo total en mantenimientos completados de cada vehiculo.
+     *
+     * @return Mapa de placa del vehiculo al total gastado
+     */
     public Map<String, Double> totalGastadoEnMantenimientos(){
         return serviciosMantenimientos.totalGastadoEnMantenimientos();
     }

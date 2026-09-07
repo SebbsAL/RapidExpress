@@ -26,5 +26,6 @@ public interface IDaoRutas {
     /** Obtiene el detalle de entregas de una ruta. */
     List<RutaPaquetes> obtenerDetalleEntregas(int rutaId) throws SQLException;
     
+    /** Obtiene todas las rutas en estado COMPLETADA. */
     List<Rutas> detallesRutasCompletadas() throws SQLException;
 }

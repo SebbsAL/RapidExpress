@@ -106,6 +106,9 @@ public class ServicioVehiculos {
         }
     }
     
+    /**
+     * Lista los vehiculos DISPONIBLES con capacidad suficiente para la carga indicada.
+     */
     public List<Vehiculos> ListarVehiculoPorAptitudes(double kg){
         try{
             return daoVehiculos.ListarVehiculoPorAptitudes(kg);
@@ -115,6 +118,9 @@ public class ServicioVehiculos {
         }
     }
     
+    /**
+     * Obtiene el resumen de cuantos vehiculos hay en cada estado.
+     */
     public Map<String, Integer> ContabilizarEstados(){
         try {
             return daoVehiculos.ContabilizarEstados();

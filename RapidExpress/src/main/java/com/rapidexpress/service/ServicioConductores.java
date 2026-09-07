@@ -81,6 +81,9 @@ public class ServicioConductores {
         }
     }
     
+    /**
+     * Lista los conductores que actualmente no tienen ningun vehiculo asignado.
+     */
     public List<Conductores> conductoresSinVehiculoAsignado(){
         try {
             List<Conductores> conductoresSinVehAsignado = daoConductores.conductoresSinVehiculoAsignado();

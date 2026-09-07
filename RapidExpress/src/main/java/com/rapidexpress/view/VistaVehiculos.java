@@ -335,6 +335,9 @@ public class VistaVehiculos {
         UtilidadConsola.pausar();
     }
     
+    /**
+     * Muestra los vehiculos disponibles que soportan un peso de carga dado
+     */
     private void ListarVehiculoPorAptitudes(){
         System.out.println("Buscar vehiculos disponibles segun el peso maximo disponible");
         double kgg = UtilidadConsola.leerDouble("Ingrese el peso que necesita cargar: ");
@@ -364,6 +367,9 @@ public class VistaVehiculos {
         }
     }
     
+    /**
+     * Muestra cuantos vehiculos hay en cada estado
+     */
     private void ContabilizarEstados(){
         System.out.println("Disponibilidad de los vehiculos de la empresa: ");
         try {
@@ -378,6 +384,9 @@ public class VistaVehiculos {
         }
     }
     
+    /**
+     * Muestra el costo total de mantenimientos completados de cada vehiculo
+     */
     private void totalGastadoEnMantenimientos(){
         System.out.println("-------------- Total gastado por mantenimientos --------------");
         try {

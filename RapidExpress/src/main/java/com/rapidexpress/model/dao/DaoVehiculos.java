@@ -98,6 +98,7 @@ public class DaoVehiculos implements IDaoVehiculos {
         return lista;
     }
     
+    /** Obtiene los vehiculos DISPONIBLES que soportan la carga indicada. */
     public List<Vehiculos> ListarVehiculoPorAptitudes(double kg) throws SQLException{
         String sql = "SELECT * FROM vehiculos WHERE estado = 'DISPONIBLE' AND capacidad_maxima_kg>=? ORDER BY capacidad_maxima_kg DESC";
         List<Vehiculos> lista = new ArrayList<>();
@@ -111,6 +112,7 @@ public class DaoVehiculos implements IDaoVehiculos {
     }
     
     
+    /** Cuenta cuantos vehiculos hay en cada estado. */
     public Map<String, Integer> ContabilizarEstados() throws SQLException{
         String sql = "SELECT estado, COUNT(*) AS total from vehiculos GROUP BY estado";
         LinkedHashMap<String, Integer> vehiculosDisponibles = new LinkedHashMap<>();

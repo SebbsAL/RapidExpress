@@ -119,6 +119,9 @@ public class VistaConductores {
         UtilidadConsola.pausar();
     }
         
+    /**
+     * Muestra los conductores que no tienen ningun vehiculo asignado
+     */
     private void conductoresSinVehiculoAsignado(){
         System.out.println("\nCONDUCTORES SIN VEHICULO ASIGNADO");
         System.out.println("------------------------------------------");

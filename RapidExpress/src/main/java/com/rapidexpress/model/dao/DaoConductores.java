@@ -127,6 +127,7 @@ public class DaoConductores implements IDaoConductores {
         return false;
     }
     
+    /** Obtiene los conductores sin asignacion de vehiculo activa (LEFT JOIN sin match). */
     public List<Conductores> conductoresSinVehiculoAsignado() throws SQLException{
         List<Conductores> conductores = new ArrayList<>();
         String sql = "SELECT c.* FROM conductores c LEFT JOIN asignaciones_vehiculo_conductor a ON a.conductor_id = c.id AND a.activo = 1 WHERE a.conductor_id IS NULL ";

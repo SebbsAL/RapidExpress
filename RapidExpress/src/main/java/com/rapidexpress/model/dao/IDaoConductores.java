@@ -30,5 +30,6 @@ public interface IDaoConductores {
     /** Cierra (desactiva) la asignación de vehículo activa de un conductor. */
     boolean desasignarVehiculo(String identificacionConductor) throws SQLException;
     
+    /** Obtiene los conductores que no tienen ninguna asignacion de vehiculo activa. */
     List<Conductores> conductoresSinVehiculoAsignado() throws SQLException;
 }
