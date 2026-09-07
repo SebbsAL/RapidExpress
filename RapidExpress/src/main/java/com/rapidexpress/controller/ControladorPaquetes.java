@@ -6,6 +6,7 @@ package com.rapidexpress.controller;
 import java.util.List;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
+import com.rapidexpress.model.entity.ResumenCategoriaPeso;
 import com.rapidexpress.service.ServicioPaquetes;
 import java.util.Map;
 /**
@@ -97,5 +98,13 @@ public class ControladorPaquetes {
      */
     public int contarRecibidos(String identificacion){
         return servicioPaquetes.contarRecibidos(identificacion);
+    }
+    
+    /**
+     * Clasifica los paquetes en bodega por rango de peso
+     * @return Lista con la cantidad y el peso total de cada categoria
+     */
+    public List<ResumenCategoriaPeso> categorizarPaquetesPorPeso(){
+        return servicioPaquetes.categorizarPaquetesPorPeso();
     }
 }

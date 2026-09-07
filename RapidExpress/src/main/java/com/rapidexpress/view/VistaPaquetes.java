@@ -7,6 +7,7 @@ import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.HistorialPaquetes;
+import com.rapidexpress.model.entity.ResumenCategoriaPeso;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,7 +33,8 @@ public class VistaPaquetes {
             "Listar paquetes en bodega",
             "Consultar paquetes que llevan X dias sin actualizarse",
             "Listar remitentes con mas de 3 envios",
-            "Consultar paquetes enviados y recibidos por cliente"
+            "Consultar paquetes enviados y recibidos por cliente",
+            "Consultar paquetes categorizados por su peso"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE PAQUETES", opciones);
@@ -57,6 +59,9 @@ public class VistaPaquetes {
                     break;
                 case 7:
                     consultarEnviadosYRecibidos();
+                    break;
+                case 8:
+                    categorizarPaquetesPorPeso();
                     break;
                 case 0:
                     return;
@@ -275,6 +280,27 @@ public class VistaPaquetes {
             UtilidadConsola.mostrarExito("Consulta realizada exitosamente");
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al consultar: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    /**
+     * Muestra los paquetes en bodega agrupados por rango de peso, con la
+     * cantidad y el peso total de cada categoria
+     */
+    private void categorizarPaquetesPorPeso(){
+        System.out.println("\nPAQUETES EN BODEGA POR CATEGORIA DE PESO");
+        System.out.println("---------------------------------------");
+        try{
+            List<ResumenCategoriaPeso> categorizarPeso = controladorPaquetes.categorizarPaquetesPorPeso();
+            System.out.printf("%-12s %-10s %-10s%n", "CATEGORIA", "CANTIDAD", "PESO TOTAL");
+            System.out.println("");
+            for (ResumenCategoriaPeso r : categorizarPeso) {
+                System.out.printf("%-12s %-10d %-10.2f kg%n",
+                r.getCategoria(), r.getCantidad(), r.getPesoTotal());
+            }
+        }catch(Exception e){
+            UtilidadConsola.mostrarError("Error al categorizar: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }

@@ -5,12 +5,14 @@ import com.rapidexpress.model.entity.EstadoPaquete;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.Clientes;
 import com.rapidexpress.model.dao.IDaoPaquetes;
+import com.rapidexpress.model.entity.ResumenCategoriaPeso;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Servicio de gestión de paquetes.
@@ -179,6 +181,28 @@ public class ServicioPaquetes {
             System.err.println("Error de base de datos al listar paquetes en bodega: " + e.getMessage());
             return new ArrayList<>();
         }
+    }
+    
+    /**
+     * Clasifica los paquetes en bodega en tres rangos de peso (ligeros, medianos
+     * y pesados) y devuelve, por cada rango, cuantos hay y cuanto pesan en total.
+     * Los umbrales son reglas de negocio, no columnas de la BD: por eso el
+     * calculo se hace con Streams en Java y no con una consulta nueva.
+     */
+    public List<ResumenCategoriaPeso> categorizarPaquetesPorPeso(){
+        List<Paquetes> enBodega = listarPaquetesEnBodega();
+        List<ResumenCategoriaPeso> resumen = new ArrayList<>();
+
+        List<Paquetes> ligeros = enBodega.stream().filter(p -> p.getPesoKg() < 5).collect(Collectors.toList());
+        resumen.add(new ResumenCategoriaPeso("Ligeros", ligeros.size(), ligeros.stream().mapToDouble(p -> p.getPesoKg()).sum()));
+
+        List<Paquetes> medianos = enBodega.stream().filter(p -> p.getPesoKg() >= 5 ).filter(p ->  p.getPesoKg()<= 20).collect(Collectors.toList());
+        resumen.add(new ResumenCategoriaPeso("Medianos", medianos.size(), medianos.stream().mapToDouble(p -> p.getPesoKg()).sum()));
+
+        List<Paquetes> pesados = enBodega.stream().filter(p -> p.getPesoKg() > 20).collect(Collectors.toList());
+        resumen.add(new ResumenCategoriaPeso("Pesados", pesados.size(), pesados.stream().mapToDouble(p -> p.getPesoKg()).sum()));
+
+        return resumen;
     }
 
     /**
