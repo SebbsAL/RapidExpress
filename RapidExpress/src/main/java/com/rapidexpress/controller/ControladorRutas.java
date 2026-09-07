@@ -101,4 +101,8 @@ public class ControladorRutas {
     public List<RutaPaquetes> obtenerDetalleEntregas(String codigoRuta) {
         return servicioRutas.obtenerDetalleEntregas(codigoRuta);
     }
+    
+    public double[] calcularPromedioRutasCompletadas(){
+        return servicioRutas.calcularPromediosRutasCompletadas();
+    }
 }

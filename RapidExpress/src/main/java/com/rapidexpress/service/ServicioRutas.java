@@ -14,8 +14,10 @@ import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.dao.IDaoRutas;
 import com.rapidexpress.model.dao.IDaoPaquetes;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -189,7 +191,7 @@ public class ServicioRutas {
             return false;
         }
     }
-
+    
     /**
      * Inicia una ruta planificada y pone en tránsito vehículo, conductor y paquetes.
      */
@@ -328,6 +330,21 @@ public class ServicioRutas {
         } catch (SQLException e) {
             System.err.println("Error de base de datos al obtener detalle de entregas: " + e.getMessage());
             return new ArrayList<>();
+        }
+    }
+    
+    public double[] calcularPromediosRutasCompletadas(){
+        try{
+        
+        List<Rutas> rutasCompletadas = daoRutas.detallesRutasCompletadas();
+        double pesoPromedio = rutasCompletadas.stream().mapToDouble(ruta -> ruta.getPesoTotalAsignadoKg()).average().orElse(0);
+        double duracionPromedio = rutasCompletadas.stream().mapToDouble(ruta -> Duration.between(ruta.getHoraInicio(), ruta.getHoraFin()).toMinutes()).average().orElse(0);
+        double[] pesoYduracionPromedio = {pesoPromedio,duracionPromedio,rutasCompletadas.size()};
+        return pesoYduracionPromedio;
+        }catch(SQLException e){
+            System.err.println("Error de base de datos al obtener detalle de rutas completadas: " + e.getMessage());
+            double[] pesoYduracionPromedio={0,0,0};
+            return pesoYduracionPromedio;
         }
     }
 

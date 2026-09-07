@@ -7,7 +7,9 @@ import com.rapidexpress.model.entity.Clientes;
 import com.rapidexpress.model.dao.IDaoPaquetes;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -120,6 +122,44 @@ public class ServicioPaquetes {
             return new ArrayList<>();
         }
     }
+    
+    public List<Paquetes> consultarPorDiasDemora(int diasDemora){
+        try {
+            return daoPaquetes.buscarPorDiasSinActualizar(diasDemora);
+        } catch (Exception e) {
+            System.err.println("Error de base de datos al consultar: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+    
+    public Map<String, Integer> contarPedidosPorRemitente(){
+        try {
+            return daoPaquetes.contarPedidosPorRemitente();
+        } catch (Exception e) {
+            System.err.println("Error de base de datos al consultar: " + e.getMessage());
+            return new LinkedHashMap<>();
+        }
+    }
+
+    /** Cuenta cuántos paquetes ha enviado (remitente) un cliente. */
+    public int contarEnviados(String identificacion) {
+        try {
+            return daoPaquetes.contarEnviadosPorIdentificacion(identificacion);
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al contar paquetes enviados: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /** Cuenta cuántos paquetes ha recibido (destinatario) un cliente. */
+    public int contarRecibidos(String identificacion) {
+        try {
+            return daoPaquetes.contarRecibidosPorIdentificacion(identificacion);
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al contar paquetes recibidos: " + e.getMessage());
+            return 0;
+        }
+    }
 
     /**
      * Lista los paquetes que actualmente están en estado EN_BODEGA.
@@ -162,4 +202,6 @@ public class ServicioPaquetes {
         double largo = Double.parseDouble(partes[2].trim());
         return new double[]{alto, ancho, largo};
     }
+    
+    
 }

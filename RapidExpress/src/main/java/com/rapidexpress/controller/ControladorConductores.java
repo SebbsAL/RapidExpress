@@ -73,6 +73,10 @@ public class ControladorConductores {
         }
         return exito;
     }
+    
+    public List<Conductores> conductoresSinVehiculoAsignado(){
+        return servicioConductores.conductoresSinVehiculoAsignado();
+    }
 
     /**
      * Desasigna el vehículo activo de un conductor y deja constancia en la auditoría.

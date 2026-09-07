@@ -7,7 +7,10 @@ import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.HistorialPaquetes;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 /**
  * Vista para gestion de paquetes
  * @author Sebastian
@@ -26,7 +29,10 @@ public class VistaPaquetes {
             "Registrar nuevo paquete",
             "Buscar paquete por tracking",
             "Consultar trazabilidad de paquete",
-            "Listar paquetes en bodega"
+            "Listar paquetes en bodega",
+            "Consultar paquetes que llevan X dias sin actualizarse",
+            "Listar remitentes con mas de 3 envios",
+            "Consultar paquetes enviados y recibidos por cliente"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE PAQUETES", opciones);
@@ -42,6 +48,15 @@ public class VistaPaquetes {
                     break;
                 case 4:
                     listarPaquetesEnBodega();
+                    break;
+                case 5:
+                    consultarPaqueteSinXdiasSinActualizar();
+                    break;
+                case 6:
+                    contarPedidosPorRemitente();
+                    break;
+                case 7:
+                    consultarEnviadosYRecibidos();
                     break;
                 case 0:
                     return;
@@ -186,6 +201,71 @@ public class VistaPaquetes {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al listar paquetes: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    
+
+    private void consultarPaqueteSinXdiasSinActualizar() {
+        System.out.println("Consultar paquetes que llevan X dias sin actualizarse");
+        System.out.println("-------------------------------------------------------");
+        try {
+            int dias = UtilidadConsola.leerEntero("Ingrese cuantos dias de no actualizarse quiere consultar: ");
+            List<Paquetes> paquetesMora= controladorPaquetes.buscarPorDiasMora(dias);
+            if (paquetesMora != null && !paquetesMora.isEmpty()) {
+                System.out.println("Paquetes con "+dias+" de no recibir actualizacion");
+                System.out.println("-----------------------------------------------------");
+                for (Paquetes paquetes : paquetesMora) {
+                    System.out.println("\n--------------------------------------------------------------");
+                    System.out.println("Codigo: "+paquetes.getCodigoSeguimiento());
+                    System.out.println("Estado: "+paquetes.getEstado());
+                    System.out.println("Ultima actualizacion: "+paquetes.getFechaActualizacion());
+                    System.out.println("--------------------------------------------------------------");
+                }
+            }else{
+                System.out.println("No hay ningun paquete sin recibir actualizacion hace "+ dias+" dias");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al listar paquetes: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    private void contarPedidosPorRemitente(){
+        System.out.println("----------------------------------------------------------------");
+        System.out.println("Lista de remitentes con mas de 3 envios");
+        try {
+            Map<String, Integer> mapa = controladorPaquetes.contarPedidosPorRemitente();
+            if (mapa != null && !mapa.isEmpty()) {
+                mapa.forEach((nombre,pedidos)->{
+                    System.out.println("\n----------------------------------------");
+                    System.out.println("Nombre: "+nombre);
+                    System.out.println("Cantidad de pedidos: "+pedidos);
+                });
+            }else{
+                System.out.println("No se encontraron remitentes");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al buscar remitentes: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+
+    private void consultarEnviadosYRecibidos() {
+        System.out.println("\nCONSULTAR PAQUETES ENVIADOS Y RECIBIDOS POR CLIENTE");
+        System.out.println("---------------------------------------");
+        try {
+            String identificacion = UtilidadConsola.leerTextoObligatorio("  Numero de identificacion del cliente: ");
+            int enviados = controladorPaquetes.contarEnviados(identificacion);
+            int recibidos = controladorPaquetes.contarRecibidos(identificacion);
+            int total = enviados + recibidos;
+            System.out.println("\n  Enviados: " + enviados);
+            System.out.println("  Recibidos: " + recibidos);
+            System.out.println("  Total: " + total);
+            UtilidadConsola.mostrarExito("Consulta realizada exitosamente");
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }

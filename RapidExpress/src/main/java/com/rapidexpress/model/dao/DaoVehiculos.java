@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 /**
  * Implementación JDBC del acceso a datos de Vehiculos.
  *
@@ -96,6 +98,31 @@ public class DaoVehiculos implements IDaoVehiculos {
         return lista;
     }
     
+    public List<Vehiculos> ListarVehiculoPorAptitudes(double kg) throws SQLException{
+        String sql = "SELECT * FROM vehiculos WHERE estado = 'DISPONIBLE' AND capacidad_maxima_kg>=? ORDER BY capacidad_maxima_kg DESC";
+        List<Vehiculos> lista = new ArrayList<>();
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setDouble(1, kg);
+            try(ResultSet rs = ps.executeQuery()){
+                while (rs.next()) lista.add(mapearVehiculo(rs));
+            }
+        }
+        return lista;
+    }
+    
+    
+    public Map<String, Integer> ContabilizarEstados() throws SQLException{
+        String sql = "SELECT estado, COUNT(*) AS total from vehiculos GROUP BY estado";
+        LinkedHashMap<String, Integer> vehiculosDisponibles = new LinkedHashMap<>();
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                vehiculosDisponibles.put(rs.getString("estado"), rs.getInt("total"));
+            }
+        }
+        return vehiculosDisponibles;
+    }
+    
+    
 
     /** Convierte una fila del ResultSet en un objeto Vehiculos. */
     private Vehiculos mapearVehiculo(ResultSet rs) throws SQLException {
@@ -115,4 +142,5 @@ public class DaoVehiculos implements IDaoVehiculos {
         }
         return v;
     }
+    
 }

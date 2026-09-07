@@ -80,6 +80,16 @@ public class ServicioConductores {
             return new ArrayList<>();
         }
     }
+    
+    public List<Conductores> conductoresSinVehiculoAsignado(){
+        try {
+            List<Conductores> conductoresSinVehAsignado = daoConductores.conductoresSinVehiculoAsignado();
+            return conductoresSinVehAsignado;
+        } catch (Exception e) {
+            System.err.println("Error de base de datos al listar conductores: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
 
     /**
      * Busca un conductor por su número de identificación.

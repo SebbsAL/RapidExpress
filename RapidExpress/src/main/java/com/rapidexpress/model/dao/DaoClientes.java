@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Implementación JDBC del acceso a datos de Clientes.
  *
@@ -39,6 +41,33 @@ public class DaoClientes implements IDaoClientes {
         return null;
     }
 
+    /** Actualiza los datos de un cliente existente, localizado por su identificación. */
+    public boolean actualizar(Clientes cliente) throws SQLException {
+        String sql = "UPDATE clientes SET nombre_completo=?, telefono=?, email=?, direccion=?, ciudad=? WHERE numero_identificacion=?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, cliente.getNombreCompleto());
+            ps.setString(2, cliente.getTelefono());
+            ps.setString(3, cliente.getEmail());
+            ps.setString(4, cliente.getDireccion());
+            ps.setString(5, cliente.getCiudad());
+            ps.setString(6, cliente.getNumeroIdentificacion());
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    /** Obtiene todos los clientes registrados. */
+    public List<Clientes> obtenerTodos() throws SQLException {
+        String sql = "SELECT * FROM clientes";
+        List<Clientes> lista = new ArrayList<>();
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) lista.add(mapearCliente(rs));
+        }
+        return lista;
+    }
+
     /** Busca un cliente por su número de identificación. */
     public Clientes obtenerPorIdentificacion(String identificacion) throws SQLException {
         String sql = "SELECT * FROM clientes WHERE numero_identificacion=?";
@@ -64,7 +93,7 @@ public class DaoClientes implements IDaoClientes {
         }
         return null;
     }
-
+    
     /** Convierte una fila del ResultSet en un objeto Clientes. */
     private Clientes mapearCliente(ResultSet rs) throws SQLException {
         Clientes c = new Clientes();

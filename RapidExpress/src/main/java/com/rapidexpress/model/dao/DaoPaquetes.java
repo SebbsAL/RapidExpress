@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 /**
  * Implementación JDBC del acceso a datos de Paquetes y su historial.
  *
@@ -169,5 +171,53 @@ public class DaoPaquetes implements IDaoPaquetes {
             }
         }
         return lista;
+    }
+    
+    public List<Paquetes> buscarPorDiasSinActualizar(int diasSinActualizar) throws SQLException{
+        String sql = "SELECT * FROM paquetes WHERE fecha_actualizacion <= NOW() - INTERVAL ? DAY";
+        List<Paquetes> lista = new ArrayList<>();
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement PS = con.prepareStatement(sql)){
+            PS.setInt(1, diasSinActualizar);
+            try(ResultSet RS = PS.executeQuery()){
+                while (RS.next()) {lista.add(mapearPaquete(RS));}
+            }
+        }
+        return lista;
+    }
+
+    
+    public Map<String, Integer> contarPedidosPorRemitente() throws SQLException {
+        String sql = " SELECT c.nombre_completo, COUNT(*) AS total FROM paquetes p JOIN clientes c ON p.remitente_id = c.id GROUP BY c.id HAVING COUNT(*) >= 3";
+        LinkedHashMap<String, Integer> mapa = new LinkedHashMap<>();
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement PS = con.prepareStatement(sql); ResultSet RS = PS.executeQuery()){
+            while (RS.next()) {mapa.put(RS.getString("nombre_completo"), RS.getInt("total"));}
+        }
+        return mapa;
+    }
+
+    /** Cuenta cuántos paquetes ha enviado (como remitente) el cliente con esa identificación. */
+    public int contarEnviadosPorIdentificacion(String identificacion) throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM paquetes p JOIN clientes c ON p.remitente_id = c.id WHERE c.numero_identificacion = ?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, identificacion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("total");
+            }
+        }
+        return 0;
+    }
+
+    /** Cuenta cuántos paquetes ha recibido (como destinatario) el cliente con esa identificación. */
+    public int contarRecibidosPorIdentificacion(String identificacion) throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM paquetes p JOIN clientes c ON p.destinatario_id = c.id WHERE c.numero_identificacion = ?";
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, identificacion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("total");
+            }
+        }
+        return 0;
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import com.rapidexpress.model.entity.Vehiculos;
 import com.rapidexpress.model.entity.EstadoVehiculo;
 import com.rapidexpress.service.ServicioVehiculos;
+import java.util.Map;
 /**
  * Controlador para la gestión de vehículos del sistema.
  * Maneja las operaciones CRUD y cambios de estado de vehículos, 
@@ -72,6 +73,14 @@ public class ControladorVehiculos {
      */
     public Vehiculos buscarVehiculoPorPlaca(String placa){
         return servicioVehiculos.buscarVehiculoPorPlaca(placa);
+    }
+    
+    public List<Vehiculos> ListarVehiculoPorAptitudes(double kg){
+        return servicioVehiculos.ListarVehiculoPorAptitudes(kg);
+    }
+    
+    public Map<String, Integer> ContabilizarEstados(){
+        return servicioVehiculos.ContabilizarEstados();
     }
     /**
      * Actualiza el estado de un vehículo (DISPONIBLE, EN_MANTENIMIENTO, EN_RUTA, etc.).

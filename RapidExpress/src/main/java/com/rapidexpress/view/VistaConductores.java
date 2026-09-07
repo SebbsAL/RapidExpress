@@ -29,7 +29,8 @@ public class VistaConductores {
             "Actualizar datos de conductor",
             "Actualizar estado de conductor",
             "Asignar vehiculo a conductor",
-            "Desasignar vehiculo de conductor"
+            "Desasignar vehiculo de conductor",
+            "Listar conductores sin vehiculo asignado"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE CONDUCTORES", opciones);
@@ -54,6 +55,9 @@ public class VistaConductores {
                     break;
                 case 7:
                     desasignarVehiculoDeConductor();
+                    break;
+                case 8:
+                    conductoresSinVehiculoAsignado();
                     break;
                 case 0:
                     return;
@@ -114,6 +118,37 @@ public class VistaConductores {
         }
         UtilidadConsola.pausar();
     }
+        
+    private void conductoresSinVehiculoAsignado(){
+        System.out.println("\nCONDUCTORES SIN VEHICULO ASIGNADO");
+        System.out.println("------------------------------------------");
+        try {
+            List<Conductores> conductores = controladorConductores.conductoresSinVehiculoAsignado();
+            if (conductores.isEmpty()) {
+                UtilidadConsola.mostrarInfo("No hay conductores sin vehiculo asignado");
+            } else {
+                System.out.printf("%-15s %-25s %-10s %-12s %-20s %-15s%n",
+                    "IDENTIFICACION", "NOMBRE", "LICENCIA", "TELEFONO", "EMAIL", "ESTADO");
+                System.out.println("");
+                for (Conductores c : conductores) {
+                    System.out.printf("%-15s %-25s %-10s %-12s %-20s %-15s%n",
+                        c.getNumeroIdentificacion(),
+                        c.getNombreCompleto(),
+                        c.getTipoLicencia(),
+                        c.getTelefono(),
+                        c.getEmail(),
+                        c.getEstado().toString()
+                    );
+                }
+                UtilidadConsola.mostrarInfo("Total de conductores: " + conductores.size());
+            }            
+            
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al listar conductores: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
     /**
      * Busca un conductor por su identificacion
      */

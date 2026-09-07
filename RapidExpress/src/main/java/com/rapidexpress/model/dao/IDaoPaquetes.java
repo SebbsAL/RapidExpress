@@ -5,6 +5,7 @@ import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contrato de persistencia para Paquetes y su historial de trazabilidad.
@@ -26,4 +27,13 @@ public interface IDaoPaquetes {
     void registrarHistorial(HistorialPaquetes historial) throws SQLException;
     /** Obtiene el historial de eventos de un paquete. */
     List<HistorialPaquetes> obtenerHistorial(String codigoSeguimiento) throws SQLException;
+    /** Busca paquetes que llevan mas de N dias sin actualizarse. */
+    List<Paquetes> buscarPorDiasSinActualizar(int diasSinActualizar) throws SQLException;
+    
+    Map<String, Integer> contarPedidosPorRemitente() throws SQLException;
+
+    /** Cuenta cuántos paquetes ha enviado (como remitente) el cliente con esa identificación. */
+    int contarEnviadosPorIdentificacion(String identificacion) throws SQLException;
+    /** Cuenta cuántos paquetes ha recibido (como destinatario) el cliente con esa identificación. */
+    int contarRecibidosPorIdentificacion(String identificacion) throws SQLException;
 }

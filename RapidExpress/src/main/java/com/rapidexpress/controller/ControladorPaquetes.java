@@ -7,6 +7,7 @@ import java.util.List;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.service.ServicioPaquetes;
+import java.util.Map;
 /**
  *
  * @author Sebastian
@@ -61,5 +62,21 @@ public class ControladorPaquetes {
      */
     public List<Paquetes> listarPaquetesEnBodega() {
         return servicioPaquetes.listarPaquetesEnBodega();
+    }
+    
+    public List<Paquetes> buscarPorDiasMora(int diasMora){
+        return servicioPaquetes.consultarPorDiasDemora(diasMora);
+    }
+
+    public Map<String, Integer> contarPedidosPorRemitente(){
+        return servicioPaquetes.contarPedidosPorRemitente();
+    }
+
+    public int contarEnviados(String identificacion){
+        return servicioPaquetes.contarEnviados(identificacion);
+    }
+
+    public int contarRecibidos(String identificacion){
+        return servicioPaquetes.contarRecibidos(identificacion);
     }
 }

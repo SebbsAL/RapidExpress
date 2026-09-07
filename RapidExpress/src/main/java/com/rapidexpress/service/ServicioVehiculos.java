@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Servicio de gestión de vehículos.
@@ -101,6 +102,24 @@ public class ServicioVehiculos {
             return daoVehiculos.obtenerPorPlaca(placa);
         } catch (SQLException e) {
             System.err.println("Error de base de datos al buscar vehiculo: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    public List<Vehiculos> ListarVehiculoPorAptitudes(double kg){
+        try{
+            return daoVehiculos.ListarVehiculoPorAptitudes(kg);
+        }catch(SQLException e){
+            System.err.println("Error de base de datos al buscar vehiculo: "+ e.getMessage());
+            return null;
+        }
+    }
+    
+    public Map<String, Integer> ContabilizarEstados(){
+        try {
+            return daoVehiculos.ContabilizarEstados();
+        }catch(SQLException e){
+            System.err.println("Error de base de datos al obtener los estados: "+ e.getMessage());
             return null;
         }
     }

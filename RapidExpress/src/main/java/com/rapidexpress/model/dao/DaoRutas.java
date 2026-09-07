@@ -74,7 +74,18 @@ public class DaoRutas implements IDaoRutas {
         }
         return lista;
     }
-
+    
+    public List<Rutas> detallesRutasCompletadas() throws SQLException{
+        List<Rutas> lista = new ArrayList<>();
+        String sql = "SELECT * FROM rutas WHERE estado='COMPLETADA'";
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                lista.add(mapearRuta(rs));
+            }
+        }
+        return lista;
+    }
+    
     /** Busca una ruta por su código. */
     public Rutas obtenerPorCodigo(String codigoRuta) throws SQLException {
         String sql = "SELECT * FROM rutas WHERE codigo_ruta=?";

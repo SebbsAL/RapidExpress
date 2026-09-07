@@ -13,7 +13,9 @@ import com.rapidexpress.model.entity.EstadoVehiculo;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 /**
  * Vista para gestion de vehiculos
  * @author Sebastian
@@ -39,7 +41,10 @@ public class VistaVehiculos {
             "Actualizar estado de vehiculo",
             "Programar mantenimiento de vehiculo",
             "Actualizar estado de un mantenimiento",
-            "Consultar historial de mantenimientos de un vehiculo"
+            "Consultar historial de mantenimientos de un vehiculo",
+            "Listar vehiculo por aptitudes(KG)",
+            "Resumen del estado de los vehiculos",
+            "Mostrar gastado por mantenimientos"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE VEHICULOS", opciones);
@@ -67,6 +72,15 @@ public class VistaVehiculos {
                     break;
                 case 8:
                     consultarHistorialMantenimientos();
+                    break;
+                case 9:
+                    ListarVehiculoPorAptitudes();
+                    break;
+                case 10:
+                    ContabilizarEstados();
+                    break;
+                case 11:
+                    totalGastadoEnMantenimientos();
                     break;
                 case 0:
                     return;
@@ -317,6 +331,69 @@ public class VistaVehiculos {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al consultar historial de mantenimientos: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    private void ListarVehiculoPorAptitudes(){
+        System.out.println("Buscar vehiculos disponibles segun el peso maximo disponible");
+        double kgg = UtilidadConsola.leerDouble("Ingrese el peso que necesita cargar: ");
+        
+        try {
+            List<Vehiculos> vehiculos = controladorVehiculos.ListarVehiculoPorAptitudes(kgg);
+            if (vehiculos == null || vehiculos.isEmpty()) {
+                System.out.println("No hay ningun vehiculo con las capacidades requeridas");
+            }else{
+                System.out.printf("%-12s %-15s %-15s %-6s %-10s %-15s%n",
+                    "PLACA", "MARCA", "MODELO", "ANO", "CAPACIDAD", "ESTADO");
+                System.out.println("");                
+                for (Vehiculos v : vehiculos) {
+                    System.out.printf("%-12s %-15s %-15s %-6d %-10.2f %-15s%n",
+                        v.getPlaca(),
+                        v.getMarca(),
+                        v.getModelo(),
+                        v.getAnio_fabricacion(),
+                        v.getCapacidad_maxima_kg(),
+                        v.getEstado().toString()
+                    );
+                }
+                UtilidadConsola.mostrarInfo("Total de vehiculos: " + vehiculos.size());                
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar vehiculos: " + e.getMessage());
+        }
+    }
+    
+    private void ContabilizarEstados(){
+        System.out.println("Disponibilidad de los vehiculos de la empresa: ");
+        try {
+            Map<String, Integer> estados = controladorVehiculos.ContabilizarEstados();
+                System.out.printf("%-15s %-15s%n","Estado","Cantidad");
+                System.out.println("");
+                estados.forEach((estado, cantidad) -> {
+                    System.out.printf("%-15s %-15d%n",estado,cantidad);
+                });
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar estados: " + e.getMessage());
+        }
+    }
+    
+    private void totalGastadoEnMantenimientos(){
+        System.out.println("-------------- Total gastado por mantenimientos --------------");
+        try {
+            Map<String, Double> gastadoPorMantenimientos = controladorMantenimientos.totalGastadoEnMantenimientos();
+            if(gastadoPorMantenimientos.isEmpty()){
+                UtilidadConsola.mostrarInfo("No hay mantenimientos completados registrados");
+            }
+            else{
+            System.out.printf("%-15s %-15s%n","Placa","Gastado");
+            System.out.println("");
+            gastadoPorMantenimientos.forEach((placa, gastado)->{
+                System.out.printf("%-15s %-15.2f%n", placa,gastado);
+            });
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar total gastado por placa : " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }

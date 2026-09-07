@@ -68,7 +68,7 @@ public final class Fabrica {
 
     /** Crea el controlador de clientes con sus dependencias ya conectadas. */
     public static ControladorClientes crearControladorClientes() {
-        return new ControladorClientes(SERVICIO_CLIENTES);
+        return new ControladorClientes(SERVICIO_CLIENTES, CONTROLADOR_AUDITORIA);
     }
 
     /** Crea el controlador de paquetes con sus dependencias ya conectadas. */

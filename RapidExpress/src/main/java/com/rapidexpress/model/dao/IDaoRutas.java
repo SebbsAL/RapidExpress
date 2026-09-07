@@ -25,4 +25,6 @@ public interface IDaoRutas {
     boolean actualizarEstadoEntregaPaquete(String codigoRuta, String codigoSeguimiento, EstadoEntrega estadoEntrega, String observaciones) throws SQLException;
     /** Obtiene el detalle de entregas de una ruta. */
     List<RutaPaquetes> obtenerDetalleEntregas(int rutaId) throws SQLException;
+    
+    List<Rutas> detallesRutasCompletadas() throws SQLException;
 }

@@ -29,4 +29,6 @@ public interface IDaoConductores {
     void registrarAsignacion(int idVehiculo, int idConductor) throws SQLException;
     /** Cierra (desactiva) la asignación de vehículo activa de un conductor. */
     boolean desasignarVehiculo(String identificacionConductor) throws SQLException;
+    
+    List<Conductores> conductoresSinVehiculoAsignado() throws SQLException;
 }

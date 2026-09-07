@@ -8,7 +8,9 @@ import com.rapidexpress.model.dao.IDaoMantenimientos;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Servicio de gestión de mantenimientos de vehículos.
@@ -89,6 +91,15 @@ public class ServicioMantenimientos {
         } catch (SQLException e) {
             System.err.println("Error de base de datos al actualizar mantenimiento: " + e.getMessage());
             return false;
+        }
+    }
+    
+    public Map<String, Double> totalGastadoEnMantenimientos(){
+        try {
+            return daoMantenimientos.totalGastadoEnMantenimientos();
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al consultar el total gastado: " + e.getMessage());
+            return new LinkedHashMap<>();
         }
     }
 

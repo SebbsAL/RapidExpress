@@ -4,6 +4,7 @@ import com.rapidexpress.model.entity.EstadoVehiculo;
 import com.rapidexpress.model.entity.Vehiculos;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contrato de persistencia para Vehiculos. Permite que la capa de Servicios
@@ -22,4 +23,8 @@ public interface IDaoVehiculos {
     Vehiculos obtenerPorId(int id) throws SQLException;
     /** Obtiene todos los vehículos registrados. */
     List<Vehiculos> obtenerTodos() throws SQLException;
+    
+    List<Vehiculos> ListarVehiculoPorAptitudes(double kg) throws SQLException;
+    
+    Map<String, Integer> ContabilizarEstados() throws SQLException;
 }

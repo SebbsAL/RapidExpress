@@ -4,6 +4,7 @@ import com.rapidexpress.model.entity.EstadoMantenimiento;
 import com.rapidexpress.model.entity.Mantenimientos;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contrato de persistencia para Mantenimientos de vehiculos.
@@ -17,4 +18,6 @@ public interface IDaoMantenimientos {
     Mantenimientos obtenerPorId(int id) throws SQLException;
     /** Obtiene el historial de mantenimientos de un vehículo por su placa. */
     List<Mantenimientos> obtenerPorPlacaVehiculo(String placa) throws SQLException;
+    
+    Map<String, Double> totalGastadoEnMantenimientos()throws SQLException;
 }

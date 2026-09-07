@@ -31,7 +31,8 @@ public class VistaRutas {
             "Finalizar ruta",
             "Listar rutas activas",
             "Ver detalle de entregas de una ruta",
-            "Cancelar ruta planificada"
+            "Cancelar ruta planificada",
+            "Calcular promedios de peso y duracion de las rutas completadas"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE RUTAS", opciones);
@@ -56,6 +57,9 @@ public class VistaRutas {
                     break;
                 case 7:
                     cancelarRuta();
+                    break;
+                case 8:
+                    calcularPromedioRutasCompletadas();
                     break;
                 case 0:
                     return;
@@ -283,6 +287,22 @@ public class VistaRutas {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al cancelar ruta: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    private void calcularPromedioRutasCompletadas(){
+        try{
+        double[] promTiempoYPeso = controladorRutas.calcularPromedioRutasCompletadas();    
+            if (promTiempoYPeso[2] == 0) {
+                System.out.println("No hay rutas completadas registradas.");
+            }else{
+                System.out.println("Promedio de duracion de tiempo y peso en rutas completadas: ");
+                System.out.printf("Peso promedio:  %.2f Kg%n",promTiempoYPeso[0]);
+                System.out.println("Tiempo promedio: "+promTiempoYPeso[1]+" Minutos");
+            }
+        } catch(Exception e){
+            UtilidadConsola.mostrarError("Error al mostrar promedios de rutas completadas: "+e.getMessage());
         }
         UtilidadConsola.pausar();
     }

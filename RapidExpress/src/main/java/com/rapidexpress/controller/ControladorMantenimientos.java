@@ -9,6 +9,7 @@ import java.util.List;
 import com.rapidexpress.model.entity.Mantenimientos;
 import com.rapidexpress.model.entity.EstadoMantenimiento;
 import com.rapidexpress.service.ServicioMantenimientos;
+import java.util.Map;
 
 /**
  *
@@ -53,6 +54,10 @@ public class ControladorMantenimientos {
      */
     public List<Mantenimientos> consultarHistorialMantenimientosPorVehiculo(String placa){
         return serviciosMantenimientos.consultarHistorialMantenimientosPorVehiculo(placa);
+    }
+    
+    public Map<String, Double> totalGastadoEnMantenimientos(){
+        return serviciosMantenimientos.totalGastadoEnMantenimientos();
     }
             
 }

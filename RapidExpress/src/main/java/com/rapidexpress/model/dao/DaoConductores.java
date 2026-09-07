@@ -126,6 +126,17 @@ public class DaoConductores implements IDaoConductores {
         }
         return false;
     }
+    
+    public List<Conductores> conductoresSinVehiculoAsignado() throws SQLException{
+        List<Conductores> conductores = new ArrayList<>();
+        String sql = "SELECT c.* FROM conductores c LEFT JOIN asignaciones_vehiculo_conductor a ON a.conductor_id = c.id AND a.activo = 1 WHERE a.conductor_id IS NULL ";
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                conductores.add(mapearConductor(rs));
+            }
+        }
+        return conductores;
+    }
 
     /** Indica si el vehículo ya tiene un conductor con asignación activa. */
     public boolean vehiculoTieneAsignacionActiva(int idVehiculo) throws SQLException {

@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 /**
  * Implementación JDBC del acceso a datos de Mantenimientos.
  *
@@ -72,6 +74,17 @@ public class DaoMantenimientos implements IDaoMantenimientos {
             }
         }
         return lista;
+    }
+    
+    public Map<String, Double> totalGastadoEnMantenimientos()throws SQLException{
+        String sql = "SELECT vh.placa, SUM(mt.costo) AS total from vehiculos vh JOIN mantenimientos mt on vh.id = mt.vehiculo_id WHERE mt.estado='COMPLETADO' GROUP BY vh.placa;";
+        LinkedHashMap<String, Double> gastoPorPlaca = new LinkedHashMap<>();
+        try(Connection con = ConexionBD.MySQLConnection();PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                gastoPorPlaca.put(rs.getString("placa"), rs.getDouble("total"));
+            }
+        }
+        return gastoPorPlaca;
     }
 
     /** Convierte una fila del ResultSet en un objeto Mantenimientos. */
