@@ -40,7 +40,8 @@ public class VistaRutas {
             "Ver detalle de entregas de una ruta",
             "Cancelar ruta planificada",
             "Calcular promedios de peso y duracion de las rutas completadas",
-            "Mostrar un resumen de los vehiculos con una rutas activas."
+            "Mostrar un resumen de los vehiculos con una rutas activas.",
+            "Simular recorrido de una ruta"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE RUTAS", opciones);
@@ -71,6 +72,9 @@ public class VistaRutas {
                     break;
                 case 9:
                     reporteOcupacionDeVehiculos();
+                    break;
+                case 10:
+                    simularRecorridoRuta();
                     break;
                 case 0:
                     return;
@@ -349,4 +353,50 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
+
+    /**
+     * Simula el recorrido de una ruta entregando sus paquetes uno por uno,
+     * con una pausa entre cada parada. El recorrido corre en un hilo aparte
+     * y el hilo principal espera a que termine antes de volver al menu.
+     */
+    private void simularRecorridoRuta(){
+        try {
+            String codigoRuta = UtilidadConsola.leerTexto("Ingrese el codigo de su ruta: ");
+            List<RutaPaquetes> entregas = controladorRutas.obtenerDetalleEntregas(codigoRuta);
+            
+            if (entregas.isEmpty()) {
+                System.out.println("No hay una ruta registrada con el codigo: "+codigoRuta);
+                return;
+            }
+            
+            Thread hilo1 = new Thread(() -> {
+                for (RutaPaquetes entrega : entregas) {
+                    System.out.print("  Parada " + entrega.getOrdenEntrega() + ": ");
+                    if (entrega.getPaquete() != null) {
+                        System.out.println("entregando paquete " + entrega.getPaquete().getCodigoSeguimiento()
+                                + " en " + entrega.getPaquete().getDireccionDestino());
+                    } else {
+                        System.out.println("entregando paquete (sin datos)");
+                    }
+                    // La pausa simula el tiempo de viaje entre paradas. El catch va aqui
+                    // adentro porque una lambda no puede propagar excepciones checked.
+                    try{
+                        Thread.sleep(1000);}
+                    catch(InterruptedException e){
+                        System.out.println("Se interrumpio el recorrido: "+ e.getMessage());
+                    }
+                }
+            });
+            hilo1.start();  // arranca el recorrido en un hilo aparte
+            hilo1.join();   // el hilo principal espera aqui hasta que el recorrido termine
+        } catch (InterruptedException ex) {
+            // Solo llega aqui si interrumpen al hilo principal mientras espera en join().
+            System.out.println("Se interrumpio la espera del recorrido: "+ex.getMessage());
+        }
+        System.out.println("Recorrido terminado");
+        UtilidadConsola.pausar();
+    }
+
+
+
 }
