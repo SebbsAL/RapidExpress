@@ -22,6 +22,10 @@ public class Mantenimientos extends EntidadBase {
     private String observaciones;
     private LocalDateTime fechaCreacion;
 
+    // Se completa en la capa de Servicio a partir de vehiculoId, para poder
+    // mostrar la placa en vez del id interno.
+    private Vehiculos vehiculo;
+
     public Mantenimientos(int id, int vehiculoId, String tipoMantenimiento, String descripcion, LocalDate fechaProgramada, LocalDate fechaRealizacion, double costo, EstadoMantenimiento estado, String observaciones, LocalDateTime fechaCreacion) {
         this.id = id;
         this.vehiculoId = vehiculoId;
@@ -40,6 +44,14 @@ public class Mantenimientos extends EntidadBase {
     
     public int getVehiculoId() {
         return vehiculoId;
+    }
+
+    public Vehiculos getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculos vehiculo) {
+        this.vehiculo = vehiculo;
     }
 
     public String getTipoMantenimiento() {

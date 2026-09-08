@@ -107,4 +107,22 @@ public class ControladorPaquetes {
     public List<ResumenCategoriaPeso> categorizarPaquetesPorPeso(){
         return servicioPaquetes.categorizarPaquetesPorPeso();
     }
+    
+    /**
+     * Obtiene el paquete mas pesado que hay en bodega
+     * @return El paquete de mayor peso, o null si la bodega esta vacia
+     */
+    public Paquetes obtenerPaqueteMasPesado(){
+        return servicioPaquetes.obtenerPaqueteMasPesado();
+    }
+    
+    /**
+     * Obtiene el paquete mas liviano que hay en bodega
+     * @return El paquete de menor peso, o null si la bodega esta vacia
+     */
+    public Paquetes obtenerPaqueteMenosPesado(){
+        return servicioPaquetes.obtenerPaqueteMenosPesado();
+    }
+
+    
 }

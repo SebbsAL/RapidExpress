@@ -91,7 +91,7 @@ public class DaoPaquetes implements IDaoPaquetes {
         }
         return lista;
     }
-
+    
     /** Obtiene los paquetes asignados a una ruta, en orden de entrega. */
     public List<Paquetes> obtenerPorRuta(int rutaId) throws SQLException {
         String sql = "SELECT p.* FROM paquetes p JOIN ruta_paquetes rp ON p.id = rp.paquete_id WHERE rp.ruta_id=? ORDER BY rp.orden_entrega";

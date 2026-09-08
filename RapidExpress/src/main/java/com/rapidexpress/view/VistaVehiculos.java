@@ -44,7 +44,9 @@ public class VistaVehiculos {
             "Consultar historial de mantenimientos de un vehiculo",
             "Listar vehiculo por aptitudes(KG)",
             "Resumen del estado de los vehiculos",
-            "Mostrar gastado por mantenimientos"
+            "Mostrar gastado por mantenimientos",
+            "Actualizar la fecha del mantenimiento para un vehiculo",
+            "Listar todos los mantenimientos"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE VEHICULOS", opciones);
@@ -81,6 +83,12 @@ public class VistaVehiculos {
                     break;
                 case 11:
                     totalGastadoEnMantenimientos();
+                    break;
+                case 12:
+                    actualizarFechaMantenimiento();
+                    break;
+                case 13:
+                    listarMantenimientos();
                     break;
                 case 0:
                     return;
@@ -302,6 +310,62 @@ public class VistaVehiculos {
         }
         UtilidadConsola.pausar();
     }
+    
+    /**
+     * Lista todos los mantenimientos del sistema con su ID, para poder
+     * identificarlos antes de actualizarlos o reprogramarlos
+     */
+    private void listarMantenimientos() {
+        System.out.println("\nLISTADO DE MANTENIMIENTOS");
+        System.out.println("---------------------------------------");
+        try {
+            List<Mantenimientos> mantenimientos = controladorMantenimientos.listarMantenimientos();
+            if (mantenimientos.isEmpty()) {
+                UtilidadConsola.mostrarInfo("No hay mantenimientos registrados");
+            } else {
+                System.out.printf("%-6s %-12s %-15s %-14s %-14s %-12s %-10s%n",
+                    "ID", "PLACA", "TIPO", "PROGRAMADA", "REALIZACION", "ESTADO", "COSTO");
+                System.out.println("");
+                for (Mantenimientos m : mantenimientos) {
+                    System.out.printf("%-6d %-12s %-15s %-14s %-14s %-12s %-10.2f%n",
+                        m.getId(),
+                        m.getVehiculo() != null ? m.getVehiculo().getPlaca() : "(sin vehiculo)",
+                        m.getTipoMantenimiento(),
+                        m.getFechaProgramada(),
+                        m.getFechaRealizacion() != null ? m.getFechaRealizacion() : "-",
+                        m.getEstado(),
+                        m.getCosto()
+                    );
+                }
+                UtilidadConsola.mostrarInfo("Total de mantenimientos: " + mantenimientos.size());
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al listar mantenimientos: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    /**
+     * Reprograma la fecha de un mantenimiento que todavia esta PROGRAMADO
+     */
+    private void actualizarFechaMantenimiento(){
+        System.out.println("\nACTUALIZAR FECHA DE UN MANTENIMIENTO");
+        System.out.println("---------------------------------------");        
+        try {
+            int idMantenimiento = UtilidadConsola.leerEntero("ID del mantenimiento a re agendar");
+            String fechaProgramadaStr = UtilidadConsola.leerTexto("Fecha a reagendar: (dd/MM/yyyy): ");
+            LocalDate fechaProgramada = LocalDate.parse(fechaProgramadaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            boolean exito = controladorMantenimientos.actualizarFechaMantenimiento(idMantenimiento, fechaProgramada);
+            if (exito) {
+                UtilidadConsola.mostrarExito("Mantenimiento re agendado para el mantenimiento con ID: "+idMantenimiento);
+            } else {
+                UtilidadConsola.mostrarError("No se pudo re agendar. Verifique que exista un mantenimiento con esa ID. que este en un estado diferente a \"PROGRAMADO\" o la fecha a reagendar es anterior a hoy");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al reprogramar el mantenimiento: "+ e.getMessage() );
+        }
+        UtilidadConsola.pausar();
+    }
+    
     /**
      * Consulta el historial de mantenimientos registrados para un vehiculo
      */

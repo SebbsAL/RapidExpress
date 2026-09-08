@@ -2,6 +2,8 @@ package com.rapidexpress.model.dao;
 
 import com.rapidexpress.model.entity.EstadoEntrega;
 import com.rapidexpress.model.entity.EstadoRuta;
+import com.rapidexpress.model.entity.ResumenCategoriaPeso;
+import com.rapidexpress.model.entity.ResumenVehiculoRutasActivas;
 import com.rapidexpress.model.entity.RutaPaquetes;
 import com.rapidexpress.model.entity.Rutas;
 import java.sql.SQLException;
@@ -28,4 +30,6 @@ public interface IDaoRutas {
     
     /** Obtiene todas las rutas en estado COMPLETADA. */
     List<Rutas> detallesRutasCompletadas() throws SQLException;
+    
+    List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos()throws SQLException;
 }

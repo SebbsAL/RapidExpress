@@ -7,6 +7,7 @@ import com.rapidexpress.model.entity.Rutas;
 import com.rapidexpress.model.entity.EstadoRuta;
 import com.rapidexpress.model.entity.RutaPaquetes;
 import com.rapidexpress.model.entity.EstadoEntrega;
+import com.rapidexpress.model.entity.ResumenVehiculoRutasActivas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -73,6 +74,17 @@ public class DaoRutas implements IDaoRutas {
             }
         }
         return lista;
+    }
+    
+    public List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos()throws SQLException{
+        String sql = "SELECT vh.placa, vh.capacidad_maxima_kg, SUM(rt.peso_total_asignado_kg) AS total_asignado FROM vehiculos vh JOIN rutas rt ON vh.id = rt.vehiculo_id WHERE rt.estado IN('PLANIFICADA', 'EN_PROCESO') GROUP BY vh.placa, vh.id;";
+        List<ResumenVehiculoRutasActivas> resumenRutasActivas = new ArrayList<>();
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery();){
+            while (rs.next()) {
+                resumenRutasActivas.add(new ResumenVehiculoRutasActivas(rs.getString("placa"), rs.getDouble("capacidad_maxima_kg"), rs.getDouble("total_asignado")));
+            }
+        }
+        return resumenRutasActivas;
     }
     
     /** Obtiene todas las rutas en estado COMPLETADA. */

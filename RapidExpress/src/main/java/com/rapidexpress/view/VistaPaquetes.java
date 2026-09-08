@@ -34,7 +34,8 @@ public class VistaPaquetes {
             "Consultar paquetes que llevan X dias sin actualizarse",
             "Listar remitentes con mas de 3 envios",
             "Consultar paquetes enviados y recibidos por cliente",
-            "Consultar paquetes categorizados por su peso"
+            "Consultar paquetes categorizados por su peso",
+            "Obtener paquete mas/menos pesado"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE PAQUETES", opciones);
@@ -62,6 +63,9 @@ public class VistaPaquetes {
                     break;
                 case 8:
                     categorizarPaquetesPorPeso();
+                    break;
+                case 9:
+                    obtenerPaqueteMenosYMasPesado();
                     break;
                 case 0:
                     return;
@@ -206,6 +210,32 @@ public class VistaPaquetes {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al listar paquetes: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    /**
+     * Muestra el paquete mas pesado y el mas liviano de los que estan en bodega
+     */
+    private void obtenerPaqueteMenosYMasPesado(){
+        System.out.println("Consultar paquete mas y menos pesado de la bodega");
+        System.out.println("-------------------------------------------------");
+        try {
+            Paquetes paqueteMasPesado = controladorPaquetes.obtenerPaqueteMasPesado();
+            Paquetes paqueteMenosPesado = controladorPaquetes.obtenerPaqueteMenosPesado();
+            
+            if (paqueteMasPesado == null || paqueteMenosPesado == null) {
+                UtilidadConsola.mostrarError("No se pudo obtener alguno de los 2 paquetes");
+            }else{
+                System.out.println("--------------------------------------------------------------------------------------------------");
+                System.out.println("Paquete mas pesado: \n CODIGO: "+paqueteMasPesado.getCodigoSeguimiento()+"\n DESCRIPCION: "+paqueteMasPesado.getDescripcionContenido()+"\nPESO: "+paqueteMasPesado.getPesoKg());
+                System.out.println("--------------------------------------------------------------------------------------------------");
+                System.out.println("\n--------------------------------------------------------------------------------------------------");
+                System.out.println("Paquete menos pesado: \n CODIGO: "+paqueteMenosPesado.getCodigoSeguimiento()+"\n DESCRIPCION: "+paqueteMenosPesado.getDescripcionContenido()+"\nPESO: "+paqueteMenosPesado.getPesoKg());
+                System.out.println("--------------------------------------------------------------------------------------------------");                
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar paquetes: "+ e.getMessage());
         }
         UtilidadConsola.pausar();
     }

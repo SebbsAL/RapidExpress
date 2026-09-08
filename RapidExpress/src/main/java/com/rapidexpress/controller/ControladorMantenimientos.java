@@ -48,6 +48,30 @@ public class ControladorMantenimientos {
         }
         return exito;
     }
+    
+    /**
+     * Reprograma la fecha de un mantenimiento y deja constancia en la auditoría.
+     *
+     * @param idMantenimiento Id del mantenimiento a reprogramar
+     * @param fechaReAgendar Nueva fecha programada
+     * @return true si se reprogramo correctamente
+     */
+    public boolean actualizarFechaMantenimiento(int idMantenimiento, LocalDate fechaReAgendar){
+        boolean exito = serviciosMantenimientos.actualizarFechaMantenimiento(idMantenimiento, fechaReAgendar);
+        if (exito) {
+            controladorAuditoria.registrar("MANTENIMIENTO", "ACTUALIZAR_FECHA_DEL_MANTENIMIENTO", "SE_ACTUALIZO_LA_FECHA_PROGRAMADA_PARA EL MANTENIMIENTO", USUARIO_SISTEMA);
+        }
+        return exito;
+    }
+
+    /**
+     * Lista todos los mantenimientos registrados en el sistema.
+     *
+     * @return Lista de mantenimientos con su vehiculo ya resuelto
+     */
+    public List<Mantenimientos> listarMantenimientos(){
+        return serviciosMantenimientos.listarMantenimientos();
+    }
 
     /**
      * Consulta el historial de mantenimientos de un vehículo.

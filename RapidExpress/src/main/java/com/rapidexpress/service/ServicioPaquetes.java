@@ -8,6 +8,7 @@ import com.rapidexpress.model.dao.IDaoPaquetes;
 import com.rapidexpress.model.entity.ResumenCategoriaPeso;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,6 +182,24 @@ public class ServicioPaquetes {
             System.err.println("Error de base de datos al listar paquetes en bodega: " + e.getMessage());
             return new ArrayList<>();
         }
+    }
+    
+    /**
+     * Obtiene el paquete mas pesado de los que estan en bodega, o null si no hay ninguno.
+     */
+    public Paquetes obtenerPaqueteMasPesado(){
+        List<Paquetes> paquetes = listarPaquetesEnBodega();
+        Paquetes paqueteMasPesado = paquetes.stream().max(Comparator.comparingDouble(Paquetes::getPesoKg)).orElse(null);
+        return paqueteMasPesado;
+    }
+    
+    /**
+     * Obtiene el paquete mas liviano de los que estan en bodega, o null si no hay ninguno.
+     */
+    public Paquetes obtenerPaqueteMenosPesado(){
+        List<Paquetes> paquetes = listarPaquetesEnBodega();
+        Paquetes paqueteMenosPesado = paquetes.stream().min(Comparator.comparingDouble(Paquetes::getPesoKg)).orElse(null);
+        return paqueteMenosPesado;
     }
     
     /**

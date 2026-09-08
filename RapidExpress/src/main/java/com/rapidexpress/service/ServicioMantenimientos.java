@@ -95,6 +95,38 @@ public class ServicioMantenimientos {
     }
     
     /**
+     * Reprograma la fecha de un mantenimiento. Solo se permite si el mantenimiento
+     * existe, sigue en estado PROGRAMADO (uno completado o cancelado ya no se
+     * reagenda) y la nueva fecha no es anterior a hoy.
+     */
+    public boolean actualizarFechaMantenimiento(int idMantenimiento, LocalDate fechaReAgendar){
+        try{
+            Mantenimientos mantenimientoReagendar = daoMantenimientos.obtenerPorId(idMantenimiento);
+            if (mantenimientoReagendar == null) {
+                System.err.println("Error: No se encontro el mantenimiento con id " + idMantenimiento);
+                return false;                
+            }
+            
+            if (mantenimientoReagendar.getEstado() != EstadoMantenimiento.PROGRAMADO) {
+                System.err.println("Error: el mantenimiento con id: " + idMantenimiento+" se no se puede re agendar, su estado actual es: "+mantenimientoReagendar.getEstado());
+                return false;                
+            }
+            
+            if (fechaReAgendar.isBefore(LocalDate.now())) {
+                System.err.println("Error: el mantenimiento no puede ser re agendado al pasado.");
+                return false;
+            }
+            
+            boolean exito = daoMantenimientos.actualizarFechaMantenimiento(idMantenimiento, fechaReAgendar);
+            
+            return exito;
+        }catch(SQLException ex){
+            System.err.println("Error de base de datos al actualizar la fecha del mantenimiento : " + ex.getMessage() );
+            return false;
+        }        
+    }
+    
+    /**
      * Obtiene el costo total en mantenimientos completados de cada vehiculo.
      */
     public Map<String, Double> totalGastadoEnMantenimientos(){
@@ -104,6 +136,28 @@ public class ServicioMantenimientos {
             System.err.println("Error de base de datos al consultar el total gastado: " + e.getMessage());
             return new LinkedHashMap<>();
         }
+    }
+
+    /**
+     * Lista todos los mantenimientos registrados, con su vehículo ya resuelto
+     * para poder mostrar la placa en vez del id interno.
+     */
+    public List<Mantenimientos> listarMantenimientos() {
+        try {
+            List<Mantenimientos> mantenimientos = daoMantenimientos.obtenerTodos();
+            mantenimientos.forEach(this::hidratarVehiculo);
+            return mantenimientos;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al listar mantenimientos: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Completa un mantenimiento con los datos del vehículo al que pertenece.
+     */
+    private void hidratarVehiculo(Mantenimientos mantenimiento) {
+        mantenimiento.setVehiculo(servicioVehiculos.obtenerVehiculoPorId(mantenimiento.getVehiculoId()));
     }
 
     /**

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,6 +47,16 @@ public class DaoMantenimientos implements IDaoMantenimientos {
             return ps.executeUpdate() > 0;
         }
     }
+    
+    /** Cambia la fecha programada de un mantenimiento; retorna false si el id no existe. */
+    public boolean actualizarFechaMantenimiento(int idMantenimiento, LocalDate fechaReAgendar) throws SQLException{
+        String sql = "UPDATE mantenimientos SET fecha_programada = ? WHERE id = ?";
+        try (Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setDate(1, java.sql.Date.valueOf(fechaReAgendar));
+            ps.setInt(2, idMantenimiento);
+            return ps.executeUpdate() > 0;
+        }
+    }    
 
     /** Busca un mantenimiento por su id. */
     public Mantenimientos obtenerPorId(int id) throws SQLException {
@@ -59,7 +70,7 @@ public class DaoMantenimientos implements IDaoMantenimientos {
         }
         return null;
     }
-
+    
     /** Obtiene el historial de mantenimientos de un vehículo por su placa. */
     public List<Mantenimientos> obtenerPorPlacaVehiculo(String placa) throws SQLException {
         String sql = "SELECT m.* FROM mantenimientos m JOIN vehiculos v ON m.vehiculo_id = v.id WHERE v.placa=?";
@@ -76,6 +87,20 @@ public class DaoMantenimientos implements IDaoMantenimientos {
         return lista;
     }
     
+    /** Obtiene todos los mantenimientos registrados, del mas reciente al mas antiguo. */
+    public List<Mantenimientos> obtenerTodos() throws SQLException {
+        String sql = "SELECT * FROM mantenimientos ORDER BY fecha_programada DESC";
+        List<Mantenimientos> lista = new ArrayList<>();
+        try (Connection con = ConexionBD.MySQLConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                lista.add(mapearMantenimiento(rs));
+            }
+        }
+        return lista;
+    }
+
     /** Suma el costo de los mantenimientos COMPLETADOS de cada vehiculo, por placa. */
     public Map<String, Double> totalGastadoEnMantenimientos()throws SQLException{
         String sql = "SELECT vh.placa, SUM(mt.costo) AS total from vehiculos vh JOIN mantenimientos mt on vh.id = mt.vehiculo_id WHERE mt.estado='COMPLETADO' GROUP BY vh.placa;";
