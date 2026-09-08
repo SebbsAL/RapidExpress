@@ -31,5 +31,6 @@ public interface IDaoRutas {
     /** Obtiene todas las rutas en estado COMPLETADA. */
     List<Rutas> detallesRutasCompletadas() throws SQLException;
     
+    /** Suma el peso asignado en rutas activas de cada vehiculo, junto con su capacidad. */
     List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos()throws SQLException;
 }

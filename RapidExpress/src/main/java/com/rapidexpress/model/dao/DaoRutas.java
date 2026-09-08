@@ -76,6 +76,7 @@ public class DaoRutas implements IDaoRutas {
         return lista;
     }
     
+    /** Suma el peso asignado en rutas activas de cada vehiculo, junto con su capacidad. */
     public List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos()throws SQLException{
         String sql = "SELECT vh.placa, vh.capacidad_maxima_kg, SUM(rt.peso_total_asignado_kg) AS total_asignado FROM vehiculos vh JOIN rutas rt ON vh.id = rt.vehiculo_id WHERE rt.estado IN('PLANIFICADA', 'EN_PROCESO') GROUP BY vh.placa, vh.id;";
         List<ResumenVehiculoRutasActivas> resumenRutasActivas = new ArrayList<>();

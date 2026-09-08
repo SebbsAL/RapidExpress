@@ -7,6 +7,7 @@ import com.rapidexpress.model.entity.Clientes;
 import com.rapidexpress.model.dao.IDaoPaquetes;
 import com.rapidexpress.model.entity.ResumenCategoriaPeso;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -144,6 +145,24 @@ public class ServicioPaquetes {
     public Map<String, Integer> contarPedidosPorRemitente(){
         try {
             return daoPaquetes.contarPedidosPorRemitente();
+        } catch (Exception e) {
+            System.err.println("Error de base de datos al consultar: " + e.getMessage());
+            return new LinkedHashMap<>();
+        }
+    }
+    
+    /**
+     * Cuenta los paquetes registrados entre dos fechas, agrupados por estado.
+     * Rechaza el rango si la fecha de inicio es posterior a la de fin.
+     */
+    public Map<String, Integer> paquetesRegistradosEnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin){
+        try {
+            if (fechaInicio.isAfter(fechaFin)) {
+                System.err.println("La fecha inicio no puede ser posterior a la fecha fin");
+                return new LinkedHashMap<>();
+            }else{
+            return daoPaquetes.paquetesRegistradosEnRangoDeFechas(fechaInicio, fechaFin);
+            }
         } catch (Exception e) {
             System.err.println("Error de base de datos al consultar: " + e.getMessage());
             return new LinkedHashMap<>();

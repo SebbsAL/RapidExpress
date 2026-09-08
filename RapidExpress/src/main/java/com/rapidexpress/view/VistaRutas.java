@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.rapidexpress.view;
+
 import com.rapidexpress.config.Fabrica;
 import com.rapidexpress.controller.ControladorRutas;
 import com.rapidexpress.model.entity.Rutas;
@@ -11,16 +12,21 @@ import com.rapidexpress.model.entity.RutaPaquetes;
 import com.rapidexpress.model.entity.EstadoEntrega;
 import com.rapidexpress.model.entity.ResumenVehiculoRutasActivas;
 import java.util.List;
+
 /**
  * Vista para gestion de rutas
+ *
  * @author Sebastian
  */
 public class VistaRutas {
+    
     private ControladorRutas controladorRutas;
+    
     public VistaRutas() {
         // Fabrica ya conecto Dao -> Servicio -> Controlador; solo se pide el controlador.
         this.controladorRutas = Fabrica.crearControladorRutas();
     }
+
     /**
      * Muestra el menu principal de rutas
      */
@@ -73,6 +79,7 @@ public class VistaRutas {
             }
         }
     }
+
     /**
      * Crea una nueva hoja de ruta asignando vehiculo, conductor y paquetes
      */
@@ -114,6 +121,7 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
+
     /**
      * Inicia una ruta cambiando los estados de vehiculo, conductor y paquetes
      */
@@ -136,6 +144,7 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
+
     /**
      * Registra la entrega de un paquete especifico dentro de una ruta
      */
@@ -181,6 +190,7 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
+
     /**
      * Finaliza una ruta completada, liberando vehiculo y conductor
      */
@@ -205,19 +215,28 @@ public class VistaRutas {
         UtilidadConsola.pausar();
     }
     
-    private void reporteOcupacionDeVehiculos(){
+    /**
+     * Muestra, por cada vehiculo con rutas activas, cuanto de su capacidad va ocupada
+     */
+    private void reporteOcupacionDeVehiculos() {
         System.out.println("--------------------------------------");
         System.out.println("Reporte de ocupacion de vehiculos");
         try {
             List<ResumenVehiculoRutasActivas> reporteRutasActivas = controladorRutas.reporteOcupacionDeVehiculos();
-            System.out.println("------------------------------------------------------------------------------");
-            for (ResumenVehiculoRutasActivas RrA : reporteRutasActivas) {
-                System.out.println("PLACA: "+ RrA.getPlaca()+ "\nCAPACIDAD_MAXIMA_KG: "+ RrA.getCapacidad_maxima_kg()+"\nPESO_TOTAL_ASIGNADO: "+RrA.getPesoTotalAsignadoKg()+"\nPORCENTAJE_DE_CARGA_RESPECTO_A_LA_CAPACIDAD: "+RrA.getPorcentaje());
+            if (reporteRutasActivas != null && !reporteRutasActivas.isEmpty()) {
+                System.out.println("------------------------------------------------------------------------------");
+                for (ResumenVehiculoRutasActivas RrA : reporteRutasActivas) {
+                    System.out.println("PLACA: " + RrA.getPlaca() + "\nCAPACIDAD_MAXIMA_KG: " + RrA.getCapacidad_maxima_kg() + "\nPESO_TOTAL_ASIGNADO: " + RrA.getPesoTotalAsignadoKg() + "\nPORCENTAJE_DE_CARGA_RESPECTO_A_LA_CAPACIDAD: " + RrA.getPorcentaje());
+                }
+            } else {
+                UtilidadConsola.mostrarInfo("No hay vehiculos con rutas activas");
             }
         } catch (Exception e) {
-            UtilidadConsola.mostrarError("Error al obtener el reporte de ocupacion de los vehiculos");
+            UtilidadConsola.mostrarError("Error al obtener el reporte de ocupacion de los vehiculos: " + e.getMessage());
         }
+        UtilidadConsola.pausar();
     }
+
     /**
      * Lista todas las rutas que estan actualmente activas (en proceso)
      */
@@ -252,9 +271,10 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
+
     /**
-     * Muestra el detalle de entrega de cada paquete asignado a una ruta
-     * (orden, estado de entrega, fechas y observaciones)
+     * Muestra el detalle de entrega de cada paquete asignado a una ruta (orden,
+     * estado de entrega, fechas y observaciones)
      */
     private void verDetalleEntregas() {
         System.out.println("\nDETALLE DE ENTREGAS DE LA RUTA");
@@ -286,6 +306,7 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
+
     /**
      * Cancela una ruta que todavia no ha iniciado (estado PLANIFICADA)
      */
@@ -309,22 +330,22 @@ public class VistaRutas {
         }
         UtilidadConsola.pausar();
     }
-    
+
     /**
      * Muestra el peso y la duracion promedio de las rutas completadas
      */
-    private void calcularPromedioRutasCompletadas(){
-        try{
-        double[] promTiempoYPeso = controladorRutas.calcularPromedioRutasCompletadas();    
+    private void calcularPromedioRutasCompletadas() {
+        try {
+            double[] promTiempoYPeso = controladorRutas.calcularPromedioRutasCompletadas();            
             if (promTiempoYPeso[2] == 0) {
                 System.out.println("No hay rutas completadas registradas.");
-            }else{
+            } else {
                 System.out.println("Promedio de duracion de tiempo y peso en rutas completadas: ");
-                System.out.printf("Peso promedio:  %.2f Kg%n",promTiempoYPeso[0]);
-                System.out.println("Tiempo promedio: "+promTiempoYPeso[1]+" Minutos");
+                System.out.printf("Peso promedio:  %.2f Kg%n", promTiempoYPeso[0]);
+                System.out.println("Tiempo promedio: " + promTiempoYPeso[1] + " Minutos");
             }
-        } catch(Exception e){
-            UtilidadConsola.mostrarError("Error al mostrar promedios de rutas completadas: "+e.getMessage());
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al mostrar promedios de rutas completadas: " + e.getMessage());
         }
         UtilidadConsola.pausar();
     }

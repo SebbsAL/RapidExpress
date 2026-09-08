@@ -334,16 +334,15 @@ public class ServicioRutas {
         }
     }
     
+    /**
+     * Obtiene la ocupación de cada vehículo que tiene rutas activas: su capacidad,
+     * el peso ya asignado en esas rutas y el porcentaje que eso representa.
+     */
     public List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos(){
         try {
-            List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos = daoRutas.reporteOcupacionDeVehiculos();
-            if (reporteOcupacionDeVehiculos.isEmpty()) {
-                System.err.println("Error: no se pudo obtener reporte de ocupacion de vehiculos");
-                return new ArrayList<>();
-            }
-            return reporteOcupacionDeVehiculos;
+            return daoRutas.reporteOcupacionDeVehiculos();
         } catch (SQLException e) {
-            System.err.println("Error de base de datos al obtener el reporte de ocupaciones de vehiculos" + e.getMessage());
+            System.err.println("Error de base de datos al obtener el reporte de ocupacion de vehiculos: " + e.getMessage());
             return new ArrayList<>();
         }
     }

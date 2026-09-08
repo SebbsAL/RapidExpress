@@ -7,9 +7,11 @@ import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.EstadoPaquete;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -193,6 +195,24 @@ public class DaoPaquetes implements IDaoPaquetes {
         LinkedHashMap<String, Integer> mapa = new LinkedHashMap<>();
         try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement PS = con.prepareStatement(sql); ResultSet RS = PS.executeQuery()){
             while (RS.next()) {mapa.put(RS.getString("nombre_completo"), RS.getInt("total"));}
+        }
+        return mapa;
+    }
+    
+    /**
+     * Cuenta los paquetes registrados entre dos fechas, agrupados por estado.
+     * Se usa DATE(fecha_creacion) porque la columna es DATETIME: sin eso, los
+     * paquetes creados el ultimo dia del rango despues de medianoche quedarian fuera.
+     */
+    public Map<String, Integer> paquetesRegistradosEnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) throws SQLException{
+        String sql = "SELECT estado, COUNT(*) AS paquetes_registrados FROM paquetes WHERE DATE(fecha_creacion) BETWEEN ? AND ? GROUP BY estado";
+        LinkedHashMap<String, Integer> mapa = new LinkedHashMap<>();
+        try (Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setDate(1, Date.valueOf(fechaInicio));
+            ps.setDate(2, Date.valueOf(fechaFin));
+            try(ResultSet rs = ps.executeQuery()){
+                while (rs.next()) {mapa.put(rs.getString("estado"),rs.getInt("paquetes_registrados"));}
+            }
         }
         return mapa;
     }

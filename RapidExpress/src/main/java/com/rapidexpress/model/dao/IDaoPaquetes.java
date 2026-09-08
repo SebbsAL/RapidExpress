@@ -4,6 +4,7 @@ import com.rapidexpress.model.entity.EstadoPaquete;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -37,4 +38,7 @@ public interface IDaoPaquetes {
     int contarEnviadosPorIdentificacion(String identificacion) throws SQLException;
     /** Cuenta cuántos paquetes ha recibido (como destinatario) el cliente con esa identificación. */
     int contarRecibidosPorIdentificacion(String identificacion) throws SQLException;
+    
+    /** Cuenta los paquetes registrados entre dos fechas, agrupados por estado. */
+    Map<String, Integer> paquetesRegistradosEnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) throws SQLException;
 }

@@ -104,6 +104,10 @@ public class ControladorRutas {
         return servicioRutas.obtenerDetalleEntregas(codigoRuta);
     }
     
+    /**
+     * Obtiene la ocupacion de los vehiculos que tienen rutas activas
+     * @return Lista con placa, capacidad, peso asignado y porcentaje de ocupacion
+     */
     public List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos(){
         return servicioRutas.reporteOcupacionDeVehiculos();
     }

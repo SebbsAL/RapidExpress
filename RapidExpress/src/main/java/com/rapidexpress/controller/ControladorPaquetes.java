@@ -8,6 +8,7 @@ import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.ResumenCategoriaPeso;
 import com.rapidexpress.service.ServicioPaquetes;
+import java.time.LocalDate;
 import java.util.Map;
 /**
  *
@@ -80,6 +81,16 @@ public class ControladorPaquetes {
      */
     public Map<String, Integer> contarPedidosPorRemitente(){
         return servicioPaquetes.contarPedidosPorRemitente();
+    }
+    
+    /**
+     * Cuenta los paquetes registrados en un rango de fechas, agrupados por estado
+     * @param fechaInicio Fecha inicial del rango (inclusive)
+     * @param fechaFin Fecha final del rango (inclusive)
+     * @return Mapa de estado a cantidad de paquetes
+     */
+    public Map<String, Integer> paquetesRegistradosEnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin){
+        return servicioPaquetes.paquetesRegistradosEnRangoDeFechas(fechaInicio, fechaFin);
     }
 
     /**

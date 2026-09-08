@@ -8,7 +8,11 @@ import com.rapidexpress.controller.ControladorPaquetes;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.entity.ResumenCategoriaPeso;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +39,8 @@ public class VistaPaquetes {
             "Listar remitentes con mas de 3 envios",
             "Consultar paquetes enviados y recibidos por cliente",
             "Consultar paquetes categorizados por su peso",
-            "Obtener paquete mas/menos pesado"
+            "Obtener paquete mas/menos pesado",
+            "Paquete registrado en rango de fechas"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE PAQUETES", opciones);
@@ -66,6 +71,9 @@ public class VistaPaquetes {
                     break;
                 case 9:
                     obtenerPaqueteMenosYMasPesado();
+                    break;
+                case 10:
+                    paquetesRegistradosEnRangoDeFechas();
                     break;
                 case 0:
                     return;
@@ -279,8 +287,8 @@ public class VistaPaquetes {
         try {
             Map<String, Integer> mapa = controladorPaquetes.contarPedidosPorRemitente();
             if (mapa != null && !mapa.isEmpty()) {
-                mapa.forEach((nombre,pedidos)->{
-                    System.out.println("\n----------------------------------------");
+                mapa.forEach((nombre,pedidos)->{ //asdfads
+                    System.out.println("\n-------------------------------------------");
                     System.out.println("Nombre: "+nombre);
                     System.out.println("Cantidad de pedidos: "+pedidos);
                 });
@@ -334,4 +342,30 @@ public class VistaPaquetes {
         }
         UtilidadConsola.pausar();
     }
+    
+    /**
+     * Muestra cuantos paquetes se registraron en un rango de fechas, por estado
+     */
+    private void paquetesRegistradosEnRangoDeFechas(){
+        System.out.println("Paquetes Registrados categorizados por rango de fechas");
+        System.out.println("----------------------------------------------");
+        try {
+            String fechaInicioStr = UtilidadConsola.leerTexto("Ingrese fecha de inicio (dd/MM/yyyy): ");
+            LocalDate fechaInicio = LocalDate.parse(fechaInicioStr,DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String fechaFinStr = UtilidadConsola.leerTexto("Ingrese fecha de fin (dd/MM/yyyy): ");
+            LocalDate fechaFin = LocalDate.parse(fechaFinStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Map<String, Integer> paquetesRangoDeFechas = controladorPaquetes.paquetesRegistradosEnRangoDeFechas(fechaInicio, fechaFin);
+            if (paquetesRangoDeFechas != null && !paquetesRangoDeFechas.isEmpty()) {
+                paquetesRangoDeFechas.forEach( (Estado, cantidad) -> {System.out.println("ESTADO: "+Estado+" Cantidad: "+cantidad);});
+            }else{
+                System.out.println("No se encontraron paquetes en ese rango de fechas");
+            }
+        }catch (DateTimeParseException e) {
+            UtilidadConsola.mostrarError("Formato de fecha invalido. Use dd/MM/yyyy");
+        }catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al consultar paquetes registrados: "+ e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
 }
