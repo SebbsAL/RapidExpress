@@ -9,6 +9,7 @@ import com.rapidexpress.model.entity.Rutas;
 import com.rapidexpress.model.entity.Paquetes;
 import com.rapidexpress.model.entity.RutaPaquetes;
 import com.rapidexpress.model.entity.EstadoEntrega;
+import com.rapidexpress.model.entity.ResumenVehiculoRutasActivas;
 import java.util.List;
 /**
  * Vista para gestion de rutas
@@ -32,7 +33,8 @@ public class VistaRutas {
             "Listar rutas activas",
             "Ver detalle de entregas de una ruta",
             "Cancelar ruta planificada",
-            "Calcular promedios de peso y duracion de las rutas completadas"
+            "Calcular promedios de peso y duracion de las rutas completadas",
+            "Mostrar un resumen de los vehiculos con una rutas activas."
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE RUTAS", opciones);
@@ -60,6 +62,9 @@ public class VistaRutas {
                     break;
                 case 8:
                     calcularPromedioRutasCompletadas();
+                    break;
+                case 9:
+                    reporteOcupacionDeVehiculos();
                     break;
                 case 0:
                     return;
@@ -198,6 +203,20 @@ public class VistaRutas {
             UtilidadConsola.mostrarError("Error al finalizar ruta: " + e.getMessage());
         }
         UtilidadConsola.pausar();
+    }
+    
+    private void reporteOcupacionDeVehiculos(){
+        System.out.println("--------------------------------------");
+        System.out.println("Reporte de ocupacion de vehiculos");
+        try {
+            List<ResumenVehiculoRutasActivas> reporteRutasActivas = controladorRutas.reporteOcupacionDeVehiculos();
+            System.out.println("------------------------------------------------------------------------------");
+            for (ResumenVehiculoRutasActivas RrA : reporteRutasActivas) {
+                System.out.println("PLACA: "+ RrA.getPlaca()+ "\nCAPACIDAD_MAXIMA_KG: "+ RrA.getCapacidad_maxima_kg()+"\nPESO_TOTAL_ASIGNADO: "+RrA.getPesoTotalAsignadoKg()+"\nPORCENTAJE_DE_CARGA_RESPECTO_A_LA_CAPACIDAD: "+RrA.getPorcentaje());
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al obtener el reporte de ocupacion de los vehiculos");
+        }
     }
     /**
      * Lista todas las rutas que estan actualmente activas (en proceso)

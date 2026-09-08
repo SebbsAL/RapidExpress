@@ -13,6 +13,7 @@ import com.rapidexpress.model.entity.EstadoVehiculo;
 import com.rapidexpress.model.entity.HistorialPaquetes;
 import com.rapidexpress.model.dao.IDaoRutas;
 import com.rapidexpress.model.dao.IDaoPaquetes;
+import com.rapidexpress.model.entity.ResumenVehiculoRutasActivas;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -329,6 +330,20 @@ public class ServicioRutas {
             return detalle;
         } catch (SQLException e) {
             System.err.println("Error de base de datos al obtener detalle de entregas: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+    
+    public List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos(){
+        try {
+            List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos = daoRutas.reporteOcupacionDeVehiculos();
+            if (reporteOcupacionDeVehiculos.isEmpty()) {
+                System.err.println("Error: no se pudo obtener reporte de ocupacion de vehiculos");
+                return new ArrayList<>();
+            }
+            return reporteOcupacionDeVehiculos;
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos al obtener el reporte de ocupaciones de vehiculos" + e.getMessage());
             return new ArrayList<>();
         }
     }

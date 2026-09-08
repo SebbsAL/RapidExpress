@@ -1,4 +1,5 @@
 
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -8,6 +9,7 @@ import java.util.List;
 import com.rapidexpress.model.entity.Rutas;
 import com.rapidexpress.model.entity.RutaPaquetes;
 import com.rapidexpress.model.entity.EstadoEntrega;
+import com.rapidexpress.model.entity.ResumenVehiculoRutasActivas;
 import com.rapidexpress.service.ServicioRutas;
 /**
  *
@@ -102,6 +104,9 @@ public class ControladorRutas {
         return servicioRutas.obtenerDetalleEntregas(codigoRuta);
     }
     
+    public List<ResumenVehiculoRutasActivas> reporteOcupacionDeVehiculos(){
+        return servicioRutas.reporteOcupacionDeVehiculos();
+    }
     /**
      * Calcula el peso y la duracion promedio de las rutas completadas
      * @return Arreglo con {pesoPromedio, duracionPromedioMinutos, cantidadDeRutas}

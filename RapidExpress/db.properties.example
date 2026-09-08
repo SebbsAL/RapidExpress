@@ -1,8 +1,0 @@
-# Copia este archivo a "db.properties" (mismo directorio, junto a pom.xml) y
-# reemplaza los valores con los datos reales de tu base de datos MySQL en la
-# nube. "db.properties" esta en .gitignore: nunca se sube al repositorio.
-# No uses comillas alrededor de los valores.
-
-DB_URL=jdbc:mysql://TU_HOST:3306/rapidexpress_db
-DB_USER=TU_USUARIO
-DB_PASSWORD=TU_CONTRASENA
