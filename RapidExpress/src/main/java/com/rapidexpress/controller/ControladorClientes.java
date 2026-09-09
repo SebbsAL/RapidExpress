@@ -60,4 +60,14 @@ public class ControladorClientes {
     public Clientes buscarClientePorIdentificacion(String identificacion){
         return servicioClientes.buscarClientePorIdentificacion(identificacion);
     }
+    
+    /**
+     * Elimina un cliente que no tenga paquetes asociados
+     * @param identificacion Numero de identificacion del cliente
+     * @return true si el cliente se elimino
+     */
+    public boolean eliminar(String identificacion){
+        return servicioClientes.eliminar(identificacion);
+    }
+    
 }

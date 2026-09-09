@@ -48,7 +48,7 @@ public final class Fabrica {
     private static final ServicioAuditoria SERVICIO_AUDITORIA = new ServicioAuditoria(DAO_AUDITORIA);
     private static final ServicioVehiculos SERVICIO_VEHICULOS = new ServicioVehiculos(DAO_VEHICULOS);
     private static final ServicioConductores SERVICIO_CONDUCTORES = new ServicioConductores(DAO_CONDUCTORES, SERVICIO_VEHICULOS);
-    private static final ServicioClientes SERVICIO_CLIENTES = new ServicioClientes(DAO_CLIENTES);
+    private static final ServicioClientes SERVICIO_CLIENTES = new ServicioClientes(DAO_CLIENTES,DAO_PAQUETES);
     private static final ServicioPaquetes SERVICIO_PAQUETES = new ServicioPaquetes(DAO_PAQUETES, SERVICIO_CLIENTES);
     private static final ServicioRutas SERVICIO_RUTAS = new ServicioRutas(DAO_RUTAS, SERVICIO_VEHICULOS, SERVICIO_CONDUCTORES, DAO_PAQUETES);
     private static final ServicioMantenimientos SERVICIO_MANTENIMIENTOS = new ServicioMantenimientos(DAO_MANTENIMIENTOS, SERVICIO_VEHICULOS);

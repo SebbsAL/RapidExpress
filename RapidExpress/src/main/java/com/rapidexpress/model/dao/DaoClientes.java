@@ -94,6 +94,15 @@ public class DaoClientes implements IDaoClientes {
         return null;
     }
     
+    /** Borra un cliente por su identificación; retorna false si no existia. */
+    public boolean eliminar(String identificacion)throws SQLException{
+        String sql = "DELETE FROM clientes WHERE numero_identificacion = ?";
+        try(Connection con = ConexionBD.MySQLConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, identificacion);
+            return ps.executeUpdate()>0;
+        }
+    }
+    
     /** Convierte una fila del ResultSet en un objeto Clientes. */
     private Clientes mapearCliente(ResultSet rs) throws SQLException {
         Clientes c = new Clientes();

@@ -25,7 +25,8 @@ public class VistaClientes {
             "Registrar un nuevo cliente",
             "Listar clientes",
             "Buscar cliente por identificacion",
-            "Actualizar datos de cliente"
+            "Actualizar datos de cliente",
+            "Eliminar cliente"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE CLIENTES", opciones);
@@ -41,6 +42,9 @@ public class VistaClientes {
                     break;
                 case 4:
                     actualizarDatosCliente();
+                    break;
+                case 5:
+                    eliminarCliente();
                     break;
                 case 0:
                     return;
@@ -138,6 +142,36 @@ public class VistaClientes {
             UtilidadConsola.mostrarError("Error al buscar cliente: " + e.getMessage());
         }
         UtilidadConsola.pausar();
+    }
+    
+    
+    /**
+     * Elimina un cliente, pidiendo confirmacion mostrando su nombre
+     */
+    private void eliminarCliente(){
+        System.out.println("\nELIMINAR CLIENTE CON SU IDENTIFICACION");
+        System.out.println("----------------------------------------");
+        try {
+            String identificacion = UtilidadConsola.leerTextoObligatorio("Numero de identificacion: ");
+            Clientes clienteEliminar = controladorClientes.buscarClientePorIdentificacion(identificacion);
+            String confirmacion = UtilidadConsola.leerTexto("Seguro que desea eliminar al cliente "+clienteEliminar.getNombreCompleto()+" ("+clienteEliminar.getNumeroIdentificacion()+")?: (S/N): ");
+            
+            if (confirmacion.equalsIgnoreCase("s")) {
+                boolean exito = controladorClientes.eliminar(identificacion);
+                if (exito) {
+                    UtilidadConsola.mostrarExito("Cliente eliminado");
+                }else{
+                    UtilidadConsola.mostrarError("No se pudo eliminar. Verifique que no este asignado a una ruta activa...");
+                }
+            }else if (confirmacion.equalsIgnoreCase("n")) {
+                UtilidadConsola.mostrarInfo("Redirigiendo al menu...");
+                return;
+            }else{
+                UtilidadConsola.mostrarInfo("selecione una opcion correcta..");
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al eliminar el cliente: " + e.getMessage());
+        }
     }
     /**
      * Actualiza los datos de un cliente existente

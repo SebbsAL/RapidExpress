@@ -18,4 +18,7 @@ public interface IDaoClientes {
     Clientes obtenerPorId(int id) throws SQLException;
     /** Obtiene todos los clientes registrados. */
     List<Clientes> obtenerTodos() throws SQLException;
+    
+    /** Borra un cliente por su número de identificación. */
+    boolean eliminar(String identificacion)throws SQLException;
 }

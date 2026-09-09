@@ -1,7 +1,9 @@
 package com.rapidexpress.service;
 
+import com.rapidexpress.model.dao.DaoPaquetes;
 import com.rapidexpress.model.entity.Clientes;
 import com.rapidexpress.model.dao.IDaoClientes;
+import com.rapidexpress.model.dao.IDaoPaquetes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,9 +15,11 @@ import java.util.List;
 public class ServicioClientes {
 
     private final IDaoClientes daoClientes;
+    private final IDaoPaquetes daoPaquetes;
 
-    public ServicioClientes(IDaoClientes daoClientes) {
+    public ServicioClientes(IDaoClientes daoClientes, IDaoPaquetes daoPaquetes) {
         this.daoClientes = daoClientes;
+        this.daoPaquetes = daoPaquetes;
     }
 
     /**
@@ -44,8 +48,9 @@ public class ServicioClientes {
     }
 
     /**
-     * Actualiza los datos de un cliente existente, identificado por su número de identificación.
-     * El número de identificación no se modifica: es la llave con la que se ubica al cliente.
+     * Actualiza los datos de un cliente existente, identificado por su número
+     * de identificación. El número de identificación no se modifica: es la
+     * llave con la que se ubica al cliente.
      */
     public boolean actualizarDatosCliente(String identificacion, String nombre, String telefono, String email, String direccion, String ciudad) {
         try {
@@ -91,7 +96,8 @@ public class ServicioClientes {
     }
 
     /**
-     * Busca un cliente por su número de identificación, sin crearlo si no existe.
+     * Busca un cliente por su número de identificación, sin crearlo si no
+     * existe.
      */
     public Clientes buscarClientePorIdentificacion(String identificacion) {
         try {
@@ -103,8 +109,34 @@ public class ServicioClientes {
     }
 
     /**
-     * Obtiene un cliente a partir de su identificador interno.
+     * Elimina un cliente. Solo procede si el cliente existe y no tiene ningun
+     * paquete asociado, ni como remitente ni como destinatario: la tabla
+     * paquetes tiene foreign keys hacia clientes, asi que borrarlo con envios
+     * registrados romperia la integridad referencial.
      */
+    public boolean eliminar(String identificacion) {
+        try {
+            Clientes obtenerCliente = buscarClientePorIdentificacion(identificacion);
+            if (obtenerCliente == null) {
+                System.err.println("Error: no se pudo obtener el cliente con esa identificacon");
+                return false;
+            }
+            int cantidadPaquetes = (daoPaquetes.contarEnviadosPorIdentificacion(identificacion) + daoPaquetes.contarRecibidosPorIdentificacion(identificacion));
+
+            if (cantidadPaquetes > 0) {
+                System.err.println("Error: este cliente");
+                return false;
+            }
+            
+            return daoClientes.eliminar(identificacion);
+        }catch(SQLException e){
+            System.err.println("Error de base de datos al eliminar un cliente: "+ e.getMessage());
+            return false;
+        }        
+    }
+        /**
+         * Obtiene un cliente a partir de su identificador interno.
+         */
     public Clientes obtenerClientePorId(int id) {
         try {
             return daoClientes.obtenerPorId(id);
