@@ -135,5 +135,11 @@ public class ControladorPaquetes {
         return servicioPaquetes.obtenerPaqueteMenosPesado();
     }
 
-    
+    /**
+     * Agrupa los paquetes en bodega por la ciudad de destino
+     * @return Mapa de ciudad a cantidad de paquetes
+     */
+    public Map<String, Long> paquetesEnBodegaPorCiudadDestino(){
+        return servicioPaquetes.paquetesEnBodegaPorCiudadDestino();
+    }
 }

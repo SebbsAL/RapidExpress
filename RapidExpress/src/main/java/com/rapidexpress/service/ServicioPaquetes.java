@@ -204,6 +204,19 @@ public class ServicioPaquetes {
     }
     
     /**
+     * Agrupa los paquetes en bodega por la ciudad de su destinatario y cuenta
+     * cuantos hay en cada una. Se apoya en listarPaquetesEnBodega() porque ese
+     * metodo ya deja el destinatario cargado; sin eso getDestinatario() vendria
+     * en null. El mapa que devuelve groupingBy es un HashMap, asi que el orden
+     * de las ciudades no esta garantizado.
+     */
+    public Map<String, Long> paquetesEnBodegaPorCiudadDestino(){
+        return listarPaquetesEnBodega().stream()
+                .collect(Collectors.groupingBy(p -> p.getDestinatario().getCiudad(),
+                        Collectors.counting()));
+    }
+    
+    /**
      * Obtiene el paquete mas pesado de los que estan en bodega, o null si no hay ninguno.
      */
     public Paquetes obtenerPaqueteMasPesado(){

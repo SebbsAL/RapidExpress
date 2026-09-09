@@ -40,7 +40,8 @@ public class VistaPaquetes {
             "Consultar paquetes enviados y recibidos por cliente",
             "Consultar paquetes categorizados por su peso",
             "Obtener paquete mas/menos pesado",
-            "Paquete registrado en rango de fechas"
+            "Paquete registrado en rango de fechas",
+            "consultar cantidad de paquetes en bodega por ciudad de destino"
         };
         while (true) {
             int opcion = UtilidadConsola.mostrarMenu("GESTION DE PAQUETES", opciones);
@@ -74,6 +75,9 @@ public class VistaPaquetes {
                     break;
                 case 10:
                     paquetesRegistradosEnRangoDeFechas();
+                    break;
+                case 11:
+                    paquetesEnBodegaPorCiudadDestino();
                     break;
                 case 0:
                     return;
@@ -218,6 +222,28 @@ public class VistaPaquetes {
             }
         } catch (Exception e) {
             UtilidadConsola.mostrarError("Error al listar paquetes: " + e.getMessage());
+        }
+        UtilidadConsola.pausar();
+    }
+    
+    /**
+     * Muestra cuantos paquetes en bodega hay por cada ciudad de destino
+     */
+    private void paquetesEnBodegaPorCiudadDestino(){
+        System.out.println("\nPAQUETES EN BODEGA POR CIUDAD DE DESTINO");
+        System.out.println("--------------------------------------------------------");
+        try {
+            Map<String, Long> paquetesBodega = controladorPaquetes.paquetesEnBodegaPorCiudadDestino();
+            if (paquetesBodega.isEmpty()) {
+                UtilidadConsola.mostrarInfo("No hay paquetes en bodega actualmente");
+            } else {
+                paquetesBodega.forEach((ciudad, paquetes)->{
+                    System.out.println("-----------------------------------------------------------------------------");
+                    System.out.println("CIUDAD: "+ciudad+"\nPAQUETES: "+paquetes);
+                });
+            }
+        } catch (Exception e) {
+            UtilidadConsola.mostrarError("Error al agrupar paquetes en bodega por ciudad de destino: "+ e.getMessage());
         }
         UtilidadConsola.pausar();
     }
